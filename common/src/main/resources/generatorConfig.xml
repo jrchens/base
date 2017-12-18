@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <classPathEntry
+            location="/Users/shengchen/.m2/repository/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar"/>
+    <context id="context1" targetRuntime="MyBatis3Simple">
+        <!-- targetRuntime="MyBatis3Simple" -->
+        <!-- targetRuntime="MyBatis3" -->
+
+        <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+        </plugin>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/base"
+                        driverClass="com.mysql.jdbc.Driver" password="develop"
+                        userId="develop"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="cn.jrry.sys.domain"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="cn.jrry.sys.mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="cn.jrry.sys.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- sys_user,sys_group,sys_user_group,sys_role,sys_user_role,sys_permission,sys_role_permission -->
+        <!-- cms_category,cms_article,cms_file,cms_config,cms_config -->
+        <table schema="base" tableName="sys_group">
+            <generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID() + 1"/>
+            <!-- <ignoreColumn column="fred"/> -->
+            <columnOverride column="crtime" property="crtime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <columnOverride column="mdtime" property="mdtime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </table>
+    </context>
+</generatorConfiguration>

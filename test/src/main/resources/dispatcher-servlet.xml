@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- <bean id="messageSource" -->
+    <!-- class="org.springframework.context.support.ResourceBundleMessageSource"> -->
+    <!-- <property name="basenames"> -->
+    <!-- <list> -->
+    <!-- <value>site-config</value> -->
+    <!-- </list> -->
+    <!-- </property> -->
+    <!-- </bean> -->
+
+    <context:component-scan base-package="cn.jrry.test.**.*.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!--<mvc:interceptors>-->
+    <!--<mvc:interceptor>-->
+    <!--<mvc:mapping path="/**"/>-->
+    <!--<mvc:exclude-mapping path="/login.json"/>-->
+    <!--<bean class="me.sample.interceptor.JsonWebTokenInterceptor">-->
+    <!--<property name="dataSource" ref="dataSource"></property>-->
+    <!--</bean>-->
+    <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+
+    <!--<mvc:cors>-->
+    <!--<mvc:mapping path="/**" max-age="900"/>-->
+    <!--</mvc:cors>-->
+
+    <!-- <context:component-scan base-package="me.sample" use-default-filters="false" 
+        > -->
+    <!-- <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
+    <!-- <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/> -->
+    <!-- <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/> -->
+    <!-- </context:component-scan> -->
+
+    <!--<mvc:resources location="/WEB-INF/resources/" mapping="/resources/**/*"></mvc:resources>-->
+    <!--<mvc:resources location="/MP_verify_18tLgLKbrDMZDUTI.txt" mapping="/MP_verify_18tLgLKbrDMZDUTI.txt"></mvc:resources>-->
+    <!--<mvc:resources location="/favicon.ico" mapping="/favicon.ico"></mvc:resources>-->
+    <!--<mvc:resources location="/WEB-INF/html" mapping="/**/*.html"></mvc:resources>-->
+
+    <!--<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">-->
+    <!--<property name="defaultLocale" value="en"/>-->
+    <!--</bean>-->
+
+    <mvc:annotation-driven/>
+    <!--<mvc:view-controller path="/" view-name="index"/>-->
+    <!-- <mvc:redirect-view-controller path="/" redirect-url="/login.html" 
+        /> -->
+
+    <!-- <mvc:tiles-configurer> -->
+    <!-- <mvc:definitions location="classpath:applicationContext-tiles.xml" 
+        /> -->
+    <!-- </mvc:tiles-configurer> -->
+
+    <!--<mvc:view-resolvers>-->
+    <!--<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>-->
+    <!-- <mvc:tiles view-class="org.springframework.web.servlet.view.tiles3.TilesView"
+        /> -->
+    <!--<mvc:content-negotiation>-->
+    <!--<mvc:default-views>-->
+    <!--<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>-->
+    <!--</mvc:default-views>-->
+    <!--</mvc:content-negotiation>-->
+    <!--</mvc:view-resolvers>-->
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+        <property name="resolveLazily" value="false"></property>
+    </bean>
+
+</beans>

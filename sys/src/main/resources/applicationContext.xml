@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="cn.jrry.sys.**.*.service.impl"></context:component-scan>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:jdbc.properties"/>
+    </bean>
+    <!-- <context:property-placeholder location="classpath:jdbc.properties"/> -->
+
+    <!--<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">-->
+    <!--<property name="velocityProperties">-->
+    <!--<props>-->
+    <!--<prop key="resource.loader">classpath</prop>-->
+    <!--</props>-->
+    <!--</property>-->
+    <!--<property name="configLocation" value="classpath:velocity.properties" />-->
+    <!--<property name="overrideLogging" value="false"/>-->
+    <!--</bean>-->
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- <tx:annotation-driven transaction-manager="txManager" /> -->
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <aop:config>
+        <aop:pointcut id="pointCutMethod"
+                      expression="execution(* cn.jrry.sys.**.*.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointCutMethod"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <import resource="applicationContext-mybatis.xml"/>
+    <!--     <import resource="applicationContext-shiro.xml"/> -->
+    <!--<import resource="applicationContext-cache.xml"/>-->
+    <!--<import resource="applicationContext-task.xml"/>-->
+
+</beans>
