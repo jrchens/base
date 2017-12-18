@@ -18,11 +18,16 @@
 *.tar.gz
 *.rar
 
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
 
+# user custom ignore
 *.iml
 .DS_Store
 target/
 .idea/
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+rebel.xml
+.classpath
+.project
+.settings/
+.externalToolBuilders/
