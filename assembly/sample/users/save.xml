@@ -1,0 +1,37 @@
+<RestClientRequest>
+  <option name="biscuits">
+    <list />
+  </option>
+  <option name="httpMethod" value="POST" />
+  <option name="urlBase" value="http://localhost:8080" />
+  <option name="urlPath" value="sample/users.json" />
+  <option name="headers">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="Accept" />
+        <option name="value" value="*/*" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Cache-Control" />
+        <option name="value" value="no-cache" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Content-Type" />
+        <option name="value" value="application/json" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="username" />
+        <option name="value" value="admin" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parameters">
+    <list />
+  </option>
+  <option name="parametersEnabled" value="true" />
+  <option name="haveTextToSend" value="true" />
+  <option name="haveFileToSend" value="false" />
+  <option name="isFileUpload" value="false" />
+  <option name="textToSend" value="{   &quot;username&quot;:&quot;alex&quot;,   &quot;viewname&quot;:&quot;Alex&quot;,   &quot;password&quot;:&quot;75f1baf529f2166d0ae14e2f50a4d37d2df0a007d94a36988dc27238e8a7b62ef00c202932cd400b71d9d456b884e51c56280f668ac64b060d9e582848d02ba9&quot;,   &quot;passwordSalt&quot;:&quot;vheeB57N&quot;,   &quot;email&quot;:&quot;alex@gmail.com&quot;,   &quot;cruser&quot;:&quot;alex&quot; }" />
+  <option name="filesToSend" value="" />
+</RestClientRequest>

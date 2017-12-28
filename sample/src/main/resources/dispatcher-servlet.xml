@@ -13,13 +13,17 @@
 
     <!--<context:property-placeholder location="classpath:config.properties"/>-->
 
-    <context:component-scan base-package="cn.jrry.sample.**.*.controller">
+    <context:component-scan base-package="cn.jrry.sample.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
     <mvc:annotation-driven/>
+    
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-methods="*"/>
+    </mvc:cors>
 
     <!-- <mvc:redirect-view-controller -->
     <!-- redirect-url="login" path="/" /> -->

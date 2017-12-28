@@ -1,0 +1,22 @@
+package ${packageName}.mapper;
+
+import cn.jrry.common.domain.$className;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+public interface ${className}Mapper {
+    int insert($className record);
+
+    int deleteByPrimaryKey(Long id);
+    int removeByPrimaryKey(Long id);
+
+    int updateByPrimaryKey($className record);
+
+    $className selectByPrimaryKey(Long id);
+
+    int count(@Param("record") $className record);
+
+    List<$className> select(@Param("record") $className record, @Param("offset") int offset, @Param("rows") int rows);
+
+}

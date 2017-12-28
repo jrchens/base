@@ -28,6 +28,28 @@ public class HashingTest {
     }
 
     @Test
+    public void testUserPasswordEncrypt() {
+        // md5(123456) --> e10adc3949ba59abbe56e057f20f883e
+        String[] datas = {"admin:e10adc3949ba59abbe56e057f20f883e,ZuVQXbee",
+                "jason:e10adc3949ba59abbe56e057f20f883e,w0N3N6OL",
+                "mason:e10adc3949ba59abbe56e057f20f883e,sPxiGWxX"};
+
+        for (String data: datas
+             ) {
+            String[] ups = data.split(","); // user,password,salt
+            String[] up = ups[0].split(":");
+
+            String encryptPassword = Hashing.md5().hashString(ups[0],Charsets.UTF_8).toString();
+
+            SecretKey key = new SecretKeySpec(ups[1].getBytes(Charsets.UTF_8), "HmacSHA512");
+            String pwd = Hashing.hmacSha512(key).hashBytes(encryptPassword.getBytes(Charsets.UTF_8)).toString();
+
+            System.out.println(String.format("%s\t%s\t%s",up[0],pwd,ups[1]));
+
+        }
+    }
+
+    @Test
     public void encrypt() throws Exception {
         String username = "admin";
         String password = "12345";
@@ -58,5 +80,15 @@ public class HashingTest {
         String crc32c = Hashing.crc32c().hashInt(input).toString();
         logger.info(crc32c);
         Assert.assertTrue(crc32c.length() == 8);
+    }
+
+
+
+    @Test
+    public void testMD5() {
+        String pwd = "123456";
+        String result = Hashing.md5().hashString(pwd,Charsets.UTF_8).toString();
+
+        logger.info(result);
     }
 }

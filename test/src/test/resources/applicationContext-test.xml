@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--<context:component-scan base-package=""></context:component-scan>-->
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <value>classpath:jdbc.properties</value>
+                <!--<value>classpath:redis.properties</value>-->
+            </array>
+        </property>
+    </bean>
+    <!-- <context:property-placeholder location="classpath:jdbc.properties"/> -->
+
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- <tx:annotation-driven transaction-manager="txManager" /> -->
+    <!--<bean id="transactionManager"-->
+          <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="pointCutMethod"-->
+                      <!--expression="execution(* me.sample.**.*.service.impl.*.*(..))"/>-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="pointCutMethod"/>-->
+    <!--</aop:config>-->
+
+    <!--<tx:advice id="txAdvice">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="get*" read-only="true"/>-->
+            <!--<tx:method name="query*" read-only="true"/>-->
+            <!--<tx:method name="select*" read-only="true"/>-->
+            <!--<tx:method name="*"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+
+    <!-- <import resource="applicationContext-shiro.xml"/> -->
+    <!--     <import resource="applicationContext-oxm.xml"/> -->
+    <!--     <import resource="applicationContext-cache.xml"/> -->
+    <!--<import resource="applicationContext-mybatis.xml"/>-->
+    <!-- <import resource="applicationContext-task.xml"/> -->
+</beans>

@@ -3,15 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="cn.jrry.sample.**.*.service.impl"/>
+    <context:component-scan base-package="cn.jrry.*.service.impl"/>
 
     <!--   <bean id="config" -->
     <!--     class="org.springframework.beans.factory.config.PropertiesFactoryBean"> -->
@@ -55,8 +58,23 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <aop:config>
+        <aop:pointcut id="pointCutMethod"
+                      expression="execution(* cn.jrry.*.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointCutMethod"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
     <!--<tx:annotation-driven/>-->
 
+    <import resource="classpath:applicationContext-mybatis.xml"/>
     <!--<import resource="classpath:cacheConfig.xml"/>-->
     <!--<import resource="classpath:shiroConfig.xml"/>-->
 

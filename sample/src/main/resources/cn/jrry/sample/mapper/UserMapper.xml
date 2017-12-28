@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.sample.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="cn.jrry.common.domain.User">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="disabled" jdbcType="BIT" property="disabled" />
+        <result column="locked" jdbcType="TINYINT" property="locked" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+        <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+        <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+        <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="cn.jrry.common.domain.User">
+        insert into sys_user (
+         id
+        , username
+        , viewname
+        , password
+        , password_salt
+        , email
+        , disabled
+        , locked
+        , deleted
+        , cruser
+        , crtime
+        )
+        values (
+         #{id,jdbcType=BIGINT}
+        , #{username,jdbcType=VARCHAR}
+        , #{viewname,jdbcType=VARCHAR}
+        , #{password,jdbcType=VARCHAR}
+        , #{passwordSalt,jdbcType=VARCHAR}
+        , #{email,jdbcType=VARCHAR}
+        , #{disabled,jdbcType=BIT}
+        , #{locked,jdbcType=TINYINT}
+        , #{deleted,jdbcType=TINYINT}
+        , #{cruser,jdbcType=VARCHAR}
+        , #{crtime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.common.domain.User">
+        update sys_user
+        set
+         username = #{username,jdbcType=VARCHAR}
+        , viewname = #{viewname,jdbcType=VARCHAR}
+        , password = #{password,jdbcType=VARCHAR}
+        , password_salt = #{passwordSalt,jdbcType=VARCHAR}
+        , email = #{email,jdbcType=VARCHAR}
+        , disabled = #{disabled,jdbcType=BIT}
+        , locked = #{locked,jdbcType=TINYINT}
+        , deleted = #{deleted,jdbcType=TINYINT}
+        , mduser = #{mduser,jdbcType=VARCHAR}
+        , mdtime = #{mdtime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectId" resultType="java.lang.Long">
+        select max(id) + 2
+        from sys_user
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumns" />
+        from sys_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <sql id="selectColumns">
+                     id
+                    , username
+                    , viewname
+                    , password
+                    , password_salt
+                    , email
+                    , disabled
+                    , locked
+                    , deleted
+                    , cruser
+                    , crtime
+                    , mduser
+                    , mdtime
+            </sql>
+
+    <sql id="selectWhereCondition">
+        <where>
+            deleted = 0
+            <trim prefix=" and (" suffixOverrides=" or " suffix=")">
+                     <if test="record.username != null"> or username = #{record.username}</if>
+                     <if test="record.viewname != null"> or viewname = #{record.viewname}</if>
+                     <if test="record.email != null"> or email = #{record.email}</if>
+                     <if test="record.disabled != null"> or disabled = #{record.disabled}</if>
+                     <if test="record.locked != null"> or locked = #{record.locked}</if>
+            </trim>
+        </where>
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer" parameterType="cn.jrry.common.domain.User">
+        select count(1)
+        from sys_user
+        <include refid="selectWhereCondition" />
+    </select>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="cn.jrry.common.domain.User" >
+        select
+        <include refid="selectColumns" />
+        from sys_user
+        <include refid="selectWhereCondition" />
+        limit ${offset},${limit}
+    </select>
+</mapper>

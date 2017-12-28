@@ -13,13 +13,11 @@
     <packaging>war</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>cn.jrry</groupId>
             <artifactId>common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
     </dependencies>
 
 

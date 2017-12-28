@@ -1,0 +1,21 @@
+package cn.jrry.common.domain;
+
+public class ${className} implements java.io.Serializable {
+
+#foreach( $field in $fields )
+    private $field.className $field.name;
+#end
+
+#foreach( $field in $fields )
+    #set( $fieldName = ${field.name.substring(0,1).toUpperCase().concat(${field.name.substring(1)})})
+
+    public $field.className get${fieldName} () {
+        return $field.name;
+    }
+
+    public void set${fieldName} ($field.className $field.name) {
+        this.$field.name = $field.name;
+    }
+#end
+
+}

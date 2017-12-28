@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- <import resource="applicationContext.xml"/> -->
+
+    <bean id="objectFactory" class="com.jrhot.ticket.ObjectFactory"></bean>
+
+    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <!-- <property name="adapters">
+            <array>
+                <bean class="com.jrhot.ticket.util.StringAdapter"></bean>
+            </array>
+        </property> -->
+        <property name="packagesToScan">
+            <array>
+                <value>com.jrhot.ticket.domain</value>
+            </array>
+        </property>
+        <property name="marshallerProperties">
+            <map>
+                <entry key="jaxb.formatted.output">
+                    <value type="java.lang.Boolean">false</value>
+                </entry>
+                <entry key="jaxb.encoding" value="UTF-8"></entry>
+                <entry key="jaxb.fragment">
+                    <value type="java.lang.Boolean">true</value>
+                </entry>
+                <!-- <entry key="com.sun.xml.internal.bind.xmlHeaders">
+                    <value type="java.lang.String"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]></value>
+                </entry> -->
+            </map>
+        </property>
+    </bean>
+
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="targetPackages">
+            <array>
+                <value>com.jrhot.ticket.domain</value>
+            </array>
+        </property>
+    </bean>
+</beans>
