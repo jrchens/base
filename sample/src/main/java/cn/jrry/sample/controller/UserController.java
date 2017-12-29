@@ -76,18 +76,15 @@ public class UserController {
 
     @RequestMapping(path = "users.json",method = RequestMethod.GET)
     public Map<String,Object> query(@RequestHeader String username,
-                                    @RequestParam(required = false) User record,
-                                    @RequestParam(value = "offset") int offset,
-                                    @RequestParam(value = "limit") int limit){
-        logger.info("--> {}.{}({},{},{})",CONTROLLER_CLASS_NAME,"query", record,offset,limit);
+                                    @RequestParam(required = false) Map<String,Object> record ){
+        logger.info("--> {}.{}({},{},{})",CONTROLLER_CLASS_NAME,"query", record);
         Map<String,Object> result = Maps.newLinkedHashMap();
         result.put("code",200);
         result.put("message","query user success");
 
         Map<String,Object> data = Maps.newHashMap();
-        if (record == null) record = new User();
         data.put("total",userService.count(record));
-        data.put("rows",userService.select(record,offset,limit));
+        data.put("rows",userService.select(record));
 
         result.put("data",data);
         logger.info("<-- {}.{}",CONTROLLER_CLASS_NAME,"query");

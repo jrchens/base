@@ -3,6 +3,7 @@ package cn.jrry.sample.service.impl;
 import cn.jrry.common.domain.User;
 import cn.jrry.sample.service.UserService;
 import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
 import com.google.common.hash.Hashing;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -84,15 +86,24 @@ public class UserServiceImplTest {
 
     @Test
     public void count() throws Exception {
-        User record = new User();
+        Map<String,Object> record = Maps.newHashMap();
         int count = userService.count(record);
         logger.info("count:{}", count);
     }
 
     @Test
     public void select() throws Exception {
-        User record = new User();
-        List<User> list = userService.select(record, 0, 10);
+        Map<String,Object> record = Maps.newHashMap();
+        record.put("offset",0); // required
+        record.put("limit",10); // required
+
+        record.put("username","");
+        record.put("viewname","");
+        record.put("email","");
+        record.put("disabled",0);
+        record.put("locked",0);
+
+        List<User> list = userService.select(record);
         for (User user : list
                 ) {
             logger.info("{}", user.toString());

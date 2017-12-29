@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -57,12 +58,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int count(User record) {
+    public int count(Map<String,Object> record) {
         return userMapper.count(record);
     }
 
     @Override
-    public List<User> select(User record, int offset, int limit) {
-        return userMapper.select(record,offset,limit);
+    public List<User> select(Map<String,Object>  record) {
+        return userMapper.select(record);
     }
 }

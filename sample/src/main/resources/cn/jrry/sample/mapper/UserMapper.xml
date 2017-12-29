@@ -96,25 +96,35 @@
             </sql>
 
     <sql id="selectWhereCondition">
-        <where>
-            deleted = 0
-            <trim prefix=" and (" suffixOverrides=" or " suffix=")">
-                     <if test="record.username != null"> or username = #{record.username}</if>
-                     <if test="record.viewname != null"> or viewname = #{record.viewname}</if>
-                     <if test="record.email != null"> or email = #{record.email}</if>
-                     <if test="record.disabled != null"> or disabled = #{record.disabled}</if>
-                     <if test="record.locked != null"> or locked = #{record.locked}</if>
+            <trim prefix="where deleted = 0 and (" prefixOverrides="or |and" suffix=")">
+                     <if test="username != null and username != ''">
+                        <bind name="username" value="'%' + username + '%'"/>
+                        and username LIKE #{username}
+                     </if>
+                     <if test="viewname != null and viewname != ''">
+                         <bind name="viewname" value="'%' + viewname + '%'"/>
+                         and viewname = #{viewname}
+                     </if>
+                     <if test="email != null and email != ''">
+                         <bind name="email" value="'%' + email + '%'"/>
+                         and email = #{email}
+                     </if>
+                     <if test="disabled != null">
+                         and disabled = #{disabled}
+                     </if>
+                     <if test="locked != null">
+                         and locked = #{locked}
+                     </if>
             </trim>
-        </where>
     </sql>
 
-    <select id="count" resultType="java.lang.Integer" parameterType="cn.jrry.common.domain.User">
+    <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
         select count(1)
         from sys_user
         <include refid="selectWhereCondition" />
     </select>
 
-    <select id="select" resultMap="BaseResultMap" parameterType="cn.jrry.common.domain.User" >
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="selectColumns" />
         from sys_user

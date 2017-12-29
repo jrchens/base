@@ -3,6 +3,7 @@ package cn.jrry.sample.service;
 import cn.jrry.common.domain.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     int insert(User record);
@@ -14,8 +15,8 @@ public interface UserService {
 
     User selectByPrimaryKey(Long id);
 
-    int count(User record);
+    int count(Map<String,Object> record);
 
-    List<User> select(User record, int offset, int limit);
+    List<User> select(Map<String,Object> record);
 
 }

@@ -4,6 +4,7 @@ import cn.jrry.common.domain.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     int insert(User record);
@@ -15,8 +16,8 @@ public interface UserMapper {
     User selectByPrimaryKey(Long id);
     Long selectId();
 
-    int count(@Param("record") User record);
+    int count(Map<String,Object> record);
 
-    List<User> select(@Param("record") User record, @Param("offset") int offset, @Param("limit") int limit);
+    List<User> select(Map<String,Object> record);
 
 }
