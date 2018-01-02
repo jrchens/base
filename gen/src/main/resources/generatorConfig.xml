@@ -7,13 +7,12 @@
 <generatorConfiguration>
     <classPathEntry
             location="/Users/shengchen/.m2/repository/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar"/>
-    <context id="context1" targetRuntime="MyBatis3">
+    <context id="context1" targetRuntime="MyBatis3Simple">
         <!-- targetRuntime="MyBatis3Simple" -->
         <!-- targetRuntime="MyBatis3" -->
 
         <!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin">
-        </plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
 
@@ -47,7 +46,7 @@
         <!-- sys_user,sys_group,sys_user_group,sys_role,sys_user_role,sys_permission,sys_role_permission -->
         <!-- cms_category,cms_article,cms_file,cms_config,cms_config -->
         <table schema="base" tableName="sample_tab">
-            <domainObjectRenamingRule searchString="^Sample" replaceString=""/>
+            <domainObjectRenamingRule searchString="^Sample" replaceString="Simple"/>
             <!--<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID() + 1"/>-->
             <!-- <ignoreColumn column="fred"/> -->
             <!--<columnOverride column="crtime" property="crtime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.gen.mapper.SimpleTabMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.gen.domain.SimpleTab">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tinyint_boolean" jdbcType="BIT" property="tinyintBoolean" />
+    <result column="int_integer" jdbcType="INTEGER" property="intInteger" />
+    <result column="double_double" jdbcType="DOUBLE" property="doubleDouble" />
+    <result column="date_date" jdbcType="DATE" property="dateDate" />
+    <result column="time_time" jdbcType="TIME" property="timeTime" />
+    <result column="datetime_timestamp" jdbcType="TIMESTAMP" property="datetimeTimestamp" />
+    <result column="varchar_string" jdbcType="VARCHAR" property="varcharString" />
+    <result column="text_string" jdbcType="LONGVARCHAR" property="textString" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sample_tab
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.gen.domain.SimpleTab">
+    insert into sample_tab (id, tinyint_boolean, int_integer, 
+      double_double, date_date, time_time, 
+      datetime_timestamp, varchar_string, text_string
+      )
+    values (#{id,jdbcType=BIGINT}, #{tinyintBoolean,jdbcType=BIT}, #{intInteger,jdbcType=INTEGER}, 
+      #{doubleDouble,jdbcType=DOUBLE}, #{dateDate,jdbcType=DATE}, #{timeTime,jdbcType=TIME}, 
+      #{datetimeTimestamp,jdbcType=TIMESTAMP}, #{varcharString,jdbcType=VARCHAR}, #{textString,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.gen.domain.SimpleTab">
+    update sample_tab
+    set tinyint_boolean = #{tinyintBoolean,jdbcType=BIT},
+      int_integer = #{intInteger,jdbcType=INTEGER},
+      double_double = #{doubleDouble,jdbcType=DOUBLE},
+      date_date = #{dateDate,jdbcType=DATE},
+      time_time = #{timeTime,jdbcType=TIME},
+      datetime_timestamp = #{datetimeTimestamp,jdbcType=TIMESTAMP},
+      varchar_string = #{varcharString,jdbcType=VARCHAR},
+      text_string = #{textString,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, tinyint_boolean, int_integer, double_double, date_date, time_time, datetime_timestamp, 
+    varchar_string, text_string
+    from sample_tab
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, tinyint_boolean, int_integer, double_double, date_date, time_time, datetime_timestamp, 
+    varchar_string, text_string
+    from sample_tab
+  </select>
+</mapper>

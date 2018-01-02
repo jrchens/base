@@ -5,6 +5,8 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -62,8 +64,11 @@ public class GenMapperXmlTest {
             int columnDisplaySize = sqlRowSetMetaData.getColumnDisplaySize(i);
             int columnType = sqlRowSetMetaData.getColumnType(i);
 
-            String columnTypeName = sqlRowSetMetaData.getColumnTypeName(i);
-
+//            String columnTypeName = sqlRowSetMetaData.getColumnTypeName(i);
+//            if(columnTypeName.indexOf(" ") != -1){
+//                columnTypeName = columnTypeName.split(" ")[0];
+//            }
+            String columnTypeName = JdbcType.forCode(columnType).name();
 //            if (columnType == Types.TIMESTAMP) {
 //                columnTypeName = "TIMESTAMP";
 //            }
@@ -121,6 +126,6 @@ public class GenMapperXmlTest {
 
 //        System.out.println(writer.toString());
 
-        Files.write(writer.toString(),new File("/Users/shengchen/Documents/Temporary/"+className+"Mapper.xml"), Charsets.UTF_8);
+         Files.write(writer.toString(),new File("/Users/shengchen/Documents/Temporary/"+className+"Mapper.xml"), Charsets.UTF_8);
     }
 }

@@ -53,13 +53,14 @@
     </sql>
 
     <sql id="selectWhereCondition">
-        <where>
-            deleted = 0 and (
-        #foreach(${field} in ${fields})
-            #if($foreach.index > 1) or#end <if test="record.${field.name} != null"> ${field.columnName} = #{record.${field.name}}</if>
-        #end
-            )
-        </where>
+        <trim prefix="where deleted = 0 and (" prefixOverrides="or |and" suffix=")">
+#foreach(${field} in ${fields})
+            <if test="${field.name} != null and ${field.name} != ''">
+                <bind name="${field.name}" value="'%' + ${field.name} + '%'"/>
+                and ${field.columnName} LIKE #{${field.name}}
+            </if>
+#end
+        </trim>
     </sql>
 
     <select id="count" resultType="java.lang.Integer" parameterType="cn.jrry.common.domain.${className}">
