@@ -51,7 +51,11 @@
                 <tr>
                     <td>Date</td>
                     <td><form:input path="bdate" cssClass="easyui-datebox"
-                                    data-options="required:true,editable:false"/></td>
+                                    data-options="required:true,editable:false"/>
+                        <span style="margin-left: 24px; margin-right: 24px;">Datetime</span>
+                        <form:input path="bdatetime" cssClass="easyui-datetimebox"
+                                    data-options="required:true,editable:false,width:160"/>
+                    </td>
                     <td>Boolean</td>
                     <td>
                         <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>

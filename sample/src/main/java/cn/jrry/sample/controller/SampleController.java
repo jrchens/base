@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -49,17 +50,17 @@ public class SampleController {
 
     @RequestMapping(path = {"query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(Map<String, String> record) {
+    public Map<String, Object> query(@RequestParam(required = false) Map<String, String> record) {
         logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<Sample> rows = Lists.newArrayList();
+        Map<String, Object> data = Maps.newLinkedHashMap();
         try {
 
             int total = userService.count(record);
             if (total > 0) {
                 rows = userService.select(record);
             }
-            Map<String, Object> data = Maps.newLinkedHashMap();
             data.put("total", total);
             data.put("rows", rows);
 
@@ -68,9 +69,12 @@ public class SampleController {
             result.put("data", data);
 
         } catch (Exception ex) {
+            data.put("total", 0);
+            data.put("rows", rows);
+
             result.put("success", false);
             result.put("message", ex.getMessage());
-            result.put("data", false);
+            result.put("data", data);
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "query");
         return result;
@@ -83,7 +87,9 @@ public class SampleController {
             if (record == null) {
                 record = new Sample();
             }
-            record.setBdate(new Date(System.currentTimeMillis()));
+            Date now = new Date(System.currentTimeMillis());
+            record.setBdate(now);
+            record.setBdatetime(now);
             model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("create.sample.error", ex.getMessage());

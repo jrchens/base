@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jrry.sample.mapper.SampleMapper">
-  <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.Sample">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="bcode" jdbcType="CHAR" property="bcode" />
-    <result column="btitle" jdbcType="VARCHAR" property="btitle" />
-    <result column="bint" jdbcType="INTEGER" property="bint" />
-    <result column="bnum" jdbcType="DECIMAL" property="bnum" />
-    <result column="bdate" jdbcType="DATE" property="bdate" />
-    <result column="is_btinyint" jdbcType="BIT" property="btinyint" />
-    <result column="is_deleted" jdbcType="BIT" property="deleted" />
-    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
-    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
-    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
-    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.Sample">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="bcode" jdbcType="CHAR" property="bcode"/>
+        <result column="btitle" jdbcType="VARCHAR" property="btitle"/>
+        <result column="bint" jdbcType="INTEGER" property="bint"/>
+        <result column="bnum" jdbcType="DECIMAL" property="bnum"/>
+        <result column="bdate" jdbcType="DATE" property="bdate"/>
+        <result column="bdatetime" jdbcType="TIMESTAMP" property="bdatetime"/>
+        <result column="is_btinyint" jdbcType="BIT" property="btinyint"/>
+        <result column="is_deleted" jdbcType="BIT" property="deleted"/>
+        <result column="cruser" jdbcType="VARCHAR" property="cruser"/>
+        <result column="crtime" jdbcType="TIMESTAMP" property="crtime"/>
+        <result column="mduser" jdbcType="VARCHAR" property="mduser"/>
+        <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sample
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.jrry.sample.pojo.Sample" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="insert" parameterType="cn.jrry.sample.pojo.Sample" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
     insert into sample (bcode, btitle,
-      bint, bnum, bdate, is_btinyint,is_deleted,
+      bint, bnum, bdate, bdatetime, is_btinyint,is_deleted,
       cruser, crtime)
     values (#{bcode,jdbcType=CHAR}, #{btitle,jdbcType=VARCHAR},
-      #{bint,jdbcType=INTEGER}, #{bnum,jdbcType=DECIMAL}, #{bdate,jdbcType=DATE}, #{btinyint,jdbcType=BIT},
-      #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+      #{bint,jdbcType=INTEGER}, #{bnum,jdbcType=DECIMAL}, #{bdate,jdbcType=DATE}, #{bdatetime,jdbcType=TIMESTAMP},
+      #{btinyint,jdbcType=BIT}, #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.Sample">
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.Sample">
     update sample
     set
       btitle = #{btitle,jdbcType=VARCHAR},
       bint = #{bint,jdbcType=INTEGER},
       bnum = #{bnum,jdbcType=DECIMAL},
       bdate = #{bdate,jdbcType=DATE},
+      bdatetime = #{bdatetime,jdbcType=TIMESTAMP},
       is_btinyint = #{btinyint,jdbcType=BIT},
       mduser = #{mduser,jdbcType=VARCHAR},
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="removeByPrimaryKey" parameterType="cn.jrry.sample.pojo.Sample">
+    <update id="removeByPrimaryKey" parameterType="cn.jrry.sample.pojo.Sample">
     update sample
     set
     is_deleted = 1,
@@ -48,55 +51,57 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <sql id="selectColumns">
+    <sql id="selectColumns">
     id,
     bcode,
     btitle,
     bint,
     bnum,
     bdate,
+    bdatetime,
     is_btinyint
   </sql>
 
-  <sql id="selectWhereCondition">
-    <trim prefix="where is_deleted = 0 and (" prefixOverrides="or |and" suffix=")">
-      <if test="bcode != null and bcode != ''">
-        and bcode = #{bcode}
-      </if>
-      <if test="btitle != null and btitle != ''">
-        <bind name="btitle" value="'%' + btitle + '%'"/>
-        and btitle LIKE #{btitle}
-      </if>
-      <if test="btinyint != null">
-        and is_btinyint = #{btinyint}
-      </if>
-    </trim>
-  </sql>
+    <sql id="selectWhereCondition">
+        <where>
+            is_deleted = 0
+            <if test="bcode != null and bcode != ''">
+                and bcode = #{bcode}
+            </if>
+            <if test="btitle != null and btitle != ''">
+                <bind name="btitle" value="'%' + btitle + '%'"/>
+                and btitle LIKE #{btitle}
+            </if>
+            <if test="btinyint != null">
+                and is_btinyint = #{btinyint}
+            </if>
+        </where>
+    </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="selectColumns" />
-    from sample
-    where is_deleted = 0 and id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="count" parameterType="map" resultType="int">
-    select count(1)
-    from sample
-    <include refid="selectWhereCondition" />
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sample
+        where is_deleted = 0 and id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="count" parameterType="map" resultType="int">
+        select count(1)
+        from sample
+        <include refid="selectWhereCondition"/>
+    </select>
 
-  <select id="query" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="selectColumns" />
-    from sample
-    <include refid="selectWhereCondition" />
-    ORDER BY id DESC
-    limit ${offset},${rows}
-  </select>
+    <select id="query" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sample
+        <include refid="selectWhereCondition"/>
+        ORDER BY id DESC
+        limit ${offset},${rows}
+    </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="selectColumns" />
-    from sample where is_deleted = 0
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sample where is_deleted = 0
+    </select>
 </mapper>

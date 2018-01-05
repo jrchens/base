@@ -23,13 +23,16 @@
 
 <table id="sample_index_datagrid" class="easyui-datagrid"
        data-options="title: '样例管理-列表',
-       url: 'http://local.com/sample/query',
+            url: 'http://local.com/sample/query',
             method: 'get',
             pagination: true,
             singleSelect: true,
             rownumbers: true,
             minHeight: 520,
             striped: true,
+            loadFilter: function(data){
+                return data.data;
+            },
             toolbar:[
                 {   iconCls:'ext-icon fa fa-plus fa-lg',
                     handler:function(){
@@ -96,12 +99,11 @@
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATE);
                 }">Date</th>
-            <th data-options="field:'btinyint'">Boolean</th>
-            <th data-options="field:'cruser'">Create User</th>
-            <th data-options="field:'crtime',
+            <th data-options="field:'bdatetime',
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
                 }">Create Time</th>
+            <th data-options="field:'btinyint'">Boolean</th>
 
         </tr>
     </thead>

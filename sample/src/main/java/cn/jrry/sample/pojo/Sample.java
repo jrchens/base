@@ -1,5 +1,6 @@
 package cn.jrry.sample.pojo;
 
+import cn.jrry.validation.group.Detail;
 import cn.jrry.validation.group.Edit;
 import cn.jrry.validation.group.Remove;
 import cn.jrry.validation.group.Update;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 public class Sample implements Serializable {
     private static final long serialVersionUID = -6686296713191305077L;
-    @NotNull(groups = {Edit.class, Remove.class, Update.class})
+    @NotNull(groups = {Edit.class, Remove.class, Update.class, Detail.class})
     private Long id;
 
     private String bcode;
@@ -26,14 +27,23 @@ public class Sample implements Serializable {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date bdatetime;
+    private Boolean btinyint;
 
     private Boolean deleted;
-    private Boolean btinyint;
     private String cruser;
     private Date crtime;
-    @NotNull(groups = {Edit.class})
     private String mduser;
     private Date mdtime;
+
+    public Date getBdatetime() {
+        return bdatetime;
+    }
+
+    public void setBdatetime(Date bdatetime) {
+        this.bdatetime = bdatetime;
+    }
 
     public Boolean getBtinyint() {
         return btinyint;
