@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -31,31 +30,48 @@ public class SampleController {
     private SampleService userService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
-    public String index(@Validated Sample record, BindingResult bindingResult,Model model) {
+    public String index(@Validated Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record.toString());
-        if(bindingResult.hasErrors()){
-logger.info("{},{},{}",record,bindingResult,model);
-        }else{
-            model.addAttribute(record);
-        }
+        try {
 
+            if (bindingResult.hasErrors()) {
+                logger.info("{},{},{}", record, bindingResult, model);
+            } else {
+                model.addAttribute(record);
+            }
+
+        } catch (Exception ex) {
+            model.addAttribute("index.sample.error", ex.getMessage());
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "index");
         return "sample/index";
     }
 
     @RequestMapping(path = {"query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(required = false) Map<String, String> record) {
+    public Map<String, Object> query(Map<String, String> record) {
         logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        int total = userService.count(record);
         List<Sample> rows = Lists.newArrayList();
-        if (total > 0) {
-            rows = userService.select(record);
-        }
-        result.put("total", total);
-        result.put("rows", rows);
+        try {
 
+            int total = userService.count(record);
+            if (total > 0) {
+                rows = userService.select(record);
+            }
+            Map<String, Object> data = Maps.newLinkedHashMap();
+            data.put("total", total);
+            data.put("rows", rows);
+
+            result.put("success", true);
+            result.put("message", "");
+            result.put("data", data);
+
+        } catch (Exception ex) {
+            result.put("success", false);
+            result.put("message", ex.getMessage());
+            result.put("data", false);
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "query");
         return result;
     }
@@ -63,11 +79,15 @@ logger.info("{},{},{}",record,bindingResult,model);
     @RequestMapping(path = "create", method = RequestMethod.GET)
     public String create(@Validated(value = Create.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", record.toString());
-        if(record == null){
-            record = new Sample();
+        try {
+            if (record == null) {
+                record = new Sample();
+            }
+            record.setBdate(new Date(System.currentTimeMillis()));
+            model.addAttribute(record);
+        } catch (Exception ex) {
+            model.addAttribute("create.sample.error", ex.getMessage());
         }
-        record.setBdate(new Date(System.currentTimeMillis()));
-        model.addAttribute(record);
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "create");
         return "sample/create";
     }
@@ -75,19 +95,31 @@ logger.info("{},{},{}",record,bindingResult,model);
     @RequestMapping(path = "save", method = RequestMethod.POST)
     public String save(@Validated(value = Save.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", record.toString());
-        userService.insert(record);
+        try {
+            if (!bindingResult.hasErrors()) {
+                userService.insert(record);
+            } else {
+                return "sample/create";
+            }
+        } catch (Exception ex) {
+            model.addAttribute("save.sample.error", ex.getMessage());
+            return "sample/create";
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
-        return "redirect:detail?id="+record.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
 
     @RequestMapping(path = "edit", method = RequestMethod.GET)
     public String edit(@Validated(value = Edit.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record.toString());
-        if (bindingResult.hasErrors()){
-
+        try {
+            if (!bindingResult.hasErrors()) {
+                model.addAttribute(userService.selectByPrimaryKey(record.getId()));
+            }
+        } catch (Exception ex) {
+            model.addAttribute("edit.sample.error", ex.getMessage());
         }
-        model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "edit");
         return "sample/edit";
     }
@@ -95,15 +127,30 @@ logger.info("{},{},{}",record,bindingResult,model);
     @RequestMapping(path = "update", method = RequestMethod.POST)
     public String update(@Validated(value = Update.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record.toString());
-        userService.updateByPrimaryKey(record);
+        try {
+            if (!bindingResult.hasErrors()) {
+                userService.updateByPrimaryKey(record);
+            } else {
+                return "sample/edit";
+            }
+        } catch (Exception ex) {
+            model.addAttribute("update.sample.error", ex.getMessage());
+            return "sample/edit";
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
-        return "redirect:detail?id="+record.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
     @RequestMapping(path = "detail", method = RequestMethod.GET)
     public String detail(@Validated(value = Detail.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail");
-        model.addAttribute(userService.selectByPrimaryKey(record.getId()));
+        try {
+            if (!bindingResult.hasErrors()) {
+                model.addAttribute(userService.selectByPrimaryKey(record.getId()));
+            }
+        } catch (Exception ex) {
+            model.addAttribute("detail.sample.error", ex.getMessage());
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "detail");
         return "sample/detail";
     }
@@ -111,8 +158,16 @@ logger.info("{},{},{}",record,bindingResult,model);
     @RequestMapping(path = "remove", method = RequestMethod.POST)
     public String remove(@Validated(value = Remove.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "remove");
-        int aff = userService.removeByPrimaryKey(record);
-//        model.addAttribute("remove.record.success", aff > 0);
+        try {
+            if (!bindingResult.hasErrors()) {
+                userService.removeByPrimaryKey(record);
+            } else {
+                return "sample/detail";
+            }
+        } catch (Exception ex) {
+            model.addAttribute("create.sample.error", ex.getMessage());
+            return "sample/detail";
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "remove");
         return "redirect:index";//index(record, bindingResult,model);
     }
@@ -122,9 +177,17 @@ logger.info("{},{},{}",record,bindingResult,model);
     public Map<String, Object> asyncRemove(@Validated(value = Remove.class) Sample record, BindingResult bindingResult) {
         logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        int aff = userService.removeByPrimaryKey(record);
-        result.put("success", aff > 0);
-        result.put("message", "remove.record.success");
+        Map<String, Object> data = Maps.newLinkedHashMap();
+        try {
+            int aff = userService.removeByPrimaryKey(record);
+            result.put("success", true);
+            result.put("message", "");
+            result.put("data", aff);
+        } catch (Exception ex) {
+            result.put("success", false);
+            result.put("message", ex.getMessage());
+            result.put("data", 0);
+        }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
         return result;
     }
