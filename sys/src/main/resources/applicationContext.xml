@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="cn.jrry.sys.**.*.service.impl"></context:component-scan>
+    <context:component-scan base-package="cn.jrry.*.service.impl"></context:component-scan>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="classpath:jdbc.properties"/>
@@ -46,7 +46,7 @@
 
     <aop:config>
         <aop:pointcut id="pointCutMethod"
-                      expression="execution(* cn.jrry.sys.**.*.service.impl.*.*(..))"/>
+                      expression="execution(* cn.jrry.*.service.impl.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="pointCutMethod"/>
     </aop:config>
 
@@ -60,7 +60,7 @@
         </tx:attributes>
     </tx:advice>
 
-    <import resource="applicationContext-mybatis.xml"/>
+    <!--<import resource="applicationContext-mybatis.xml"/>-->
     <!--     <import resource="applicationContext-shiro.xml"/> -->
     <!--<import resource="applicationContext-cache.xml"/>-->
     <!--<import resource="applicationContext-task.xml"/>-->

@@ -1,6 +1,6 @@
 package xstream;
 
-import cn.jrry.sys.domain.SysGroup;
+import cn.jrry.common.domain.Group;
 import com.thoughtworks.xstream.XStream;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Timestamp;
 
 public class XStreamTest {
     private static final Logger logger = LoggerFactory.getLogger(XStreamTest.class);
@@ -17,17 +18,17 @@ public class XStreamTest {
     @Test
     public void write() throws Exception {
         XStream xstream = new XStream();
-        SysGroup record = new SysGroup();
+        Group record = new Group();
         record.setGroupname("admin");
         record.setViewname("Admin");
         record.setDeleted(false);
-        record.setCrtime(DateTime.now().toDate());
+        record.setCrtime(new Timestamp(System.currentTimeMillis()));
         record.setCruser("jrchens");
 
         // xstream.ignoreUnknownElements("groupname");
-        xstream.alias("SysGroup", SysGroup.class);
-        xstream.omitField(SysGroup.class, "groupname");
-        xstream.omitField(SysGroup.class, "viewname");
+        xstream.alias("SysGroup", Group.class);
+        xstream.omitField(Group.class, "groupname");
+        xstream.omitField(Group.class, "viewname");
         // xstream.allowTypes(new String[]{"groupname", "viewname"});
         logger.info("xml:{}", xstream.toXML(record));
 
@@ -37,7 +38,7 @@ public class XStreamTest {
     @Test
     public void read() throws Exception {
         XStream xstream = new XStream();
-        xstream.alias("SysGroup", SysGroup.class);
+        xstream.alias("SysGroup", Group.class);
 
         File file = new File("/Users/shengchen/Documents/Temporary/admin.xml");
         InputStream is = new FileInputStream(file);

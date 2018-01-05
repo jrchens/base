@@ -30,6 +30,7 @@ public class HashingTest {
     @Test
     public void testUserPasswordEncrypt() {
         // md5(123456) --> e10adc3949ba59abbe56e057f20f883e
+        // md5(admin:e10adc3949ba59abbe56e057f20f883e) --> 5714faa2a72f533f7807b0e876911199
         String[] datas = {"admin:e10adc3949ba59abbe56e057f20f883e,ZuVQXbee",
                 "jason:e10adc3949ba59abbe56e057f20f883e,w0N3N6OL",
                 "mason:e10adc3949ba59abbe56e057f20f883e,sPxiGWxX"};

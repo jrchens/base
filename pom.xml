@@ -282,11 +282,11 @@
             </dependency>
 
             <!-- mybatis-pagination -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper</artifactId>
-                <version>5.0.0</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>com.github.pagehelper</groupId>-->
+                <!--<artifactId>pagehelper</artifactId>-->
+                <!--<version>5.0.0</version>-->
+            <!--</dependency>-->
 
             <!-- html parse -->
             <dependency>
@@ -308,6 +308,20 @@
                 <artifactId>jjwt</artifactId>
                 <version>0.7.0</version>
             </dependency>
+
+            <!--jboss.logging-->
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>3.1.4.GA</version>
+            </dependency>
+            <!-- validator -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>4.3.2.Final</version>
+            </dependency>
+
 
         </dependencies>
     <!--</dependencyManagement>-->

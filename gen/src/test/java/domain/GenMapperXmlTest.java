@@ -41,9 +41,9 @@ public class GenMapperXmlTest {
     @Test
     public void testGen() throws Exception {
 
-        String packageName = "cn.jrry.sample";
-        String tableName = "sys_user";
-        String className = "User";
+        String packageName = "cn.jrry.sys";
+        String tableName = "sys_group";
+        String className = "Group";
 
         List<Map<String, String>> fields = Lists.newArrayList();
         List<Map<String, String>> likes = Lists.newArrayList();

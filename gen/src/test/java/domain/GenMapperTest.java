@@ -40,9 +40,9 @@ public class GenMapperTest {
     @Test
     public void testGen() throws Exception {
 
-        String packageName = "cn.jrry.sample";
+        String packageName = "cn.jrry.sys";
 //        String tableName = "sys_user";
-        String className = "User";
+        String className = "Group";
 
 //        List<Map<String, String>> fields = Lists.newArrayList();
 //        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("SELECT  * FROM  sys_user WHERE 1 = 2");

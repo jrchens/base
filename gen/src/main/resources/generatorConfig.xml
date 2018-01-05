@@ -45,9 +45,11 @@
 
         <!-- sys_user,sys_group,sys_user_group,sys_role,sys_user_role,sys_permission,sys_role_permission -->
         <!-- cms_category,cms_article,cms_file,cms_config,cms_config -->
-        <table schema="base" tableName="sample_tab">
-            <domainObjectRenamingRule searchString="^Sample" replaceString="Simple"/>
-            <!--<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID() + 1"/>-->
+        <table schema="base" tableName="sample_detail">
+            <generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"/>
+            <!--<domainObjectRenamingRule searchString="^Sample" replaceString="Simple"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString="" />-->
+
             <!-- <ignoreColumn column="fred"/> -->
             <!--<columnOverride column="crtime" property="crtime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->
             <!--<columnOverride column="mdtime" property="mdtime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->

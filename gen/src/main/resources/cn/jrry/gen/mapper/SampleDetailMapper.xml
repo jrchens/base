@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.gen.mapper.SampleDetailMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.gen.domain.SampleDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sample_id" jdbcType="BIGINT" property="sampleId" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+    <result column="bcontent" jdbcType="LONGVARCHAR" property="bcontent" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sample_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.gen.domain.SampleDetail">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sample_detail (id, sample_id, is_deleted, 
+      cruser, crtime, mduser, 
+      mdtime, bcontent)
+    values (#{id,jdbcType=BIGINT}, #{sampleId,jdbcType=BIGINT}, #{isDeleted,jdbcType=BIT}, 
+      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP}, #{mduser,jdbcType=VARCHAR}, 
+      #{mdtime,jdbcType=TIMESTAMP}, #{bcontent,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.gen.domain.SampleDetail">
+    update sample_detail
+    set sample_id = #{sampleId,jdbcType=BIGINT},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      cruser = #{cruser,jdbcType=VARCHAR},
+      crtime = #{crtime,jdbcType=TIMESTAMP},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP},
+      bcontent = #{bcontent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, sample_id, is_deleted, cruser, crtime, mduser, mdtime, bcontent
+    from sample_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sample_id, is_deleted, cruser, crtime, mduser, mdtime, bcontent
+    from sample_detail
+  </select>
+</mapper>

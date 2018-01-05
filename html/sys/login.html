@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理登陆</title>
+    <link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/gray/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://res.local.com/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <script type="text/javascript" src="http://res.local.com/jquery-easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="http://res.local.com/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="http://res.local.com/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="http://res.local.com/jquery-serializeJSON/lib/jquery.serializeJSON.js"></script>
+    <script type="text/javascript" src="http://res.local.com/crypto-js/crypto-js.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+</head>
+
+<body>
+<div id="user_login_container" style="width:500px; float: right; padding: 200px 100px 0px 0px; margin: 0px;">
+    <form id="user_login_form" method="post" style="padding: 5px; margin: 0px;" class="easyui-panel" title="管理登陆"
+          data-options="inline: true">
+        <table class="ext-data-table">
+            <tr>
+                <td>用户名</td>
+                <td>
+                    <input class="easyui-textbox" type="text" name="username" value="admin"
+                           data-options="required:true,fit:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>密&#12288;码</td>
+                <td>
+                    <input class="easyui-textbox" type="text" name="password" value="123456"
+                           data-options="required:true,fit:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <a href="javascript:;" id="user_login_form_login_btn">登陆</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#user_login_form_login_btn').linkbutton({
+            iconCls: 'ext-icon fa fa-sign-in fa-lg',
+            width: 80,
+            onClick: function () {
+                var thisButton = $(this);
+                thisButton.linkbutton('disable');
+                var reqData = $('#user_login_form').serializeJSON();
+                reqData.password = CryptoJS.MD5(reqData.username.concat(':').concat(CryptoJS.MD5(reqData.password).toString())).toString();
+
+                jQuery.ajax({
+                    url: 'http://local.com/login.json',
+                    type: 'POST',
+                    data: JSON.stringify(reqData),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    processData: false,
+                    success: function (resData, textStatus, jqXHR) {
+                        // console.log(resData);
+                        if (resData.code == 200) {
+                            localStorage.setItem('username', resData.username);
+                            localStorage.setItem('viewname', resData.username);
+                            window.location.href = "./index.html";
+                        } else if (resData.code == 400) {
+                            $.messager.show({msg: JSON.stringify(resData.data)});
+                        } else {
+                            $.messager.show({msg: resData.message});
+                        }
+                    }
+                }).always(function (data_OR_jqXHR, textStatus, jqXHR_OR_errorThrown) {
+//                    console.log(data_OR_jqXHR, textStatus, jqXHR_OR_errorThrown);
+                    thisButton.linkbutton('enable');
+                });
+
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

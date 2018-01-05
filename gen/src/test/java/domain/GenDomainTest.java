@@ -41,8 +41,8 @@ public class GenDomainTest {
     public void testGen() throws Exception {
 
         String packageName = "cn.jrry.common.domain";
-        String tableName = "sys_user";
-        String className = "User";
+        String tableName = "sys_group";
+        String className = "Group";
         List<Map<String, String>> fields = Lists.newArrayList();
 
 

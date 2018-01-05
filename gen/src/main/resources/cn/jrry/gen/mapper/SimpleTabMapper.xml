@@ -17,11 +17,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="cn.jrry.gen.domain.SimpleTab">
-    insert into sample_tab (id, tinyint_boolean, int_integer, 
+    insert into sample_tab (tinyint_boolean, int_integer,
       double_double, date_date, time_time, 
       datetime_timestamp, varchar_string, text_string
       )
-    values (#{id,jdbcType=BIGINT}, #{tinyintBoolean,jdbcType=BIT}, #{intInteger,jdbcType=INTEGER}, 
+    values (#{tinyintBoolean,jdbcType=BIT}, #{intInteger,jdbcType=INTEGER},
       #{doubleDouble,jdbcType=DOUBLE}, #{dateDate,jdbcType=DATE}, #{timeTime,jdbcType=TIME}, 
       #{datetimeTimestamp,jdbcType=TIMESTAMP}, #{varcharString,jdbcType=VARCHAR}, #{textString,jdbcType=LONGVARCHAR}
       )
