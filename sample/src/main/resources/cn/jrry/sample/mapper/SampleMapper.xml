@@ -47,29 +47,56 @@
     mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <sql id="selectColumns">
+    id,
+    bcode,
+    btitle,
+    bint,
+    bnum,
+    bdate,
+    is_btinyint
+  </sql>
+
+  <sql id="selectWhereCondition">
+    <trim prefix="where is_deleted = 0 and (" prefixOverrides="or |and" suffix=")">
+      <if test="bcode != null and bcode != ''">
+        and bcode = #{bcode}
+      </if>
+      <if test="btitle != null and btitle != ''">
+        <bind name="btitle" value="'%' + btitle + '%'"/>
+        and btitle LIKE #{btitle}
+      </if>
+      <if test="btinyint != null">
+        and is_btinyint = #{btinyint}
+      </if>
+    </trim>
+  </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, bcode, btitle, bint, bnum, bdate, is_btinyint, is_deleted, cruser, crtime, mduser,
-    mdtime
+    select
+    <include refid="selectColumns" />
     from sample
     where is_deleted = 0 and id = #{id,jdbcType=BIGINT}
   </select>
   <select id="count" parameterType="map" resultType="int">
     select count(1)
-    from sample where is_deleted = 0
+    from sample
+    <include refid="selectWhereCondition" />
   </select>
 
   <select id="query" parameterType="map" resultMap="BaseResultMap">
-    select id, bcode, btitle, bint, bnum, bdate, is_btinyint, is_deleted, cruser, crtime, mduser,
-    mdtime
+    select
+    <include refid="selectColumns" />
     from sample
-    where is_deleted = 0
+    <include refid="selectWhereCondition" />
     ORDER BY id DESC
     limit ${offset},${rows}
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, bcode, btitle, bint, bnum, bdate, is_btinyint, is_deleted, cruser, crtime, mduser,
-    mdtime
+    select
+    <include refid="selectColumns" />
     from sample where is_deleted = 0
   </select>
 </mapper>

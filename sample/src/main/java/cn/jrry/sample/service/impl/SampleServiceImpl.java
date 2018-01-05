@@ -95,7 +95,6 @@ public class SampleServiceImpl implements SampleService {
             int rows = Integer.parseInt(record.get("rows"));
             int offset = (page - 1) * rows;
             record.put("offset", String.valueOf(offset));
-
             return sampleMapper.query(record);
         } catch (Exception ex) {
             logger.error("select error {}{}{}", record, System.lineSeparator(), ex);
