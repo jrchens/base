@@ -4,6 +4,7 @@ import cn.jrry.common.exception.ServiceException;
 import cn.jrry.sample.mapper.SampleMapper;
 import cn.jrry.sample.pojo.Sample;
 import cn.jrry.sample.service.SampleService;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public int insert(Sample record) {
         try {
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
+            record.setCruser(user);
             record.setCrtime(now);
             record.setDeleted(Boolean.FALSE);
             return sampleMapper.insert(record);
@@ -47,7 +50,9 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public int removeByPrimaryKey(Sample record) {
         try {
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
+            record.setMduser(user);
             record.setMdtime(now);
             return sampleMapper.removeByPrimaryKey(record);
         } catch (Exception ex) {
@@ -59,7 +64,9 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public int updateByPrimaryKey(Sample record) {
         try {
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
+            record.setMduser(user);
             record.setMdtime(now);
             return sampleMapper.updateByPrimaryKey(record);
         } catch (Exception ex) {

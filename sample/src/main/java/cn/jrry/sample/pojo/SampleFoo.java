@@ -98,13 +98,13 @@ public class SampleFoo implements Serializable {
         }
         SampleFoo other = (SampleFoo) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getFcode() == null ? other.getFcode() == null : this.getFcode().equals(other.getFcode()))
-            && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
-            && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
-            && (this.getCruser() == null ? other.getCruser() == null : this.getCruser().equals(other.getCruser()))
-            && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
-            && (this.getMduser() == null ? other.getMduser() == null : this.getMduser().equals(other.getMduser()))
-            && (this.getMdtime() == null ? other.getMdtime() == null : this.getMdtime().equals(other.getMdtime()));
+                && (this.getFcode() == null ? other.getFcode() == null : this.getFcode().equals(other.getFcode()))
+                && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
+                && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
+                && (this.getCruser() == null ? other.getCruser() == null : this.getCruser().equals(other.getCruser()))
+                && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
+                && (this.getMduser() == null ? other.getMduser() == null : this.getMduser().equals(other.getMduser()))
+                && (this.getMdtime() == null ? other.getMdtime() == null : this.getMdtime().equals(other.getMdtime()));
     }
 
     @Override

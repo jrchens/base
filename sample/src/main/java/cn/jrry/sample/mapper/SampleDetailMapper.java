@@ -1,6 +1,7 @@
 package cn.jrry.sample.mapper;
 
 import cn.jrry.sample.pojo.SampleDetail;
+
 import java.util.List;
 
 public interface SampleDetailMapper {

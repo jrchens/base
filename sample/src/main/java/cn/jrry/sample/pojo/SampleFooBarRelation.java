@@ -47,8 +47,8 @@ public class SampleFooBarRelation implements Serializable {
         }
         SampleFooBarRelation other = (SampleFooBarRelation) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getFooId() == null ? other.getFooId() == null : this.getFooId().equals(other.getFooId()))
-            && (this.getBarId() == null ? other.getBarId() == null : this.getBarId().equals(other.getBarId()));
+                && (this.getFooId() == null ? other.getFooId() == null : this.getFooId().equals(other.getFooId()))
+                && (this.getBarId() == null ? other.getBarId() == null : this.getBarId().equals(other.getBarId()));
     }
 
     @Override

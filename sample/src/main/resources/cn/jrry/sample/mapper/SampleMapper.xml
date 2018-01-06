@@ -17,9 +17,9 @@
         <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sample
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete from sample
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="cn.jrry.sample.pojo.Sample" useGeneratedKeys="true" keyColumn="id"
             keyProperty="id">
     insert into sample (bcode, btitle,

@@ -47,8 +47,8 @@ public class SampleDetail implements Serializable {
         }
         SampleDetail other = (SampleDetail) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getSampleId() == null ? other.getSampleId() == null : this.getSampleId().equals(other.getSampleId()))
-            && (this.getBcontent() == null ? other.getBcontent() == null : this.getBcontent().equals(other.getBcontent()));
+                && (this.getSampleId() == null ? other.getSampleId() == null : this.getSampleId().equals(other.getSampleId()))
+                && (this.getBcontent() == null ? other.getBcontent() == null : this.getBcontent().equals(other.getBcontent()));
     }
 
     @Override

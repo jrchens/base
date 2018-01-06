@@ -26,9 +26,9 @@
         <mvc:mapping path="/**" allowed-methods="*"/>
     </mvc:cors>
 
-    <!-- <mvc:redirect-view-controller -->
-    <!-- redirect-url="login" path="/" /> -->
-    <!-- <mvc:view-controller path="/" view-name="login"/> -->
+    <!--<mvc:redirect-view-controller -->
+    <!--redirect-url="login" path="/" /> -->
+    <!--<mvc:view-controller path="/" view-name="login"/>-->
 
     <!--<mvc:tiles-configurer>-->
     <!--<mvc:definitions location="classpath:tilesConfig.xml"/>-->

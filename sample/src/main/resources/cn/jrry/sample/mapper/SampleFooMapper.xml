@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jrry.sample.mapper.SampleFooMapper">
-  <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.SampleFoo">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="fcode" jdbcType="CHAR" property="fcode" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="is_deleted" jdbcType="BIT" property="deleted" />
-    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
-    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
-    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
-    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sample_foo
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="cn.jrry.sample.pojo.SampleFoo">
+    <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.SampleFoo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="fcode" jdbcType="CHAR" property="fcode"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="is_deleted" jdbcType="BIT" property="deleted"/>
+        <result column="cruser" jdbcType="VARCHAR" property="cruser"/>
+        <result column="crtime" jdbcType="TIMESTAMP" property="crtime"/>
+        <result column="mduser" jdbcType="VARCHAR" property="mduser"/>
+        <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sample_foo
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.jrry.sample.pojo.SampleFoo">
     insert into sample_foo (id, fcode, title, 
       is_deleted, cruser, crtime, 
       mduser, mdtime)
@@ -23,7 +23,7 @@
       #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP}, 
       #{mduser,jdbcType=VARCHAR}, #{mdtime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.SampleFoo">
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.SampleFoo">
     update sample_foo
     set fcode = #{fcode,jdbcType=CHAR},
       title = #{title,jdbcType=VARCHAR},
@@ -34,12 +34,12 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, fcode, title, is_deleted, cruser, crtime, mduser, mdtime
     from sample_foo
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, fcode, title, is_deleted, cruser, crtime, mduser, mdtime
     from sample_foo
   </select>

@@ -14,12 +14,17 @@
     <meta charset="UTF-8">
     <title>样例管理</title>
 
-    <%@ include file="../common/css.jsp"%>
-    <%@ include file="../common/js.jsp"%>
+    <%@ include file="../common/css.jsp" %>
+    <%@ include file="../common/js.jsp" %>
 
 </head>
 
 <body>
+
+<c:if test="${not empty index_error}">
+    <div class="easyui-panel" data-options="closable:true" title="错误信息"
+         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${index_error}</div>
+</c:if>
 
 <table id="sample_index_datagrid" class="easyui-datagrid"
        data-options="title: '样例管理-列表',
@@ -31,6 +36,9 @@
             minHeight: 520,
             striped: true,
             loadFilter: function(data){
+                if(!data.success){
+                    $.messager.show({msg:data.message});
+                }
                 return data.data;
             },
             toolbar:[
@@ -47,11 +55,11 @@
                             return false;
                         }
                         location.href = 'http://local.com/sample/edit?id='+row.id;
-
                     }
                 },
                 {   iconCls:'ext-icon fa fa-trash fa-lg',
                     handler:function(){
+                        var thisButton = $(this);
                         var row = $('#sample_index_datagrid').datagrid('getSelected');
                         if(row == null){
                             $.messager.alert('Info', 'Please select a delete row!', 'warning');
@@ -63,14 +71,20 @@
                                 // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
                                 // $('#sys_group_datagrid').datagrid('deleteRow', index);
 
-                                var reqData = {id:row.id,mduser:localStorage.getItem('username')};
+                                $('#overlay').show();
+                                thisButton.linkbutton('disable');
+
+                                var reqData = {id:row.id};
                                 $.post('http://local.com/sample/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         $('#sample_index_datagrid').datagrid('reload');
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
-                                },'json');
+                                },'json').aways(function(data_jqXHR, textStatus, jqXHR_errorThrown){
+                                    $('#overlay').hide();
+                                    thisButton.linkbutton('enable');
+                                });
 
                             }
                         });
@@ -89,23 +103,25 @@
             ],
        ">
     <thead>
-        <tr>
-            <th data-options="field:'id'">Id</th>
-            <th data-options="field:'bcode'">Code</th>
-            <th data-options="field:'btitle'">Title</th>
-            <th data-options="field:'bint'">Int</th>
-            <th data-options="field:'bnum'">Decimal</th>
-            <th data-options="field:'bdate',
+    <tr>
+        <th data-options="field:'id'">Id</th>
+        <th data-options="field:'bcode'">Code</th>
+        <th data-options="field:'btitle'">Title</th>
+        <th data-options="field:'bint'">Int</th>
+        <th data-options="field:'bnum'">Decimal</th>
+        <th data-options="field:'bdate',
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATE);
-                }">Date</th>
-            <th data-options="field:'bdatetime',
+                }">Date
+        </th>
+        <th data-options="field:'bdatetime',
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
-                }">Create Time</th>
-            <th data-options="field:'btinyint'">Boolean</th>
+                }">Create Time
+        </th>
+        <th data-options="field:'btinyint'">Boolean</th>
 
-        </tr>
+    </tr>
     </thead>
 </table>
 

@@ -17,18 +17,18 @@
         <!--             </props> -->
         <!--         </property> -->
         <!--<property name="plugins">-->
-            <!--<array>-->
-                <!--<bean class="com.github.pagehelper.PageInterceptor">-->
-                    <!--<property name="properties">-->
-                        <!--<value>-->
-                            <!--helperDialect=mysql-->
-                            <!--reasonable=true-->
-                            <!--supportMethodsArguments=true-->
-                            <!--params=pageNum=page;pageSize=size-->
-                        <!--</value>-->
-                    <!--</property>-->
-                <!--</bean>-->
-            <!--</array>-->
+        <!--<array>-->
+        <!--<bean class="com.github.pagehelper.PageInterceptor">-->
+        <!--<property name="properties">-->
+        <!--<value>-->
+        <!--helperDialect=mysql-->
+        <!--reasonable=true-->
+        <!--supportMethodsArguments=true-->
+        <!--params=pageNum=page;pageSize=size-->
+        <!--</value>-->
+        <!--</property>-->
+        <!--</bean>-->
+        <!--</array>-->
         <!--</property>-->
     </bean>
     <mybatis:scan base-package="cn.jrry.*.mapper"/>

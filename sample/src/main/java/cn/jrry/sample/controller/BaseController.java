@@ -20,12 +20,12 @@ public class BaseController {
     @Autowired
     private BaseService baseService;
 
-    @RequestMapping(path = "now.json",method = RequestMethod.GET)
-    public Map<String,Object> now(){
-        logger.info("--> {}.{}",CONTROLLER_CLASS_NAME,"now");
-        Map<String,Object> result = Maps.newLinkedHashMap();
-        result.put("now",baseService.getNow());
-        logger.info("<-- {}.{}",CONTROLLER_CLASS_NAME,"now");
+    @RequestMapping(path = "now.json", method = RequestMethod.GET)
+    public Map<String, Object> now() {
+        logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "now");
+        Map<String, Object> result = Maps.newLinkedHashMap();
+        result.put("now", baseService.getNow());
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "now");
         return result;
     }
 }

@@ -1,12 +1,13 @@
 package cn.jrry.sample.pojo;
 
-import cn.jrry.validation.group.Detail;
-import cn.jrry.validation.group.Edit;
-import cn.jrry.validation.group.Remove;
-import cn.jrry.validation.group.Update;
+import cn.jrry.validation.group.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,21 +15,38 @@ import java.util.Date;
 
 public class Sample implements Serializable {
     private static final long serialVersionUID = -6686296713191305077L;
-    @NotNull(groups = {Edit.class, Remove.class, Update.class, Detail.class})
+    @NotNull(groups = {Edit.class, Update.class, Remove.class, Detail.class})
     private Long id;
 
+    @NotNull(groups = {Save.class})
+    @Pattern(regexp = "[\\w-]{4,36}", groups = {Save.class})
     private String bcode;
 
+    @NotNull(groups = {Save.class, Update.class})
+    @Pattern(regexp = "(.){4,200}", groups = {Save.class, Update.class})
     private String btitle;
 
+    @NotNull(groups = {Save.class, Update.class})
+    @Min(value = 0L, groups = {Save.class, Update.class})
+    @Max(value = 100L, groups = {Save.class, Update.class})
+    @NumberFormat(pattern = "#,###")
     private Integer bint;
 
+    @NotNull(groups = {Save.class, Update.class})
+    @Min(value = 0L, groups = {Save.class, Update.class})
+    @Max(value = 10000L, groups = {Save.class, Update.class})
+    @NumberFormat(pattern = "#,###.00")
     private BigDecimal bnum;
 
+    @NotNull(groups = {Save.class, Update.class})
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date bdate;
+
+    @NotNull(groups = {Save.class, Update.class})
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bdatetime;
+
+    @NotNull(groups = {Save.class, Update.class})
     private Boolean btinyint;
 
     private Boolean deleted;

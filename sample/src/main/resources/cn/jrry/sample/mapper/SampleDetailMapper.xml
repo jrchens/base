@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jrry.sample.mapper.SampleDetailMapper">
-  <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.SampleDetail">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="sample_id" jdbcType="BIGINT" property="sampleId" />
-    <result column="bcontent" jdbcType="LONGVARCHAR" property="bcontent" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <resultMap id="BaseResultMap" type="cn.jrry.sample.pojo.SampleDetail">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sample_id" jdbcType="BIGINT" property="sampleId"/>
+        <result column="bcontent" jdbcType="LONGVARCHAR" property="bcontent"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sample_detail
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.jrry.sample.pojo.SampleDetail">
+    <insert id="insert" parameterType="cn.jrry.sample.pojo.SampleDetail">
     insert into sample_detail (id, sample_id, bcontent
       )
     values (#{id,jdbcType=BIGINT}, #{sampleId,jdbcType=BIGINT}, #{bcontent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.SampleDetail">
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.sample.pojo.SampleDetail">
     update sample_detail
     set sample_id = #{sampleId,jdbcType=BIGINT},
       bcontent = #{bcontent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, sample_id, bcontent
     from sample_detail
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id, sample_id, bcontent
     from sample_detail
   </select>

@@ -2,6 +2,7 @@ package cn.jrry.sample.controller;
 
 import cn.jrry.sample.pojo.Sample;
 import cn.jrry.sample.service.SampleService;
+import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -34,15 +35,10 @@ public class SampleController {
     public String index(@Validated Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record.toString());
         try {
-
-            if (bindingResult.hasErrors()) {
-                logger.info("{},{},{}", record, bindingResult, model);
-            } else {
-                model.addAttribute(record);
-            }
-
+            record = new Sample();
+            model.addAttribute(record);
         } catch (Exception ex) {
-            model.addAttribute("index.sample.error", ex.getMessage());
+            model.addAttribute("index_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "index");
         return "sample/index";
@@ -73,7 +69,7 @@ public class SampleController {
             data.put("rows", rows);
 
             result.put("success", false);
-            result.put("message", ex.getMessage());
+            result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "query");
@@ -92,7 +88,7 @@ public class SampleController {
             record.setBdatetime(now);
             model.addAttribute(record);
         } catch (Exception ex) {
-            model.addAttribute("create.sample.error", ex.getMessage());
+            model.addAttribute("create_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "create");
         return "sample/create";
@@ -108,7 +104,7 @@ public class SampleController {
                 return "sample/create";
             }
         } catch (Exception ex) {
-            model.addAttribute("save.sample.error", ex.getMessage());
+            model.addAttribute("save_error", ExceptionUtils.getSimpleMessage(ex));
             return "sample/create";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
@@ -120,11 +116,9 @@ public class SampleController {
     public String edit(@Validated(value = Edit.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record.toString());
         try {
-            if (!bindingResult.hasErrors()) {
-                model.addAttribute(userService.selectByPrimaryKey(record.getId()));
-            }
+            model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
-            model.addAttribute("edit.sample.error", ex.getMessage());
+            model.addAttribute("edit_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "edit");
         return "sample/edit";
@@ -140,7 +134,7 @@ public class SampleController {
                 return "sample/edit";
             }
         } catch (Exception ex) {
-            model.addAttribute("update.sample.error", ex.getMessage());
+            model.addAttribute("update_error", ExceptionUtils.getSimpleMessage(ex));
             return "sample/edit";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
@@ -151,11 +145,9 @@ public class SampleController {
     public String detail(@Validated(value = Detail.class) Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail");
         try {
-            if (!bindingResult.hasErrors()) {
-                model.addAttribute(userService.selectByPrimaryKey(record.getId()));
-            }
+            model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
-            model.addAttribute("detail.sample.error", ex.getMessage());
+            model.addAttribute("detail_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "detail");
         return "sample/detail";
@@ -171,7 +163,8 @@ public class SampleController {
                 return "sample/detail";
             }
         } catch (Exception ex) {
-            model.addAttribute("create.sample.error", ex.getMessage());
+
+            model.addAttribute("remove_error", ExceptionUtils.getSimpleMessage(ex));
             return "sample/detail";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "remove");
@@ -191,9 +184,10 @@ public class SampleController {
             result.put("data", aff);
         } catch (Exception ex) {
             result.put("success", false);
-            result.put("message", ex.getMessage());
+            result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", 0);
         }
+
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
         return result;
     }

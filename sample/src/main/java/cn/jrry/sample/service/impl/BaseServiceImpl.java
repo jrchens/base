@@ -17,16 +17,16 @@ public class BaseServiceImpl implements BaseService {
     private static final String SERVICE_CLASS_NAME = BaseServiceImpl.class.getName();
 
     @Autowired
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
     @Override
-    public String getNow() throws RuntimeException{
-        logger.info("--> {}.{}",SERVICE_CLASS_NAME,"now");
-        String now = jdbcTemplate.queryForObject("select now()",String.class);
-        logger.info("<-- {}.{}",SERVICE_CLASS_NAME,"now");
+    public String getNow() throws RuntimeException {
+        logger.info("--> {}.{}", SERVICE_CLASS_NAME, "now");
+        String now = jdbcTemplate.queryForObject("select now()", String.class);
+        logger.info("<-- {}.{}", SERVICE_CLASS_NAME, "now");
         return now;
     }
 }
