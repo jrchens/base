@@ -55,7 +55,12 @@
             <td colspan="4">
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-user-circle fa-lg', width: 80,
                         onClick: function(){
+
                         var form = $('#login_form');
+                        var username = $('#username',form).textbox('getValue');
+                        var password = $('#password',form).passwordbox('getValue');
+                        password = CryptoJS.MD5(username.concat(':').concat(CryptoJS.MD5(password).toString())).toString();
+                        $('#password',form).passwordbox('setValue',password);
                         form.submit();
                         }">登陆</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-eraser fa-lg', width: 80,

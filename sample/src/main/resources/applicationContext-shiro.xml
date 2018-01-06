@@ -49,7 +49,7 @@
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-        <constructor-arg index="0" value="SHA-256"/>
+        <constructor-arg index="0" value="SHA-512"/>
     </bean>
 
     <!-- Define the Shiro Realm implementation you want to use to connect to your back-end -->
