@@ -66,14 +66,14 @@
         <where>
             is_deleted = 0
             <if test="bcode != null and bcode != ''">
-                and bcode = #{bcode}
+                and bcode = #{bcode,jdbcType=CHAR}
             </if>
             <if test="btitle != null and btitle != ''">
                 <bind name="btitle" value="'%' + btitle + '%'"/>
-                and btitle LIKE #{btitle}
+                and btitle LIKE #{btitle,jdbcType=VARCHAR}
             </if>
             <if test="btinyint != null">
-                and is_btinyint = #{btinyint}
+                and is_btinyint = #{btinyint,jdbcType=BIT}
             </if>
         </where>
     </sql>
