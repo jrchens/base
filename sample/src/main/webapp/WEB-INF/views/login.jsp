@@ -30,6 +30,8 @@
 <%--style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${save_error}</div>--%>
 <%--</c:if>--%>
 
+<%--<c:remove var="shiroSavedRequest"/>--%>
+
 <form:form id="login_form" method="post"
            modelAttribute="loginUser" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户登陆"

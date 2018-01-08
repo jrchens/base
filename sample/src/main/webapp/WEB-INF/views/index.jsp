@@ -25,6 +25,8 @@
 
 <a href="http://local.com/logout">退出</a>
 
+<a href="http://local.com/sample/index">sample</a>
+
 </body>
 
 </html>

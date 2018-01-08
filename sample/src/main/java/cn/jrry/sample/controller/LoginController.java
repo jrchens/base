@@ -59,7 +59,7 @@ public class LoginController {
         return "redirect:/index";
     }
 
-    @RequestMapping(path = "index", method = RequestMethod.GET)
+    @RequestMapping(path = {"index",""}, method = RequestMethod.GET)
     public String index(Model model) {
         logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "index");
         Subject subject = SecurityUtils.getSubject();

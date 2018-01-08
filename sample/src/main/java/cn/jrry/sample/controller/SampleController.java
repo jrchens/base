@@ -154,27 +154,9 @@ public class SampleController {
     }
 
     @RequestMapping(path = "remove", method = RequestMethod.POST)
-    public String remove(@Validated(value = Remove.class) Sample record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "remove");
-        try {
-            if (!bindingResult.hasErrors()) {
-                userService.removeByPrimaryKey(record);
-            } else {
-                return "sample/detail";
-            }
-        } catch (Exception ex) {
-
-            model.addAttribute("remove_error", ExceptionUtils.getSimpleMessage(ex));
-            return "sample/detail";
-        }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "remove");
-        return "redirect:index";//index(record, bindingResult,model);
-    }
-
-    @RequestMapping(path = "async-remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> asyncRemove(@Validated(value = Remove.class) Sample record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-remove", record);
+    public Map<String, Object> remove(@Validated(value = Remove.class) Sample record, BindingResult bindingResult) {
+        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -188,7 +170,7 @@ public class SampleController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "remove");
         return result;
     }
 }
