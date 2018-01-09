@@ -7,30 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../common/taglib.jsp" %>
-<!DOCTYPE html>
-<html lang="zh-Hans">
-
-<head>
-    <meta charset="UTF-8">
-    <title>样例管理-编辑</title>
-
-    <%@ include file="../common/css.jsp" %>
-    <%@ include file="../common/js.jsp" %>
-
-</head>
-
-<body>
-<div id="overlay"></div>
-
-<c:if test="${not empty edit_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${edit_error}</div>
-</c:if>
-<c:if test="${not empty update_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${update_error}</div>
-</c:if>
-
 <form:form id="sample_edit_form" method="post"
            modelAttribute="sample" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="样例管理-编辑"
@@ -97,7 +73,3 @@
     </table>
 
 </form:form>
-
-</body>
-
-</html>

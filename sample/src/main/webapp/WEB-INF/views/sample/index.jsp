@@ -7,25 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../common/taglib.jsp" %>
-<!DOCTYPE html>
-<html lang="zh-Hans">
-
-<head>
-    <meta charset="UTF-8">
-    <title>样例管理</title>
-
-    <%@ include file="../common/css.jsp" %>
-    <%@ include file="../common/js.jsp" %>
-
-</head>
-
-<body>
-
-<c:if test="${not empty index_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${index_error}</div>
-</c:if>
-
 <table id="sample_index_datagrid" class="easyui-datagrid"
        data-options="title: '样例管理-列表',
             url: 'http://local.com/sample/query',
@@ -100,7 +81,7 @@
                         location.href = 'http://local.com/sample/detail?id='+row.id;
                     }
                 }
-            ],
+            ]
        ">
     <thead>
     <tr>
@@ -125,6 +106,18 @@
     </thead>
 </table>
 
-</body>
-
-</html>
+<%--<div id="toolbar" style="margin: 0px; padding: 5px;">--%>
+    <%--<div id="toolbarQueryParams" style="margin: 5px; padding: 0px;">--%>
+        <%--<div style="padding: 0px; margin: 0px;">--%>
+            <%--<span>Bcode </span><input class="easyui-textbox" name="bcode">--%>
+            <%--<span>Btitle </span><input class="easyui-textbox" name="btitle">--%>
+            <%--<span><a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-search fa-lg'"></a></span>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<div id="toolbarLinkbuttons" style="margin: 5px; padding: 0px;">--%>
+        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-plus fa-lg'"></a>--%>
+        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-pencil fa-lg'"></a>--%>
+        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-trash fa-lg'"></a>--%>
+        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-info fa-lg'"></a>--%>
+    <%--</div>--%>
+<%--</div>--%>

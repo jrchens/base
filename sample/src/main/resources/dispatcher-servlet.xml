@@ -30,13 +30,13 @@
     <!--redirect-url="login" path="/" /> -->
     <!--<mvc:view-controller path="/" view-name="login"/>-->
 
-    <!--<mvc:tiles-configurer>-->
-    <!--<mvc:definitions location="classpath:tilesConfig.xml"/>-->
-    <!--</mvc:tiles-configurer>-->
+    <mvc:tiles-configurer>
+        <mvc:definitions location="classpath:applicationContex-tiles.xml"/>
+    </mvc:tiles-configurer>
 
     <mvc:view-resolvers>
-        <!--<mvc:tiles view-class="org.springframework.web.servlet.view.tiles3.TilesView"/>-->
-        <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+        <mvc:tiles view-class="org.springframework.web.servlet.view.tiles3.TilesView"/>
+        <!--<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>-->
         <mvc:content-negotiation>
             <mvc:default-views>
                 <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>
