@@ -35,7 +35,9 @@ public class SampleController {
     public String index(@Validated Sample record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record.toString());
         try {
-            record = new Sample();
+            if(record == null){
+                record = new Sample();
+            }
             model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
