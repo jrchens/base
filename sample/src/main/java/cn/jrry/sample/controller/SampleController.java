@@ -86,6 +86,7 @@ public class SampleController {
             Date now = new Date(System.currentTimeMillis());
             record.setBdate(now);
             record.setBdatetime(now);
+            record.setBtinyint(false);
             model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("create_error", ExceptionUtils.getSimpleMessage(ex));

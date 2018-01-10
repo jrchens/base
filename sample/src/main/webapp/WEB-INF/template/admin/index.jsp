@@ -51,7 +51,7 @@
 </c:if>
 
 <body class="easyui-layout">
-    <div data-options="region:'north',border:true" style="height:60px;padding:10px">
+    <div data-options="region:'north',border:true" style="height:42px;padding:10px">
         <tiles:insertAttribute name="top"></tiles:insertAttribute>
     </div>
 
@@ -63,6 +63,6 @@
     <div data-options="region:'center'" style="padding: 10px;">
         <tiles:insertAttribute name="body"></tiles:insertAttribute>
     </div>
-
 </body>
+
 </html>

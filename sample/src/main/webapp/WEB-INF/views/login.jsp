@@ -34,12 +34,11 @@
 
 <form:form id="login_form" method="post"
            modelAttribute="loginUser" cssStyle="padding: 5px; margin: 0px;"
-           cssClass="easyui-panel" title="用户登陆"
-           data-options="inline: true" action="http://local.com/login">
+           cssClass="easyui-window" title="用户登陆"
+           data-options="width:420, height:200, collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false" action="http://local.com/login">
 
-    <table class="ext-data-table">
+    <table class="ext-data-table" style="width:400px;">
         <tbody>
-
         <tr>
             <td>用户名</td>
             <td><form:input path="username" cssClass="easyui-textbox"
@@ -55,9 +54,8 @@
 
         <tr>
             <td colspan="4">
-                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-user-circle fa-lg', width: 80,
+                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-user-circle', width: 80,
                         onClick: function(){
-
                         var form = $('#login_form');
                         var username = $('#username',form).textbox('getValue');
                         var password = $('#password',form).passwordbox('getValue');
@@ -65,7 +63,7 @@
                         $('#password',form).passwordbox('setValue',password);
                         form.submit();
                         }">登陆</a>
-                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-eraser fa-lg', width: 80,
+                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-eraser', width: 80,
                         onClick: function(){
                         var form = $('#login_form');
                         form[0].reset();

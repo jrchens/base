@@ -7,26 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="./common/taglib.jsp" %>
-<!DOCTYPE html>
-<html lang="zh-Hans">
-
-<head>
-    <meta charset="UTF-8">
-    <title>用户登陆-${relogin}</title>
-
-    <%@ include file="./common/css.jsp" %>
-    <%@ include file="./common/js.jsp" %>
-
-</head>
-
-<body>
-
-<shiro:principal />
-
-<a href="http://local.com/logout">退出</a>
-
-<a href="http://local.com/sample/index">sample</a>
-
-</body>
-
-</html>
+<div>
+    Dashboard
+</div>

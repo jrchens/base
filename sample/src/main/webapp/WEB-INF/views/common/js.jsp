@@ -15,7 +15,7 @@
 
 <script type="text/javascript" src="http://res.local.com/crypto-js/crypto-js.js"></script>
 
-<%--<script type="text/javascript" src="http://res.local.com/jquery-serializeJSON/lib/jquery.serializeJSON.js"></script>--%>
+<script type="text/javascript" src="http://res.local.com/jquery-serializeJSON/lib/jquery.serializeJSON.js"></script>
 
 <%--<script type="text/javascript" src="http://res.local.com/UUID.js/dist/uuid.core.js"></script>--%>
 

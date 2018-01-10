@@ -17,25 +17,25 @@
     <table class="ext-data-table">
         <tbody>
         <tr>
-            <td>Code</td>
+            <td>代码</td>
             <td><form:input path="bcode" cssClass="easyui-textbox" data-options="required:true,fit:true,readonly:true"/><form:errors
                     path="bcode"/></td>
-            <td>Title</td>
+            <td>标题</td>
             <td><form:input path="btitle" cssClass="easyui-textbox"
                             data-options="required:true,fit:true,readonly:true"/><form:errors path="btitle"/></td>
         </tr>
         <tr>
-            <td>Int</td>
+            <td>整数</td>
             <td><form:input path="bint" cssClass="easyui-numberbox"
                             data-options="required:true,fit:true,min:0,readonly:true"/><form:errors path="bint"/></td>
-            <td>Decimal</td>
+            <td>小数</td>
             <td><form:input path="bnum" cssClass="easyui-numberbox"
                             data-options="required:true,fit:true,min:0,precision:2,readonly:true"/><form:errors
                     path="bnum"/></td>
         </tr>
 
         <tr>
-            <td>Date</td>
+            <td>日期</td>
             <td><form:input path="bdate" cssClass="easyui-datebox"
                             data-options="required:true,editable:false,readonly:true"/><form:errors path="bdate"/>
                 <span style="margin-left: 24px; margin-right: 24px;">Datetime</span>
@@ -43,7 +43,7 @@
                             data-options="required:true,editable:false,width:160,readonly:true"/><form:errors
                         path="bdatetime"/>
             </td>
-            <td>Boolean</td>
+            <td>布尔值</td>
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton"/>--%>
                 <span class="easyui-switchbutton"
@@ -56,18 +56,18 @@
 
         <tr>
             <td colspan="4">
-                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-pencil fa-lg', width: 80,
+                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-pencil ', width: 80,
                     onClick: function(){
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
                         location.href = 'http://local.com/sample/edit?id=${sample.id}';
                     }">编辑</a>
-                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash fa-lg', width: 80,
+                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
                         var thisButton = $(this);
 
-                        $.messager.confirm('Confirm', 'Are you sure to delete select row?', function(r) {
+                        $.messager.confirm('确认', '确认删除记录吗?', function(r) {
                             if (r) {
                                 // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
                                 // $('#sys_group_datagrid').datagrid('deleteRow', index);
@@ -93,7 +93,7 @@
                         });
 
                     }">删除</a>
-                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left fa-lg', width: 80,
+                <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
                     location.href = 'http://local.com/sample/index';
                     }">返回</a>

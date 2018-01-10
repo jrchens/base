@@ -16,108 +16,118 @@
             rownumbers: true,
             minHeight: 520,
             striped: true,
+            toolbar: '#sample_query_form',
             loadFilter: function(data){
                 if(!data.success){
                     $.messager.show({msg:data.message});
                 }
+                var pager = $('#sample_index_datagrid').datagrid('getPager');
+                pager.pagination({
+                    buttons:[
+                        {   iconCls:'ext-icon fa fa-plus',
+                            handler:function(){
+                                location.href = 'http://local.com/sample/create';
+                            }
+                        },
+                        {   iconCls:'ext-icon fa fa-pencil',
+                            handler:function(){
+                                var row = $('#sample_index_datagrid').datagrid('getSelected');
+                                if(row == null){
+                                    $.messager.alert('提示', '请先选择一行记录!', 'warning');
+                                    return false;
+                                }
+                                location.href = 'http://local.com/sample/edit?id='+row.id;
+                            }
+                        },
+                        {   iconCls:'ext-icon fa fa-trash',
+                            handler:function(){
+                                var thisButton = $(this);
+                                var row = $('#sample_index_datagrid').datagrid('getSelected');
+                                if(row == null){
+                                    $.messager.alert('提示', '请先选择一行记录!', 'warning');
+                                    return false;
+                                }
+
+                                $.messager.confirm('确认', '确认删除记录吗?', function(r) {
+                                    if (r) {
+                                        // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
+                                        // $('#sys_group_datagrid').datagrid('deleteRow', index);
+
+                                        $('#overlay').show();
+                                        thisButton.linkbutton('disable');
+
+                                        var reqData = {id:row.id};
+                                        $.post('http://local.com/sample/remove',reqData,function(data,textStatus,jqXHR){
+                                            if(data.success){
+                                                $('#sample_index_datagrid').datagrid('reload');
+                                            }else{
+                                                $.messager.show({msg:data.message});
+                                            }
+                                        },'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){
+                                            $('#overlay').hide();
+                                            thisButton.linkbutton('enable');
+                                        });
+
+                                    }
+                                });
+                            }
+                        },
+                        {   iconCls:'ext-icon fa fa-eye',
+                            handler:function(){
+                                var row = $('#sample_index_datagrid').datagrid('getSelected');
+                                if(row == null){
+                                    $.messager.alert('提示', '请先选择一行记录!', 'warning');
+                                    return false;
+                                }
+                                location.href = 'http://local.com/sample/detail?id='+row.id;
+                            }
+                        }
+                    ]
+                });
+
                 return data.data;
             },
-            toolbar:[
-                {   iconCls:'ext-icon fa fa-plus fa-lg',
-                    handler:function(){
-                        location.href = 'http://local.com/sample/create';
-                    }
-                },
-                {   iconCls:'ext-icon fa fa-pencil fa-lg',
-                    handler:function(){
-                        var row = $('#sample_index_datagrid').datagrid('getSelected');
-                        if(row == null){
-                            $.messager.alert('Info', 'Please select a edit row!', 'warning');
-                            return false;
-                        }
-                        location.href = 'http://local.com/sample/edit?id='+row.id;
-                    }
-                },
-                {   iconCls:'ext-icon fa fa-trash fa-lg',
-                    handler:function(){
-                        var thisButton = $(this);
-                        var row = $('#sample_index_datagrid').datagrid('getSelected');
-                        if(row == null){
-                            $.messager.alert('Info', 'Please select a delete row!', 'warning');
-                            return false;
-                        }
-
-                        $.messager.confirm('Confirm', 'Are you sure to delete select row?', function(r) {
-                            if (r) {
-                                // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
-                                // $('#sys_group_datagrid').datagrid('deleteRow', index);
-
-                                $('#overlay').show();
-                                thisButton.linkbutton('disable');
-
-                                var reqData = {id:row.id};
-                                $.post('http://local.com/sample/async-remove',reqData,function(data,textStatus,jqXHR){
-                                    if(data.success){
-                                        $('#sample_index_datagrid').datagrid('reload');
-                                    }else{
-                                        $.messager.show({msg:data.message});
-                                    }
-                                },'json').aways(function(data_jqXHR, textStatus, jqXHR_errorThrown){
-                                    $('#overlay').hide();
-                                    thisButton.linkbutton('enable');
-                                });
-
-                            }
-                        });
-                    }
-                },
-                {   iconCls:'ext-icon fa fa-info fa-lg',
-                    handler:function(){
-                        var row = $('#sample_index_datagrid').datagrid('getSelected');
-                        if(row == null){
-                            $.messager.alert('Info', 'Please select a row!', 'warning');
-                            return false;
-                        }
-                        location.href = 'http://local.com/sample/detail?id='+row.id;
-                    }
-                }
-            ]
        ">
     <thead>
     <tr>
-        <th data-options="field:'id'">Id</th>
-        <th data-options="field:'bcode'">Code</th>
-        <th data-options="field:'btitle'">Title</th>
-        <th data-options="field:'bint'">Int</th>
-        <th data-options="field:'bnum'">Decimal</th>
+        <th data-options="field:'id'">序号</th>
+        <th data-options="field:'bcode'">代码</th>
+        <th data-options="field:'btitle',width:200">标题</th>
+        <th data-options="field:'bint'">整数</th>
+        <th data-options="field:'bnum'">小数</th>
         <th data-options="field:'bdate',
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATE);
-                }">Date
+                }">日期
         </th>
         <th data-options="field:'bdatetime',
                 formatter: function(value,row,index){
                     return moment(value).format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS);
-                }">Create Time
+                }">时间
         </th>
-        <th data-options="field:'btinyint'">Boolean</th>
-
+        <th data-options="field:'btinyint'">布尔值</th>
     </tr>
     </thead>
 </table>
 
-<%--<div id="toolbar" style="margin: 0px; padding: 5px;">--%>
-    <%--<div id="toolbarQueryParams" style="margin: 5px; padding: 0px;">--%>
-        <%--<div style="padding: 0px; margin: 0px;">--%>
-            <%--<span>Bcode </span><input class="easyui-textbox" name="bcode">--%>
-            <%--<span>Btitle </span><input class="easyui-textbox" name="btitle">--%>
-            <%--<span><a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-search fa-lg'"></a></span>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<div id="toolbarLinkbuttons" style="margin: 5px; padding: 0px;">--%>
-        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-plus fa-lg'"></a>--%>
-        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-pencil fa-lg'"></a>--%>
-        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-trash fa-lg'"></a>--%>
-        <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'ext-icon fa fa-info fa-lg'"></a>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<form:form id="sample_query_form" method="post"
+           modelAttribute="sample" cssStyle="padding: 5px; margin: 0px;"
+           data-options="inline: true" action="http://local.com/sample/query">
+    <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td>代码</td>
+                <td><form:input path="bcode" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
+                <td>标题</td>
+                <td><form:input path="btitle" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
+                <td style="text-align: left"><a href="javascript:;" class="easyui-linkbutton" data-options="
+                    iconCls:'ext-icon fa fa-search',
+                    onClick: function(){
+                        var reqData = $('#sample_query_form').serializeJSON();
+                        console.log(reqData);
+                        $('#sample_index_datagrid').datagrid('reload',reqData);
+                    }"></a></td>
+            </tr>
+        </tbody>
+    </table>
+</form:form>
