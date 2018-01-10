@@ -17,6 +17,9 @@
             minHeight: 520,
             striped: true,
             toolbar: '#sample_query_form',
+            onDblClickRow: function(index,row){
+                location.href = 'http://local.com/sample/detail?id='+row.id;
+            },
             loadFilter: function(data){
                 if(!data.success){
                     $.messager.show({msg:data.message});

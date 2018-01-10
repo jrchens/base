@@ -38,7 +38,7 @@ public class SampleController {
             record = new Sample();
             model.addAttribute(record);
         } catch (Exception ex) {
-            model.addAttribute("index_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "index");
         return "sample/index";
@@ -89,7 +89,7 @@ public class SampleController {
             record.setBtinyint(false);
             model.addAttribute(record);
         } catch (Exception ex) {
-            model.addAttribute("create_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "create");
         return "sample/create";
@@ -105,7 +105,7 @@ public class SampleController {
                 return "sample/create";
             }
         } catch (Exception ex) {
-            model.addAttribute("save_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
             return "sample/create";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
@@ -119,7 +119,7 @@ public class SampleController {
         try {
             model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
-            model.addAttribute("edit_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "edit");
         return "sample/edit";
@@ -135,7 +135,7 @@ public class SampleController {
                 return "sample/edit";
             }
         } catch (Exception ex) {
-            model.addAttribute("update_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
             return "sample/edit";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
@@ -148,7 +148,7 @@ public class SampleController {
         try {
             model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
-            model.addAttribute("detail_error", ExceptionUtils.getSimpleMessage(ex));
+            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "detail");
         return "sample/detail";

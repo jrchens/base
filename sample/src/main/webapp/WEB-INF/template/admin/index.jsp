@@ -19,38 +19,11 @@
 
 </head>
 
-<div id="overlay"></div>
-
-<c:if test="${not empty index_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${index_error}</div>
-</c:if>
-
-<c:if test="${not empty create_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${create_error}</div>
-</c:if>
-<c:if test="${not empty save_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${save_error}</div>
-</c:if>
-
-
-<c:if test="${not empty edit_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${edit_error}</div>
-</c:if>
-<c:if test="${not empty update_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${update_error}</div>
-</c:if>
-
-<c:if test="${not empty detail_error}">
-    <div class="easyui-panel" data-options="closable:true" title="错误信息"
-         style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${detail_error}</div>
-</c:if>
 
 <body class="easyui-layout">
+
+    <div id="overlay"></div>
+
     <div data-options="region:'north',border:true" style="height:42px;padding:10px">
         <tiles:insertAttribute name="top"></tiles:insertAttribute>
     </div>
@@ -61,6 +34,12 @@
     <%--<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>--%>
     <%--<div data-options="region:'south',border:false" style="height:50px;background:#A9FACD;padding:10px;">south region</div>--%>
     <div data-options="region:'center'" style="padding: 10px;">
+
+        <c:if test="${not empty controller_error}">
+            <div class="easyui-panel" data-options="closable:true" title="错误信息"
+                 style="margin-bottom: 10px; color:red; padding-left: 5px; font-weight: bold;">${controller_error}</div>
+        </c:if>
+
         <tiles:insertAttribute name="body"></tiles:insertAttribute>
     </div>
 </body>

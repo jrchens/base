@@ -35,7 +35,7 @@
 <form:form id="login_form" method="post"
            modelAttribute="loginUser" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-window" title="用户登陆"
-           data-options="width:420, height:200, collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false" action="http://local.com/login">
+           data-options="width:420, height:160, collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false" action="http://local.com/login">
 
     <table class="ext-data-table" style="width:400px;">
         <tbody>

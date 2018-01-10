@@ -8,6 +8,7 @@
 <span style="display: block"><a href="http://local.com/admin/group">群组管理</a></span>
 <span style="display: block"><a href="http://local.com/admin/role">角色管理</a></span>
 <span style="display: block"><a href="http://local.com/admin/permission">权限管理</a></span>
+<span style="display: block"><a href="http://local.com/admin/config">配置管理</a></span>
 </shiro:hasRole>
 
 </div>
