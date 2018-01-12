@@ -1,15 +1,37 @@
 package cn.jrry.admin.domain;
 
+import cn.jrry.validation.group.Remove;
+import cn.jrry.validation.group.Save;
+import cn.jrry.validation.group.Update;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Config implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 9118063304074817477L;
     private Long id;
+
+    @NotBlank
+    @Length(min = 36,max = 36,groups = {Save.class, Remove.class, Update.class})
     private String cfgCode;
+    @NotBlank
+    @Length(min = 2,max = 50,groups = {Save.class, Update.class})
     private String cfgName;
+    @NotNull
+    @Min(value = 1,groups = {Save.class})
+    @Max(value = 32,groups = {Save.class})
     private Byte cfgType;
+    @NotBlank
+    @Length(min = 1,max = 200,groups = {Save.class, Update.class})
     private String cfgValue;
+
     private Boolean deleted;
     private String cruser;
     private Date crtime;
