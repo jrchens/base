@@ -46,39 +46,39 @@
                                 location.href = 'http://local.com/admin/config/edit?cfgCode='+row.cfgCode;
                             }
                         },
-                        {   iconCls:'ext-icon fa fa-trash',
-                            handler:function(){
-                                var thisButton = $(this);
-                                var row = $('#admin_config_index_datagrid').datagrid('getSelected');
-                                if(row == null){
-                                    $.messager.alert('提示', '请先选择一行记录!', 'warning');
-                                    return false;
-                                }
+                        <%--{   iconCls:'ext-icon fa fa-trash',--%>
+                            <%--handler:function(){--%>
+                                <%--var thisButton = $(this);--%>
+                                <%--var row = $('#admin_config_index_datagrid').datagrid('getSelected');--%>
+                                <%--if(row == null){--%>
+                                    <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
+                                    <%--return false;--%>
+                                <%--}--%>
 
-                                $.messager.confirm('确认', '确认删除记录吗?', function(r) {
-                                    if (r) {
-                                        // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
-                                        // $('#sys_group_datagrid').datagrid('deleteRow', index);
+                                <%--$.messager.confirm('确认', '确认删除记录吗?', function(r) {--%>
+                                    <%--if (r) {--%>
+                                        <%--// var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);--%>
+                                        <%--// $('#sys_group_datagrid').datagrid('deleteRow', index);--%>
 
-                                        $('#overlay').show();
-                                        thisButton.linkbutton('disable');
+                                        <%--$('#overlay').show();--%>
+                                        <%--thisButton.linkbutton('disable');--%>
 
-                                        var reqData = {cfgCode:row.cfgCode};
-                                        $.post('http://local.com/admin/config/remove',reqData,function(data,textStatus,jqXHR){
-                                            if(data.success){
-                                                $('#admin_config_index_datagrid').datagrid('reload');
-                                            }else{
-                                                $.messager.show({msg:data.message});
-                                            }
-                                        },'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){
-                                            $('#overlay').hide();
-                                            thisButton.linkbutton('enable');
-                                        });
+                                        <%--var reqData = {cfgCode:row.cfgCode};--%>
+                                        <%--$.post('http://local.com/admin/config/remove',reqData,function(data,textStatus,jqXHR){--%>
+                                            <%--if(data.success){--%>
+                                                <%--$('#admin_config_index_datagrid').datagrid('reload');--%>
+                                            <%--}else{--%>
+                                                <%--$.messager.show({msg:data.message});--%>
+                                            <%--}--%>
+                                        <%--},'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){--%>
+                                            <%--$('#overlay').hide();--%>
+                                            <%--thisButton.linkbutton('enable');--%>
+                                        <%--});--%>
 
-                                    }
-                                });
-                            }
-                        },
+                                    <%--}--%>
+                                <%--});--%>
+                            <%--}--%>
+                        <%--},--%>
                         {   iconCls:'ext-icon fa fa-eye',
                             handler:function(){
                                 var row = $('#admin_config_index_datagrid').datagrid('getSelected');
@@ -99,7 +99,7 @@
     <tr>
         <th data-options="field:'cfgCode'">代码</th>
         <th data-options="field:'cfgName'">名称</th>
-        <th data-options="field:'cfgType'">类型</th>
+        <%--<th data-options="field:'cfgType'">类型</th>--%>
         <th data-options="field:'cfgValue'">值</th>
     </tr>
     </thead>

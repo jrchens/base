@@ -11,29 +11,22 @@
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="配置管理-新增"
            data-options="inline: true" action="http://local.com/admin/config/save">
+    <form:hidden path="cfgCode"/>
     <form:hidden path="cfgType"/>
 
     <table class="ext-data-table">
         <tbody>
 
         <tr>
-            <td>代码</td>
-            <td><form:input path="cfgCode" cssClass="easyui-textbox"
-                            data-options="required:true,fit:true,readonly:true"/><form:errors
-                    path="cfgCode"/></td>
             <td>名称</td>
             <td><form:input path="cfgName" cssClass="easyui-textbox"
                             data-options="required:true,fit:true"/><form:errors
                     path="cfgName"/></td>
-        </tr>
-
-
-        <tr>
             <td>值</td>
             <td><form:input path="cfgValue" cssClass="easyui-textbox"
                             data-options="required:true,fit:true"/><form:errors path="cfgValue"/></td>
-            <td colspan="2">&nbsp;</td>
         </tr>
+
 
         <tr>
             <td colspan="4">

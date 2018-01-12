@@ -1,8 +1,10 @@
 package cn.jrry.admin.service.impl;
 
+import cn.jrry.admin.domain.Config;
 import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.mapper.UserMapper;
+import cn.jrry.admin.service.ConfigService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.common.exception.ServiceException;
 import com.google.common.collect.Lists;
@@ -26,6 +28,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ConfigService configService;
+
+    private static final String DEFAULT_USER_GROUP_CODE = "6e1352df-2c9d-4811-8359-ac0d68e2291e";
 
     @Override
     public int deleteByPrimaryKey(Long id) {
@@ -51,7 +58,12 @@ public class UserServiceImpl implements UserService {
 
             Sha512Hash sha256Hash = new Sha512Hash(record.getPassword(), passwordSalt);
             record.setPassword(sha256Hash.toHex());
-            return userMapper.insert(record);
+            int aff =  userMapper.insert(record);
+
+            Config config = configService.selectByPrimaryKey(DEFAULT_USER_GROUP_CODE);
+            logger.info("default user group_name :{}",config.getCfgValue());
+
+            return aff;
         } catch (Exception ex) {
             logger.error("insert error {}{}{}", record, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
