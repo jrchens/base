@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_user_create_form" method="post"
-           modelAttribute="userDTO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="userDO" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-新增"
            data-options="inline: true" action="http://local.com/admin/user/save">
     <form:hidden path="disabled"/>
@@ -19,10 +19,12 @@
 
         <tr>
             <td>用户名</td>
-            <td><form:input path="username" cssClass="easyui-textbox" data-options="required:true,fit:true"/><form:errors
+            <td><form:input path="username" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true"/><form:errors
                     path="username"/></td>
             <td>显示名</td>
-            <td><form:input path="viewname" cssClass="easyui-textbox" data-options="required:true,fit:true"/><form:errors
+            <td><form:input path="viewname" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true"/><form:errors
                     path="viewname"/></td>
         </tr>
 
@@ -32,7 +34,8 @@
             <td><form:input path="email" cssClass="easyui-textbox"
                             data-options="required:true,fit:true"/><form:errors path="email"/></td>
             <td>密码</td>
-            <td><form:input path="password" cssClass="easyui-passwordbox" data-options="required:true,fit:true"/><form:errors
+            <td><form:input path="password" cssClass="easyui-passwordbox"
+                            data-options="required:true,fit:true"/><form:errors
                     path="password"/></td>
         </tr>
 

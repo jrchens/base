@@ -1,7 +1,6 @@
 package cn.jrry.admin.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class UserVO implements Serializable {
     private static final long serialVersionUID = 6981314263251464084L;
@@ -78,11 +77,11 @@ public class UserVO implements Serializable {
         }
         UserVO other = (UserVO) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getViewname() == null ? other.getViewname() == null : this.getViewname().equals(other.getViewname()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getDisabled() == null ? other.getDisabled() == null : this.getDisabled().equals(other.getDisabled()))
-            && (this.getLocked() == null ? other.getLocked() == null : this.getLocked().equals(other.getLocked()));
+                && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
+                && (this.getViewname() == null ? other.getViewname() == null : this.getViewname().equals(other.getViewname()))
+                && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+                && (this.getDisabled() == null ? other.getDisabled() == null : this.getDisabled().equals(other.getDisabled()))
+                && (this.getLocked() == null ? other.getLocked() == null : this.getLocked().equals(other.getLocked()));
     }
 
     @Override

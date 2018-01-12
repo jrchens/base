@@ -20,10 +20,12 @@
 
         <tr>
             <td>用户名</td>
-            <td><form:input path="username" cssClass="easyui-textbox" data-options="required:true,fit:true,readonly:true"/><form:errors
+            <td><form:input path="username" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true,readonly:true"/><form:errors
                     path="username"/></td>
             <td>显示名</td>
-            <td><form:input path="viewname" cssClass="easyui-textbox" data-options="required:true,fit:true,readonly:true"/><form:errors
+            <td><form:input path="viewname" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true,readonly:true"/><form:errors
                     path="viewname"/></td>
         </tr>
 
@@ -48,7 +50,7 @@
                             $('#disabled',form).val(checked);
                         }"></span><form:errors path="disabled"/>
             </td>
-            <td>锁定 </td>
+            <td>锁定</td>
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>
                     <%--onText:'Yes',offText:'No',reversed:true--%>
@@ -69,7 +71,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/user/edit?id=${userDTO.id}';
+                        location.href = 'http://local.com/admin/user/edit?id=${userVO.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -84,7 +86,7 @@
                                 thisButton.linkbutton('disable')
                                 thisButton.linkbutton({text:'加载中...'});
 
-                                var reqData = {id:${userDTO.id}};
+                                var reqData = {id:${userVO.id}};
                                 $.post('http://local.com/admin/user/remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/user/index';

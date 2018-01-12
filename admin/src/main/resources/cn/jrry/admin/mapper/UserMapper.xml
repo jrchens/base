@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jrry.admin.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.User">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="is_disabled" jdbcType="BIT" property="disabled" />
-    <result column="is_locked" jdbcType="BIT" property="locked" />
-    <result column="is_deleted" jdbcType="BIT" property="deleted" />
-    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
-    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
-    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
-    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="viewname" jdbcType="VARCHAR" property="viewname"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_disabled" jdbcType="BIT" property="disabled"/>
+        <result column="is_locked" jdbcType="BIT" property="locked"/>
+        <result column="is_deleted" jdbcType="BIT" property="deleted"/>
+        <result column="cruser" jdbcType="VARCHAR" property="cruser"/>
+        <result column="crtime" jdbcType="TIMESTAMP" property="crtime"/>
+        <result column="mduser" jdbcType="VARCHAR" property="mduser"/>
+        <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.jrry.admin.domain.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.jrry.admin.domain.UserDO" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user (username, viewname,
       password, password_salt, email, 
       is_disabled, is_locked, is_deleted, cruser, 
@@ -32,10 +32,9 @@
       #{crtime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.User">
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.UserDO">
     update sys_user
-    set username = #{username,jdbcType=VARCHAR},
-      viewname = #{viewname,jdbcType=VARCHAR},
+    set viewname = #{viewname,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       is_disabled = #{disabled,jdbcType=BIT},
       is_locked = #{locked,jdbcType=BIT},
@@ -43,56 +42,55 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="UserVOResultMap">
-    select
-    <include refid="selectColumns"/>
-    from sys_user
-    where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="selectColumns"/>
-    from sys_user
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="UserDOResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sys_user
+        where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="UserDOResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sys_user
+        where is_deleted = 0
+    </select>
 
+    <resultMap id="UserDOResultMap" type="cn.jrry.admin.domain.UserDO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="viewname" jdbcType="VARCHAR" property="viewname"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_disabled" jdbcType="BIT" property="disabled"/>
+        <result column="is_locked" jdbcType="BIT" property="locked"/>
+    </resultMap>
 
-
-  <resultMap id="UserVOResultMap" type="cn.jrry.admin.domain.UserVO">
-    <result column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="is_disabled" jdbcType="BIT" property="disabled" />
-    <result column="is_locked" jdbcType="BIT" property="locked" />
-  </resultMap>
-
-  <sql id="selectColumns">
+    <sql id="selectColumns">
     id,username,viewname,email,is_disabled,is_locked
   </sql>
-  <sql id="selectWhereCondition">
-    <where>
-      is_deleted = 0
-      <if test="username != null and username != ''">
-        <bind name="username" value="'%' + username + '%'"/>
-        and username LIKE #{username,jdbcType=VARCHAR}
-      </if>
-      <if test="viewname != null and viewname != ''">
-        <bind name="viewname" value="'%' + viewname + '%'"/>
-        and viewname LIKE #{viewname,jdbcType=VARCHAR}
-      </if>
-      <if test="email != null and email != ''">
-        <bind name="email" value="'%' + email + '%'"/>
-        and email LIKE #{viewname,jdbcType=VARCHAR}
-      </if>
-      <if test="disabled != null">
-        and is_disabled = #{disabled,jdbcType=BIT}
-      </if>
-      <if test="locked != null">
-        and is_locked = #{locked,jdbcType=BIT}
-      </if>
-    </where>
-  </sql>
-  <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.User">
+    <sql id="selectWhereCondition">
+        <where>
+            is_deleted = 0
+            <if test="username != null and username != ''">
+                <bind name="username" value="'%' + username + '%'"/>
+                and username LIKE #{username,jdbcType=VARCHAR}
+            </if>
+            <if test="viewname != null and viewname != ''">
+                <bind name="viewname" value="'%' + viewname + '%'"/>
+                and viewname LIKE #{viewname,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                <bind name="email" value="'%' + email + '%'"/>
+                and email LIKE #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="disabled != null">
+                and is_disabled = #{disabled,jdbcType=BIT}
+            </if>
+            <if test="locked != null">
+                and is_locked = #{locked,jdbcType=BIT}
+            </if>
+        </where>
+    </sql>
+    <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.UserDO">
     update sys_user
     set
     is_deleted = #{deleted,jdbcType=BIT},
@@ -100,18 +98,18 @@
     mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="count" resultType="int">
-    select COUNT(1)
-    from sys_user
-    <include refid="selectWhereCondition"/>
-  </select>
-  <select id="select" resultMap="UserVOResultMap">
-    select
-    <include refid="selectColumns"/>
-    from sys_user
-    <include refid="selectWhereCondition"/>
-    ORDER BY ${sort} ${order}
-    limit ${offset},${rows}
-  </select>
+    <select id="count" resultType="int">
+        select COUNT(1)
+        from sys_user
+        <include refid="selectWhereCondition"/>
+    </select>
+    <select id="select" resultMap="UserDOResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sys_user
+        <include refid="selectWhereCondition"/>
+        ORDER BY ${sort} ${order}
+        limit ${offset},${rows}
+    </select>
 
 </mapper>

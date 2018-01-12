@@ -1,16 +1,15 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserDTO;
+import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,13 +33,15 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
-    public String index(@Validated UserDTO record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record.toString());
+    public String index(@Validated UserDO userDO, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", userDO.toString());
         try {
-            if (record == null) {
-                record = new UserDTO();
+            if (userDO == null) {
+                userDO = new UserDO();
             }
-            model.addAttribute(record);
+            UserVO userVO = new UserVO();
+            PropertyUtils.copyProperties(userVO, userDO);
+            model.addAttribute(userVO);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -81,15 +82,19 @@ public class UserController {
     }
 
     @RequestMapping(path = "create", method = RequestMethod.GET)
-    public String create(@Validated(value = Create.class) UserDTO record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", record.toString());
+    public String create(@Validated(value = Create.class) UserDO userDO, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", userDO.toString());
         try {
-            if (record == null) {
-                record = new UserDTO();
+            if (userDO == null) {
+                userDO = new UserDO();
             }
-            record.setLocked(Boolean.FALSE);
-            record.setDisabled(Boolean.FALSE);
-            model.addAttribute(record);
+            userDO.setLocked(Boolean.FALSE);
+            userDO.setDisabled(Boolean.FALSE);
+
+//            UserVO userVO = new UserVO();
+//            PropertyUtils.copyProperties(userVO, record);
+
+            model.addAttribute(userDO);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -98,32 +103,31 @@ public class UserController {
     }
 
     @RequestMapping(path = "save", method = RequestMethod.POST)
-    public String save(@Validated(value = Save.class) UserDTO record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", record.toString());
+    public String save(@Validated(value = Save.class) UserDO userDO, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", userDO.toString());
         try {
             if (!bindingResult.hasErrors()) {
-                userService.insert(record);
+                userService.insert(userDO);
             } else {
-                record.setPassword(null);
+                userDO.setPassword(null);
                 return "admin/user/create";
             }
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-            record.setPassword(null);
+            userDO.setPassword(null);
             return "admin/user/create";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
-        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + userDO.getId();// detail(record, bindingResult, model);
     }
 
 
     @RequestMapping(path = "edit", method = RequestMethod.GET)
-    public String edit(@Validated(value = Edit.class) UserDTO record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record.toString());
+    public String edit(@Validated(value = Edit.class) UserDO userDO, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", userDO.toString());
         try {
-            UserVO userVO = userService.selectByPrimaryKey(record.getId());
-            BeanUtils.copyProperties(userVO,record);
-            model.addAttribute(record);
+            UserVO userVO = userService.selectByPrimaryKey(userDO.getId());
+            model.addAttribute(userVO);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -132,11 +136,11 @@ public class UserController {
     }
 
     @RequestMapping(path = "update", method = RequestMethod.POST)
-    public String update(@Validated(value = Update.class) UserDTO record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record.toString());
+    public String update(@Validated(value = Update.class) UserDO userDO, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", userDO.toString());
         try {
             if (!bindingResult.hasErrors()) {
-                userService.updateByPrimaryKey(record);
+                userService.updateByPrimaryKey(userDO);
             } else {
                 return "admin/user/edit";
             }
@@ -145,14 +149,14 @@ public class UserController {
             return "admin/user/edit";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
-        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + userDO.getId();// detail(record, bindingResult, model);
     }
 
     @RequestMapping(path = "detail", method = RequestMethod.GET)
-    public String detail(@Validated(value = Detail.class) UserDTO record, BindingResult bindingResult, Model model) {
+    public String detail(@Validated(value = Detail.class) UserDO userDO, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail");
         try {
-            model.addAttribute(userService.selectByPrimaryKey(record.getId()));
+            model.addAttribute(userService.selectByPrimaryKey(userDO.getId()));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -162,12 +166,12 @@ public class UserController {
 
     @RequestMapping(path = "remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> remove(@Validated(value = Remove.class) UserDTO record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "remove", record);
+    public Map<String, Object> remove(@Validated(value = Remove.class) UserDO userDO, BindingResult bindingResult) {
+        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "remove", userDO);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            int aff = userService.removeByPrimaryKey(record);
+            int aff = userService.removeByPrimaryKey(userDO);
             result.put("success", true);
             result.put("message", "");
             result.put("data", aff);

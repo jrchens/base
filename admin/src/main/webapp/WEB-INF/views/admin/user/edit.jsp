@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_user_edit_form" method="post"
-           modelAttribute="userDTO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="userVO" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-编辑"
            data-options="inline: true" action="http://local.com/admin/user/update">
     <form:hidden path="id"/>
@@ -20,10 +20,12 @@
 
         <tr>
             <td>用户名</td>
-            <td><form:input path="username" cssClass="easyui-textbox" data-options="required:true,fit:true"/><form:errors
+            <td><form:input path="username" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true,readonly:true"/><form:errors
                     path="username"/></td>
             <td>显示名</td>
-            <td><form:input path="viewname" cssClass="easyui-textbox" data-options="required:true,fit:true"/><form:errors
+            <td><form:input path="viewname" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true"/><form:errors
                     path="viewname"/></td>
         </tr>
 
@@ -39,7 +41,7 @@
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>
                     <%--onText:'Yes',offText:'No',reversed:true--%>
-                <span class="easyui-switchbutton" data-options="checked:${userDTO.disabled},onChange:function(checked){
+                <span class="easyui-switchbutton" data-options="checked:${userVO.disabled},onChange:function(checked){
                             var form = $('#admin_user_edit_form');
                             $('#disabled',form).val(checked);
                         }"></span><form:errors path="disabled"/>
@@ -48,7 +50,7 @@
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>
                     <%--onText:'Yes',offText:'No',reversed:true--%>
-                <span class="easyui-switchbutton" data-options="checked:${userDTO.locked},onChange:function(checked){
+                <span class="easyui-switchbutton" data-options="checked:${userVO.locked},onChange:function(checked){
                             var form = $('#admin_user_edit_form');
                             $('#locked',form).val(checked);
                         }"></span><form:errors path="locked"/>

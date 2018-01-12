@@ -105,7 +105,7 @@
 </table>
 
 <form:form id="admin_user_query_form" method="post"
-           modelAttribute="userDTO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="userVO" cssStyle="padding: 5px; margin: 0px;"
            data-options="inline: true" action="http://local.com/admin/user/query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>

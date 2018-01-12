@@ -1,10 +1,12 @@
 package cn.jrry.admin.service.impl;
 
-import cn.jrry.admin.domain.UserDTO;
+import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.mapper.UserMapper;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.common.exception.ServiceException;
+import com.google.common.collect.Lists;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha512Hash;
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insert(UserDTO record) {
+    public int insert(UserDO record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -49,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
             Sha512Hash sha256Hash = new Sha512Hash(record.getPassword(), passwordSalt);
             record.setPassword(sha256Hash.toHex());
-
             return userMapper.insert(record);
         } catch (Exception ex) {
             logger.error("insert error {}{}{}", record, System.lineSeparator(), ex);
@@ -60,7 +61,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO selectByPrimaryKey(Long id) {
         try {
-            return userMapper.selectByPrimaryKey(id);
+            UserDO userDO = userMapper.selectByPrimaryKey(id);
+            UserVO userVO = new UserVO();
+            PropertyUtils.copyProperties(userVO, userDO);
+            return userVO;
         } catch (Exception ex) {
             logger.error("selectByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
@@ -69,11 +73,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserVO> selectAll() {
-        return null;
+        try {
+            List<UserDO> userDOList = userMapper.selectAll();
+            List<UserVO> userVOList = Lists.newArrayList();
+            for (UserDO userDO : userDOList
+                    ) {
+                UserVO userVO = new UserVO();
+                PropertyUtils.copyProperties(userVO, userDO);
+                userVOList.add(userVO);
+            }
+            return userVOList;
+
+        } catch (Exception ex) {
+            logger.error("selectAll error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
     }
 
     @Override
-    public int updateByPrimaryKey(UserDTO record) {
+    public int updateByPrimaryKey(UserDO record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -87,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int removeByPrimaryKey(UserDTO record) {
+    public int removeByPrimaryKey(UserDO record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -117,7 +135,16 @@ public class UserServiceImpl implements UserService {
             int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
             int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
             record.put("offset", (page - 1) * rows);
-            return userMapper.select(record);
+            List<UserDO> userDOList = userMapper.select(record);
+            List<UserVO> userVOList = Lists.newArrayList();
+            for (UserDO userDO : userDOList
+                    ) {
+                UserVO userVO = new UserVO();
+                PropertyUtils.copyProperties(userVO, userDO);
+                userVOList.add(userVO);
+            }
+            return userVOList;
+
         } catch (Exception ex) {
             logger.error("select error {}{}{}", record, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
