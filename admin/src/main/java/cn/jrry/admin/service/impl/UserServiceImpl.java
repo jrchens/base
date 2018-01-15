@@ -1,6 +1,7 @@
 package cn.jrry.admin.service.impl;
 
 import cn.jrry.admin.domain.Config;
+import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.mapper.UserMapper;
@@ -79,6 +80,16 @@ public class UserServiceImpl implements UserService {
             return userVO;
         } catch (Exception ex) {
             logger.error("selectByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public User selectByUsername(String username) {
+        try {
+            return userMapper.selectByUsername(username);
+        } catch (Exception ex) {
+            logger.error("selectByUsername error {}{}{}", username, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
         }
     }

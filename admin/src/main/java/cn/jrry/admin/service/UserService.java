@@ -1,5 +1,6 @@
 package cn.jrry.admin.service;
 
+import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
 
@@ -12,6 +13,8 @@ public interface UserService {
     int insert(UserDO record);
 
     UserVO selectByPrimaryKey(Long id);
+
+    User selectByUsername(String username);
 
     List<UserVO> selectAll();
 

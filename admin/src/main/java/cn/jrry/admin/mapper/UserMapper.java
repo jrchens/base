@@ -1,5 +1,6 @@
 package cn.jrry.admin.mapper;
 
+import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserDO;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface UserMapper {
     int count(Map<String, Object> record);
 
     List<UserDO> select(Map<String, Object> record);
+
+    User selectByUsername(String username);
 }

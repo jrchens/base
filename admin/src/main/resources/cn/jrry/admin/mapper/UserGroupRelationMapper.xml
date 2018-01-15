@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.admin.mapper.UserGroupRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.UserGroupRelation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+    <result column="is_def" jdbcType="BIT" property="def" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user_group_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.admin.domain.UserGroupRelation" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_user_group_relation (username, group_name,
+      is_def)
+    values (#{username,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR},
+      #{def,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.UserGroupRelation">
+    update sys_user_group_relation
+    set username = #{username,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      is_def = #{def,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, username, group_name, is_def
+    from sys_user_group_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, group_name, is_def
+    from sys_user_group_relation
+  </select>
+
+
+  <select id="selectGroupByUsername" parameterType="string" resultMap="BaseResultMap">
+    select rel.id, g.group_name, g.viewname,rel.is_def
+    from sys_user_group_relation rel LEFT JOIN
+    sys_group g ON rel.group_name = g.group_name
+    WHERE g.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserByGroupname" parameterType="string" resultMap="BaseResultMap">
+    select rel.id, u.username, u.viewname,rel.is_def
+    from sys_user_group_relation rel LEFT JOIN
+    sys_user u ON rel.username = u.username
+    WHERE u.is_deleted = 0 AND rel.group_name = #{groupName,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateDefByUsername" parameterType="string">
+    update sys_user_group_relation
+    set
+    is_def = 0
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateDefByPrimaryKey" parameterType="java.lang.Long">
+    update sys_user_group_relation
+    set
+    is_def = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

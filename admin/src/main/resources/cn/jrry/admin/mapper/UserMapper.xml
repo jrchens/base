@@ -42,6 +42,14 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
   </update>
+
+
+    <select id="selectByUsername" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="selectColumns"/>
+        from sys_user
+        where is_deleted = 0 AND username = #{username,jdbcType=VARCHAR}
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="UserDOResultMap">
         select
         <include refid="selectColumns"/>
