@@ -1,14 +1,31 @@
 package cn.jrry.admin.domain;
 
+import cn.jrry.validation.group.Edit;
+import cn.jrry.validation.group.Remove;
+import cn.jrry.validation.group.Save;
+import cn.jrry.validation.group.Update;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Group implements Serializable {
-    private static final long serialVersionUID = -220717131399520056L;
+    private static final long serialVersionUID = -5864192678819549188L;
+    @NotNull
+    @Min(value = 1L,groups = {Update.class,Remove.class})
+    @Max(value = 65535L,groups = {Update.class, Edit.class,Remove.class})
     private Long id;
 
+    @NotBlank
+    @Length(min = 2,max = 50,groups = {Save.class})
     private String groupName;
 
+    @NotBlank
+    @Length(min = 2,max = 50,groups = {Save.class, Update.class})
     private String viewname;
 
     private Boolean deleted;

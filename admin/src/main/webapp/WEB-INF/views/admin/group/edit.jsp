@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_group_edit_form" method="post"
-           modelAttribute="groupVO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="群组管理-编辑"
            data-options="inline: true" action="http://local.com/admin/group/update">
     <form:hidden path="id"/>

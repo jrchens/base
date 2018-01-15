@@ -1,7 +1,6 @@
 package cn.jrry.admin.service;
 
-import cn.jrry.admin.domain.GroupDO;
-import cn.jrry.admin.domain.GroupVO;
+import cn.jrry.admin.domain.Group;
 
 import java.util.List;
 import java.util.Map;
@@ -9,17 +8,17 @@ import java.util.Map;
 public interface GroupService {
     int deleteByPrimaryKey(Long id);
 
-    int insert(GroupDO record);
+    int insert(Group record);
 
-    GroupVO selectByPrimaryKey(Long id);
+    Group selectByPrimaryKey(Long id);
 
-    List<GroupVO> selectAll();
+    List<Group> selectAll();
 
-    int updateByPrimaryKey(GroupDO record);
+    int updateByPrimaryKey(Group record);
 
-    int removeByPrimaryKey(GroupDO record);
+    int removeByPrimaryKey(Group record);
 
     int count(Map<String, Object> record);
 
-    List<GroupVO> select(Map<String, Object> record);
+    List<Group> select(Map<String, Object> record);
 }

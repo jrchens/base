@@ -1,12 +1,9 @@
 package cn.jrry.admin.service.impl;
 
-import cn.jrry.admin.domain.GroupDO;
-import cn.jrry.admin.domain.GroupVO;
+import cn.jrry.admin.domain.Group;
 import cn.jrry.admin.mapper.GroupMapper;
 import cn.jrry.admin.service.GroupService;
 import cn.jrry.common.exception.ServiceException;
-import com.google.common.collect.Lists;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +33,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int insert(GroupDO record) {
+    public int insert(Group record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -53,12 +50,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupVO selectByPrimaryKey(Long id) {
+    public Group selectByPrimaryKey(Long id) {
         try {
-            GroupDO groupDO = groupMapper.selectByPrimaryKey(id);
-            GroupVO groupVO = new GroupVO();
-            PropertyUtils.copyProperties(groupVO, groupDO);
-            return groupVO;
+            return groupMapper.selectByPrimaryKey(id);
         } catch (Exception ex) {
             logger.error("selectByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
@@ -66,18 +60,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupVO> selectAll() {
+    public List<Group> selectAll() {
         try {
-            List<GroupDO> groupDOList = groupMapper.selectAll();
-            List<GroupVO> groupVOList = Lists.newArrayList();
-            for (GroupDO groupDO : groupDOList
-                    ) {
-                GroupVO groupVO = new GroupVO();
-                PropertyUtils.copyProperties(groupVO, groupDO);
-                groupVOList.add(groupVO);
-            }
-            return groupVOList;
-
+            return groupMapper.selectAll();
         } catch (Exception ex) {
             logger.error("selectAll error {}", ex);
             throw new ServiceException(ex.getCause());
@@ -85,7 +70,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int updateByPrimaryKey(GroupDO record) {
+    public int updateByPrimaryKey(Group record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -99,7 +84,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int removeByPrimaryKey(GroupDO record) {
+    public int removeByPrimaryKey(Group record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -123,20 +108,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupVO> select(Map<String, Object> record) {
+    public List<Group> select(Map<String, Object> record) {
         try {
             int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
             int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
             record.put("offset", (page - 1) * rows);
-            List<GroupDO> groupDOList = groupMapper.select(record);
-            List<GroupVO> groupVOList = Lists.newArrayList();
-            for (GroupDO groupDO : groupDOList
-                    ) {
-                GroupVO groupVO = new GroupVO();
-                PropertyUtils.copyProperties(groupVO, groupDO);
-                groupVOList.add(groupVO);
-            }
-            return groupVOList;
+            return groupMapper.select(record);
 
         } catch (Exception ex) {
             logger.error("select error {}{}{}", record, System.lineSeparator(), ex);

@@ -102,7 +102,7 @@
 </table>
 
 <form:form id="admin_group_query_form" method="post"
-           modelAttribute="groupVO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
            data-options="inline: true" action="http://local.com/admin/group/query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>

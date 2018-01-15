@@ -1,6 +1,6 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.GroupDO;
+import cn.jrry.admin.domain.Group;
 import cn.jrry.admin.domain.GroupVO;
 import cn.jrry.admin.domain.UserDO;
 import cn.jrry.admin.domain.UserVO;
@@ -36,15 +36,13 @@ public class GroupController {
     private GroupService groupService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
-    public String index(@Validated GroupDO record, BindingResult bindingResult, Model model) {
+    public String index(@Validated Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record);
         try {
             if (record == null) {
-                record = new GroupDO();
+                record = new Group();
             }
-            GroupVO voRecord = new GroupVO();
-            PropertyUtils.copyProperties(voRecord, record);
-            model.addAttribute(voRecord);
+            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -57,7 +55,7 @@ public class GroupController {
     public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        List<GroupVO> rows = Lists.newArrayList();
+        List<Group> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
 
@@ -85,16 +83,13 @@ public class GroupController {
     }
 
     @RequestMapping(path = "create", method = RequestMethod.GET)
-    public String create(@Validated(value = Create.class) GroupDO record, BindingResult bindingResult, Model model) {
+    public String create(@Validated(value = Create.class) Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", record);
         try {
             if (record == null) {
-                record = new GroupDO();
+                record = new Group();
             }
-            GroupVO voRecord = new GroupVO();
-            PropertyUtils.copyProperties(voRecord, record);
-
-            model.addAttribute(voRecord);
+            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -103,7 +98,7 @@ public class GroupController {
     }
 
     @RequestMapping(path = "save", method = RequestMethod.POST)
-    public String save(@Validated(value = Save.class) GroupDO record, BindingResult bindingResult, Model model) {
+    public String save(@Validated(value = Save.class) Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", record);
         try {
             if (!bindingResult.hasErrors()) {
@@ -121,11 +116,10 @@ public class GroupController {
 
 
     @RequestMapping(path = "edit", method = RequestMethod.GET)
-    public String edit(@Validated(value = Edit.class) GroupDO record, BindingResult bindingResult, Model model) {
+    public String edit(@Validated(value = Edit.class) Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
         try {
-            GroupVO voRecord = groupService.selectByPrimaryKey(record.getId());
-            model.addAttribute(voRecord);
+            model.addAttribute(groupService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -134,7 +128,7 @@ public class GroupController {
     }
 
     @RequestMapping(path = "update", method = RequestMethod.POST)
-    public String update(@Validated(value = Update.class) GroupDO record, BindingResult bindingResult, Model model) {
+    public String update(@Validated(value = Update.class) Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record);
         try {
             if (!bindingResult.hasErrors()) {
@@ -151,7 +145,7 @@ public class GroupController {
     }
 
     @RequestMapping(path = "detail", method = RequestMethod.GET)
-    public String detail(@Validated(value = Detail.class) GroupDO record, BindingResult bindingResult, Model model) {
+    public String detail(@Validated(value = Detail.class) Group record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail",record);
         try {
             model.addAttribute(groupService.selectByPrimaryKey(record.getId()));
@@ -164,7 +158,7 @@ public class GroupController {
 
     @RequestMapping(path = "remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> remove(@Validated(value = Remove.class) GroupDO record, BindingResult bindingResult) {
+    public Map<String, Object> remove(@Validated(value = Remove.class) Group record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();

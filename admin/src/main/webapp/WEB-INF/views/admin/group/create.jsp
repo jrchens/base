@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_group_create_form" method="post"
-           modelAttribute="groupVO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="群组管理-新增"
            data-options="inline: true" action="http://local.com/admin/group/save">
 

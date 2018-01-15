@@ -15,14 +15,14 @@
     delete from sys_group
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.jrry.admin.domain.GroupDO" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="cn.jrry.admin.domain.Group" useGeneratedKeys="true" keyProperty="id">
     insert into sys_group (group_name, viewname,
       is_deleted, cruser, crtime)
     values (#{groupName,jdbcType=VARCHAR}, #{viewname,jdbcType=VARCHAR},
       0, #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.GroupDO">
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.Group">
     update sys_group
     set
       viewname = #{viewname,jdbcType=VARCHAR},
@@ -30,13 +30,13 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="GroupDOResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="selectColumns"/>
     from sys_group
     where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="GroupDOResultMap">
+  <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="selectColumns"/>
     from sys_group
@@ -44,11 +44,6 @@
   </select>
 
 
-  <resultMap id="GroupDOResultMap" type="cn.jrry.admin.domain.GroupDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
-    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
-  </resultMap>
   <sql id="selectColumns">
     id, group_name, viewname
   </sql>
@@ -66,7 +61,7 @@
     </where>
   </sql>
 
-  <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.GroupDO">
+  <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.Group">
     update sys_group
     set
     is_deleted = 1,
@@ -80,7 +75,7 @@
     from sys_group
     <include refid="selectWhereCondition"/>
   </select>
-  <select id="select" resultMap="GroupDOResultMap">
+  <select id="select" resultMap="BaseResultMap">
     select
     <include refid="selectColumns"/>
     from sys_group

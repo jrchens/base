@@ -1,5 +1,15 @@
 package cn.jrry.admin.domain;
 
+import cn.jrry.validation.group.Edit;
+import cn.jrry.validation.group.Remove;
+import cn.jrry.validation.group.Save;
+import cn.jrry.validation.group.Update;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
