@@ -10,7 +10,7 @@
 <form:form id="admin_group_detail_form" method="post"
            modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="群组管理-详情"
-           data-options="inline: true" action="http://local.com/admin/group/remove">
+           data-options="inline: true" action="http://local.com/admin/group/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -50,7 +50,7 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:${group.id}};
-                                $.post('http://local.com/admin/group/remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('http://local.com/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/group/index';
                                     }else{

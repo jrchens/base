@@ -49,10 +49,10 @@ public class UserController {
         return "admin/user/index";
     }
 
-    @RequestMapping(path = {"query"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"async-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
-        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "query", record);
+        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserVO> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -77,7 +77,7 @@ public class UserController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-query");
         return result;
     }
 
@@ -164,10 +164,10 @@ public class UserController {
         return "admin/user/detail";
     }
 
-    @RequestMapping(path = "remove", method = RequestMethod.POST)
+    @RequestMapping(path = "async-remove", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> remove(@Validated(value = Remove.class) UserDO userDO, BindingResult bindingResult) {
-        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "remove", userDO);
+        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-remove", userDO);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -181,7 +181,7 @@ public class UserController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
         return result;
     }
 }

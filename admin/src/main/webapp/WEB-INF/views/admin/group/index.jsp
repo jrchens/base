@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="admin_group_index_datagrid" class="easyui-datagrid"
        data-options="title: '群组管理-列表',
-            url: 'http://local.com/admin/group/query',
+            url: 'http://local.com/admin/group/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -62,7 +62,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/group/remove',reqData,function(data,textStatus,jqXHR){
+                                        $.post('http://local.com/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_group_index_datagrid').datagrid('reload');
                                             }else{
@@ -103,7 +103,7 @@
 
 <form:form id="admin_group_query_form" method="post"
            modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/admin/group/query">
+           data-options="inline: true" action="http://local.com/admin/group/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

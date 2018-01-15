@@ -10,7 +10,7 @@
 <form:form id="admin_config_detail_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="配置管理-详情"
-           data-options="inline: true" action="http://local.com/admin/config/remove">
+           data-options="inline: true" action="http://local.com/admin/config/async-remove">
     <form:hidden path="cfgCode"/>
     <table class="ext-data-table">
         <tbody>
@@ -48,7 +48,7 @@
                                 <%--thisButton.linkbutton({text:'加载中...'});--%>
 
                                 <%--var reqData = {cfgCode:'${config.cfgCode}'};--%>
-                                <%--$.post('http://local.com/admin/config/remove',reqData,function(data,textStatus,jqXHR){--%>
+                                <%--$.post('http://local.com/admin/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                     <%--if(data.success){--%>
                                         <%--location.href = 'http://local.com/admin/config/index';--%>
                                     <%--}else{--%>

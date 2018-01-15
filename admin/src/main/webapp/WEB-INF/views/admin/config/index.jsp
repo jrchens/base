@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="admin_config_index_datagrid" class="easyui-datagrid"
        data-options="title: '配置管理-列表',
-            url: 'http://local.com/admin/config/query',
+            url: 'http://local.com/admin/config/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -64,7 +64,7 @@
                                         <%--thisButton.linkbutton('disable');--%>
 
                                         <%--var reqData = {cfgCode:row.cfgCode};--%>
-                                        <%--$.post('http://local.com/admin/config/remove',reqData,function(data,textStatus,jqXHR){--%>
+                                        <%--$.post('http://local.com/admin/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                             <%--if(data.success){--%>
                                                 <%--$('#admin_config_index_datagrid').datagrid('reload');--%>
                                             <%--}else{--%>
@@ -107,7 +107,7 @@
 
 <form:form id="admin_config_query_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/admin/config/query">
+           data-options="inline: true" action="http://local.com/admin/config/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

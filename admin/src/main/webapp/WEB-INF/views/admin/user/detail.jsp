@@ -10,7 +10,7 @@
 <form:form id="admin_user_detail_form" method="post"
            modelAttribute="userVO" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-详情"
-           data-options="inline: true" action="http://local.com/admin/user/remove">
+           data-options="inline: true" action="http://local.com/admin/user/async-remove">
     <form:hidden path="id"/>
     <form:hidden path="disabled"/>
     <form:hidden path="locked"/>
@@ -87,7 +87,7 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:${userVO.id}};
-                                $.post('http://local.com/admin/user/remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('http://local.com/admin/user/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/user/index';
                                     }else{
