@@ -77,3 +77,114 @@
     </table>
 
 </form:form>
+
+
+<div class="ext-div-line"></div>
+<table id="admin_group_detail_user_datagrid" class="easyui-datagrid"
+       data-options="title: '用户列表',
+            url: 'http://local.com/admin/user-group-relation/group/async-query/${group.groupName}',
+            cls: 'ext-datagrid-float-left',
+            width:400,
+            method: 'get',
+            pagination: false,
+            singleSelect: true,
+            rownumbers: true,
+            minHeight: 300,
+            striped: true,
+            <%--onClickRow: function(index,row){--%>
+                <%--if(row.def){--%>
+                    <%--$('#admin_group_detail_user_datagrid_delete').linkbutton('disable');--%>
+                    <%--$('#admin_group_detail_user_datagrid_tag').linkbutton('disable');--%>
+                <%--}else{--%>
+                    <%--$('#admin_group_detail_user_datagrid_delete').linkbutton('enable');--%>
+                    <%--$('#admin_group_detail_user_datagrid_tag').linkbutton('enable');--%>
+                <%--}--%>
+            <%--},--%>
+            <%--toolbar: [--%>
+                        <%--{   iconCls:'ext-icon fa fa-plus',--%>
+                            <%--handler:function(){--%>
+                                <%--location.href = 'http://local.com/admin/user-group-relation/user/create/${userVO.username}';--%>
+                            <%--}--%>
+                        <%--},--%>
+                        <%--{--%>
+                            <%--id: 'admin_group_detail_user_datagrid_delete',--%>
+                            <%--iconCls:'ext-icon fa fa-trash',--%>
+                            <%--handler:function(){--%>
+                                <%--var thisButton = $(this);--%>
+                                <%--var row = $('#admin_group_detail_user_datagrid').datagrid('getSelected');--%>
+                                <%--if(row == null){--%>
+                                    <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
+                                    <%--return false;--%>
+                                <%--}--%>
+
+                                <%--$.messager.confirm('确认', '确认删除记录吗?', function(r) {--%>
+                                    <%--if (r) {--%>
+                                        <%--// var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);--%>
+                                        <%--// $('#sys_group_datagrid').datagrid('deleteRow', index);--%>
+
+                                        <%--$('#overlay').show();--%>
+                                        <%--thisButton.linkbutton('disable');--%>
+
+                                        <%--var reqData = {id:row.id};--%>
+                                        <%--$.post('http://local.com/admin/user-group-relation/user/async-delete',reqData,function(data,textStatus,jqXHR){--%>
+                                            <%--if(data.success){--%>
+                                                <%--$('#admin_group_detail_user_datagrid').datagrid('reload');--%>
+                                            <%--}else{--%>
+                                                <%--$.messager.show({msg:data.message});--%>
+                                            <%--}--%>
+                                        <%--},'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){--%>
+                                            <%--$('#overlay').hide();--%>
+                                            <%--thisButton.linkbutton('enable');--%>
+                                        <%--});--%>
+
+                                    <%--}--%>
+                                <%--});--%>
+                            <%--}--%>
+                        <%--},--%>
+                        <%--{--%>
+                            <%--id: 'admin_group_detail_user_datagrid_tag',--%>
+                            <%--iconCls:'ext-icon fa fa-tag',--%>
+                            <%--handler:function(){--%>
+                                <%--var thisButton = $(this);--%>
+                                <%--var row = $('#admin_group_detail_user_datagrid').datagrid('getSelected');--%>
+                                <%--if(row == null){--%>
+                                    <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
+                                    <%--return false;--%>
+                                <%--}--%>
+
+                                        <%--// var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);--%>
+                                        <%--// $('#sys_group_datagrid').datagrid('deleteRow', index);--%>
+
+                                        <%--$('#overlay').show();--%>
+                                        <%--thisButton.linkbutton('disable');--%>
+
+                                        <%--var reqData = {id:row.id};--%>
+                                        <%--$.post('http://local.com/admin/user-group-relation/user/async-update-def',reqData,function(data,textStatus,jqXHR){--%>
+                                            <%--if(data.success){--%>
+                                                <%--$('#admin_group_detail_user_datagrid').datagrid('reload');--%>
+                                            <%--}else{--%>
+                                                <%--$.messager.show({msg:data.message});--%>
+                                            <%--}--%>
+                                        <%--},'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){--%>
+                                            <%--$('#overlay').hide();--%>
+                                            <%--thisButton.linkbutton('enable');--%>
+                                        <%--});--%>
+
+                            <%--}--%>
+                        <%--}--%>
+            <%--],--%>
+            loadFilter: function(data){
+                if(!data.success){
+                    $.messager.show({msg:data.message});
+                }
+                return data.data;
+            },
+       ">
+    <thead>
+    <tr>
+        <th data-options="field:'username'">用户名</th>
+        <th data-options="field:'viewname'">显示名</th>
+        <th data-options="field:'def'">默认组</th>
+    </tr>
+    </thead>
+</table>

@@ -192,6 +192,40 @@ public class UserGroupRelationController {
     }
 
 
+    // ===
+    // group
+
+    @RequestMapping(path = {"group/async-query/{groupName}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> queryUser(@PathVariable(value = "groupName") String groupName) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", groupName);
+        Map<String, Object> result = Maps.newLinkedHashMap();
+        List<UserGroupRelation> rows = Lists.newArrayList();
+        Map<String, Object> data = Maps.newLinkedHashMap();
+        try {
+            rows = userGroupRelationService.selectUserByGroupname(groupName);
+            int total = rows.size();
+
+            data.put("total", total);
+            data.put("rows", rows);
+
+            result.put("success", true);
+            result.put("message", "");
+            result.put("data", data);
+
+        } catch (Exception ex) {
+            data.put("total", 0);
+            data.put("rows", rows);
+
+            result.put("success", false);
+            result.put("message", ExceptionUtils.getSimpleMessage(ex));
+            result.put("data", data);
+        }
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "group/async-query");
+        return result;
+    }
+
+
 //    @RequestMapping(path = "edit", method = RequestMethod.GET)
 //    public String edit(@Validated(value = Edit.class) Group record, BindingResult bindingResult, Model model) {
 //        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
