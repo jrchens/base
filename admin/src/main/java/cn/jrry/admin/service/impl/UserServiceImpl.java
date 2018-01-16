@@ -1,14 +1,15 @@
 package cn.jrry.admin.service.impl;
 
-import cn.jrry.admin.domain.*;
+import cn.jrry.admin.domain.Config;
+import cn.jrry.admin.domain.User;
+import cn.jrry.admin.domain.UserGroupRelation;
+import cn.jrry.admin.domain.UserRoleRelation;
 import cn.jrry.admin.mapper.UserMapper;
 import cn.jrry.admin.service.ConfigService;
 import cn.jrry.admin.service.UserGroupRelationService;
 import cn.jrry.admin.service.UserRoleRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.common.exception.ServiceException;
-import com.google.common.collect.Lists;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha512Hash;

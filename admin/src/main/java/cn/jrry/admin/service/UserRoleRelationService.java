@@ -19,6 +19,8 @@ public interface UserRoleRelationService {
 
     int countRole(Map<String,Object> record);
     List<UserRoleRelation> selectRole(Map<String,Object> record);
+    int countUser(Map<String,Object> record);
+    List<UserRoleRelation> selectUser(Map<String,Object> record);
 
     List<UserRoleRelation> selectRoleByUsername(String username);
     int updateDefByPrimaryKey(Long id);

@@ -60,6 +60,16 @@
         <bind name="viewname" value="'%' + viewname + '%'"/>
         and viewname LIKE #{viewname,jdbcType=VARCHAR}
       </if>
+      <if test="exclusivePermissions != null and exclusivePermissions.size > 0">
+        <foreach collection="exclusivePermissions" open="and (" close=")" item="permission" separator="and">
+          permission != #{permission}
+        </foreach>
+      </if>
+      <if test="inclusivePermissions != null and inclusivePermissions.size > 0">
+        <foreach collection="inclusivePermissions" open="and (" close=")" item="permission" separator="or">
+          permission = #{permission}
+        </foreach>
+      </if>
     </where>
   </sql>
   <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.Role">

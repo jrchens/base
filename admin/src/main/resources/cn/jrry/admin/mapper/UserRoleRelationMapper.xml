@@ -49,10 +49,25 @@
     WHERE r.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectRole" resultMap="BaseResultMap">
-    select rel.id, r.role_name, r.viewname,rel.is_def
+    select rel.id, rel.role_name, r.viewname,rel.is_def
     from sys_user_role_relation rel LEFT JOIN
     sys_role r ON rel.role_name = r.role_name
     WHERE r.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
+  <select id="countUser" resultType="int">
+    select COUNT(1)
+    from sys_user_role_relation rel LEFT JOIN
+    sys_user u ON rel.username = u.username
+    WHERE u.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectUser" resultMap="BaseResultMap">
+    select rel.id, rel.username, u.viewname,rel.is_def
+    from sys_user_role_relation rel LEFT JOIN
+    sys_user u ON rel.username = u.username
+    WHERE u.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
     ORDER BY ${sort} ${order}
     limit ${offset},${rows}
   </select>

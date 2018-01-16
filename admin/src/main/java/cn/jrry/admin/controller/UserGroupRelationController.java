@@ -1,13 +1,11 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.Group;
 import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserGroupRelation;
 import cn.jrry.admin.service.GroupService;
 import cn.jrry.admin.service.UserGroupRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
-import cn.jrry.validation.group.Create;
 import cn.jrry.validation.group.Get;
 import cn.jrry.validation.group.Remove;
 import com.google.common.base.Joiner;
@@ -18,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -189,7 +186,7 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = {"group/async-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> queryUser(Map<String, Object> record) {
+    public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();

@@ -82,11 +82,14 @@
 <div class="ext-div-line"></div>
 <table id="admin_group_detail_user_datagrid" class="easyui-datagrid"
        data-options="title: '用户列表',
-            url: 'http://local.com/admin/user-group-relation/group/async-query/${group.groupName}',
+            url: 'http://local.com/admin/user-group-relation/group/async-query',
+            method: 'get',
+            queryParams: {groupName:'${group.groupName}'},
             cls: 'ext-datagrid-float-left',
             width:400,
-            method: 'get',
-            pagination: false,
+            pagination: true,
+            sortName: 'rel.id',
+            sortOrder: 'desc',
             singleSelect: true,
             rownumbers: true,
             minHeight: 300,

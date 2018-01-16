@@ -1,7 +1,6 @@
 package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserGroupRelation;
 import cn.jrry.admin.domain.UserRoleRelation;
 import cn.jrry.admin.service.RoleService;
 import cn.jrry.admin.service.UserRoleRelationService;
@@ -181,6 +180,41 @@ public class UserRoleRelationController {
         }
 
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        return result;
+    }
+
+
+
+    @RequestMapping(path = {"user/async-user-query"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
+        Map<String, Object> result = Maps.newLinkedHashMap();
+        List<UserRoleRelation> rows = Lists.newArrayList();
+        Map<String, Object> data = Maps.newLinkedHashMap();
+        try {
+
+            int total = userRoleRelationService.countUser(record);
+            if (total > 0) {
+                rows = userRoleRelationService.selectUser(record);
+            }
+
+            data.put("total", total);
+            data.put("rows", rows);
+
+            result.put("success", true);
+            result.put("message", "");
+            result.put("data", data);
+
+        } catch (Exception ex) {
+            data.put("total", 0);
+            data.put("rows", rows);
+
+            result.put("success", false);
+            result.put("message", ExceptionUtils.getSimpleMessage(ex));
+            result.put("data", data);
+        }
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "user/async-query");
         return result;
     }
 

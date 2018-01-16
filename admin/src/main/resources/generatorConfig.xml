@@ -50,10 +50,13 @@
         <!--sys_group-->
         <!--sys_user_group_relation-->
 
-        <!--2018-01-15-->
+        <!--2018-01-16-->
         <!--sys_role-->
         <!--sys_permission-->
         <!--sys_user_role_relation-->
+
+        <!--2018-01-17-->
+        <!--sys_role_permission_relation-->
 
         <table schema="base" tableName="sys_user_role_relation">
             <domainObjectRenamingRule searchString="^Sys" replaceString=""/>

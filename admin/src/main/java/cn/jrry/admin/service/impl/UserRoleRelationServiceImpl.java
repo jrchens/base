@@ -131,7 +131,30 @@ public class UserRoleRelationServiceImpl implements UserRoleRelationService {
             record.put("offset", (page - 1) * rows);
             return userRoleRelationMapper.selectRole(record);
         } catch (Exception ex) {
-            logger.error("selectRoleByUsername error {}", ex);
+            logger.error("selectRole error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public int countUser(Map<String,Object> record) {
+        try {
+            return userRoleRelationMapper.countUser(record);
+        } catch (Exception ex) {
+            logger.error("countUser error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public List<UserRoleRelation> selectUser(Map<String,Object> record) {
+        try {
+            int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
+            int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
+            record.put("offset", (page - 1) * rows);
+            return userRoleRelationMapper.selectUser(record);
+        } catch (Exception ex) {
+            logger.error("selectUser error {}", ex);
             throw new ServiceException(ex.getCause());
         }
     }
