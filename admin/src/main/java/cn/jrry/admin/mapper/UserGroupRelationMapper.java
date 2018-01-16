@@ -21,6 +21,8 @@ public interface UserGroupRelationMapper {
     int countGroup(Map<String,Object> record);
     List<UserGroupRelation> selectGroup(Map<String,Object> record);
 
+    List<UserGroupRelation> selectGroupByUsername(String username);
+
     int updateDefByUsername(String username);
     int updateDefByPrimaryKey(Long id);
 }

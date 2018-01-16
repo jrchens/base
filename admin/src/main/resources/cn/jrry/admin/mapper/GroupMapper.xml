@@ -58,6 +58,12 @@
         <bind name="viewname" value="'%' + viewname + '%'"/>
         and viewname LIKE #{viewname,jdbcType=VARCHAR}
       </if>
+      <if test="exclusiveGroupNames != null and exclusiveGroupNames.size > 0">
+        <foreach collection="exclusiveGroupNames" open="and (" close=")" item="groupName" separator="and">
+          group_name != #{groupName}
+        </foreach>
+      </if>
+
     </where>
   </sql>
 

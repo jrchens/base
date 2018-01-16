@@ -36,6 +36,25 @@
   </select>
 
 
+  <select id="selectGroupByUsername" resultMap="BaseResultMap" resultType="string">
+    select id, username, group_name, is_def
+    from sys_user_group_relation
+    WHERE username = #{username}
+    <!--<if test="exclusive_username_list != null and exclusive_username_list.size > 0">-->
+      <!--<foreach collection="exclusive_username_list" open="and (" close=")" item="username" separator="or">-->
+        <!--username = #{username}-->
+      <!--</foreach>-->
+    <!--</if>-->
+    <!--<if test="exclusive_group_name_list != null and exclusive_group_name_list.size > 0">-->
+      <!--<foreach collection="exclusive_group_name_list" open="and (" close=")" item="group_name" separator="or">-->
+        <!--group_name = #{group_name}-->
+      <!--</foreach>-->
+    <!--</if>-->
+    <!--ORDER BY ${sort} ${order}-->
+    <!--limit ${offset},${rows}-->
+  </select>
+
+
   <select id="countGroup" parameterType="string" resultType="int">
     select COUNT(1)
     from sys_user_group_relation rel LEFT JOIN

@@ -150,6 +150,17 @@ public class UserGroupRelationServiceImpl implements UserGroupRelationService {
         }
     }
 
+
+    @Override
+    public List<UserGroupRelation> selectGroupByUsername(String username) {
+        try {
+            return userGroupRelationMapper.selectGroupByUsername(username);
+        } catch (Exception ex) {
+            logger.error("select error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
     @Override
     public int updateDefByPrimaryKey(Long id) {
         try {

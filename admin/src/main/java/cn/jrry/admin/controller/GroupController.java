@@ -4,6 +4,8 @@ import cn.jrry.admin.domain.Group;
 import cn.jrry.admin.service.GroupService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +57,10 @@ public class GroupController {
         List<Group> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
+            String exclusiveGroupNames = ObjectUtils.getDisplayString(record.get("exclusiveGroupNames"));
+            if(StringUtils.hasText(exclusiveGroupNames)){
+                record.put("exclusiveGroupNames",Splitter.on(",").splitToList(exclusiveGroupNames));
+            }
 
             int total = groupService.count(record);
             if (total > 0) {

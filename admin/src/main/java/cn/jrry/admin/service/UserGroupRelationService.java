@@ -22,6 +22,8 @@ public interface UserGroupRelationService {
     
     int countGroup(Map<String,Object> record);
     List<UserGroupRelation> selectGroup(Map<String,Object> record);
-    
+
+    List<UserGroupRelation> selectGroupByUsername(String username);
+
     int updateDefByPrimaryKey(Long id);
 }

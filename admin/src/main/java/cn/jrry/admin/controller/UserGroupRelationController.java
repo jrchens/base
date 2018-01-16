@@ -7,8 +7,10 @@ import cn.jrry.admin.service.GroupService;
 import cn.jrry.admin.service.UserGroupRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
+import cn.jrry.validation.group.Create;
 import cn.jrry.validation.group.Get;
 import cn.jrry.validation.group.Remove;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -88,29 +91,16 @@ public class UserGroupRelationController {
     public String create(@PathVariable(value = "username") String username, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
         try {
-            // TODO user create query
-            List<Group> rows = Lists.newArrayList();
-//            User record = userService.selectByUsername(username);
-//            List<Group> groupList = groupService.selectAll();
-//            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroup(username);
-//            for (Group group: groupList
-//                 ) {
-//                String groupName = ObjectUtils.getDisplayString(group.getGroupName());
-//                boolean exists = false;
-//                for (UserGroupRelation userGroupRelation: userGroupRelationList
-//                     ) {
-//                    String relGroupName = userGroupRelation.getGroupName();
-//                    if(groupName.equals(relGroupName)){
-//                        exists = true;
-//                        break;
-//                    }
-//                }
-//                if(!exists){
-//                    rows.add(group);
-//                }
-//            }
-//            model.addAttribute("rows",rows);
-//            model.addAttribute(record);
+            User record = userService.selectByUsername(username);
+            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(username);
+            List<String> groupNames = Lists.newArrayList();
+            for (UserGroupRelation ugr:userGroupRelationList
+                 ) {
+                groupNames.add(ugr.getGroupName());
+            }
+
+            model.addAttribute(record);
+            model.addAttribute("groupNames", Joiner.on(",").join(groupNames));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -194,7 +184,6 @@ public class UserGroupRelationController {
         return result;
     }
 
-
     // ===
     // group
 
@@ -206,7 +195,6 @@ public class UserGroupRelationController {
         List<UserGroupRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-
 
             int total = userGroupRelationService.countUser(record);
             if (total > 0) {
