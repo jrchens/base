@@ -45,7 +45,17 @@
 
         <!-- sys_user,sys_group,sys_user_group,sys_role,sys_user_role,sys_permission,sys_role_permission -->
         <!-- cms_category,cms_article,cms_file,cms_config,cms_config -->
-        <table schema="base" tableName="sys_user">
+
+        <!--2018-01-15-->
+        <!--sys_group-->
+        <!--sys_user_group_relation-->
+
+        <!--2018-01-15-->
+        <!--sys_role-->
+        <!--sys_permission-->
+        <!--sys_user_role_relation-->
+
+        <table schema="base" tableName="sys_user_role_relation">
             <domainObjectRenamingRule searchString="^Sys" replaceString=""/>
             <columnRenamingRule searchString="^is_" replaceString=""/>
             <!--<columnOverride column="bnum" javaType="Double"/>-->

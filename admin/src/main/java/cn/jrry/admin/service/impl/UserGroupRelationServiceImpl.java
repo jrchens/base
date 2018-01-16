@@ -1,7 +1,5 @@
 package cn.jrry.admin.service.impl;
 
-import cn.jrry.admin.domain.Group;
-import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserGroupRelation;
 import cn.jrry.admin.mapper.UserGroupRelationMapper;
 import cn.jrry.admin.service.GroupService;

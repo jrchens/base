@@ -1,16 +1,11 @@
 package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.Group;
-import cn.jrry.admin.domain.GroupVO;
-import cn.jrry.admin.domain.UserDO;
-import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.service.GroupService;
-import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +141,7 @@ public class GroupController {
 
     @RequestMapping(path = "detail", method = RequestMethod.GET)
     public String detail(@Validated(value = Detail.class) Group record, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail",record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail", record);
         try {
             model.addAttribute(groupService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {

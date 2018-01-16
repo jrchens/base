@@ -1,15 +1,11 @@
 package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.Config;
-import cn.jrry.admin.domain.UserDO;
-import cn.jrry.admin.domain.UserVO;
 import cn.jrry.admin.service.ConfigService;
-import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

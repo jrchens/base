@@ -1,6 +1,7 @@
 package cn.jrry.admin.mapper;
 
 import cn.jrry.admin.domain.Config;
+
 import java.util.List;
 
 public interface ConfigMapper {

@@ -1,7 +1,7 @@
 package cn.jrry.admin.mapper;
 
-import cn.jrry.admin.domain.UserGroupRelation;
 import cn.jrry.admin.domain.UserRoleRelation;
+
 import java.util.List;
 
 public interface UserRoleRelationMapper {
