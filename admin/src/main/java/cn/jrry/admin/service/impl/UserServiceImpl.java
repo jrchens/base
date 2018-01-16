@@ -1,11 +1,9 @@
 package cn.jrry.admin.service.impl;
 
-import cn.jrry.admin.domain.Config;
-import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserDO;
-import cn.jrry.admin.domain.UserVO;
+import cn.jrry.admin.domain.*;
 import cn.jrry.admin.mapper.UserMapper;
 import cn.jrry.admin.service.ConfigService;
+import cn.jrry.admin.service.UserGroupRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.common.exception.ServiceException;
 import com.google.common.collect.Lists;
@@ -32,8 +30,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ConfigService configService;
+    @Autowired
+    private UserGroupRelationService userGroupRelationService;
 
     private static final String DEFAULT_USER_GROUP_CODE = "6e1352df-2c9d-4811-8359-ac0d68e2291e";
+    private static final String DEFAULT_USER_ROLE_CODE = "292d8ffc-e394-49ce-8aba-71499f35fa55";
 
     @Override
     public int deleteByPrimaryKey(Long id) {
@@ -61,8 +62,16 @@ public class UserServiceImpl implements UserService {
             record.setPassword(sha256Hash.toHex());
             int aff =  userMapper.insert(record);
 
-            Config config = configService.selectByPrimaryKey(DEFAULT_USER_GROUP_CODE);
-            logger.info("default user group_name :{}",config.getCfgValue());
+            Config groupValueConfig = configService.selectByPrimaryKey(DEFAULT_USER_GROUP_CODE);
+            logger.info("default user group_name :{}",groupValueConfig.getCfgValue());
+            UserGroupRelation ugr = new UserGroupRelation();
+            ugr.setUsername(record.getUsername());
+            ugr.setGroupName(groupValueConfig.getCfgValue());
+            ugr.setDef(Boolean.TRUE);
+            userGroupRelationService.insert(ugr);
+
+            Config roleValueConfig = configService.selectByPrimaryKey(DEFAULT_USER_ROLE_CODE);
+            logger.info("default user group_name :{}",roleValueConfig.getCfgValue());
 
             return aff;
         } catch (Exception ex) {

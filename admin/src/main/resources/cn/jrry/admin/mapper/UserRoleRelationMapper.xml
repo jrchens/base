@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.admin.mapper.UserRoleRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.UserRoleRelation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+    <result column="is_def" jdbcType="BIT" property="def" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user_role_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.admin.domain.UserRoleRelation" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_user_role_relation (username, role_name,
+      is_def)
+    values (#{username,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+      #{def,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.UserRoleRelation">
+    update sys_user_role_relation
+    set username = #{username,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      is_def = #{def,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, username, role_name, is_def
+    from sys_user_role_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, role_name, is_def
+    from sys_user_role_relation
+  </select>
+
+
+
+
+  <select id="selectRoleByUsername" parameterType="string" resultMap="BaseResultMap">
+    select rel.id, r.role_name, r.viewname,rel.is_def
+    from sys_user_role_relation rel LEFT JOIN
+    sys_role r ON rel.role_name = r.role_name
+    WHERE r.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserByRolename" parameterType="string" resultMap="BaseResultMap">
+    select rel.id, u.username, u.viewname,rel.is_def
+    from sys_user_role_relation rel LEFT JOIN
+    sys_user u ON rel.username = u.username
+    WHERE u.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateDefByUsername" parameterType="string">
+    update sys_user_role_relation
+    set
+    is_def = 0
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateDefByPrimaryKey" parameterType="java.lang.Long">
+    update sys_user_role_relation
+    set
+    is_def = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

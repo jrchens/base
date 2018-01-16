@@ -1,13 +1,14 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.Group;
+import cn.jrry.admin.domain.Role;
 import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserGroupRelation;
-import cn.jrry.admin.service.GroupService;
-import cn.jrry.admin.service.UserGroupRelationService;
+import cn.jrry.admin.domain.UserRoleRelation;
+import cn.jrry.admin.service.RoleService;
+import cn.jrry.admin.service.UserRoleRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
-import cn.jrry.validation.group.*;
+import cn.jrry.validation.group.Get;
+import cn.jrry.validation.group.Remove;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -24,16 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping(path = "admin/user-group-relation")
-public class UserGroupRelationController {
-    private static final Logger logger = LoggerFactory.getLogger(UserGroupRelationController.class);
-    private static final String CONTROLLER_CLASS_NAME = UserGroupRelationController.class.getName();
+@RequestMapping(path = "admin/user-role-relation")
+public class UserRoleRelationController {
+    private static final Logger logger = LoggerFactory.getLogger(UserRoleRelationController.class);
+    private static final String CONTROLLER_CLASS_NAME = UserRoleRelationController.class.getName();
 
     @Autowired
-    private UserGroupRelationService userGroupRelationService;
+    private UserRoleRelationService userRoleRelationService;
 
     @Autowired
-    private GroupService groupService;
+    private RoleService roleService;
     @Autowired
     private UserService userService;
 
@@ -57,10 +58,10 @@ public class UserGroupRelationController {
     public Map<String, Object> query(@PathVariable(value = "username") String username) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", username);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        List<UserGroupRelation> rows = Lists.newArrayList();
+        List<UserRoleRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            rows = userGroupRelationService.selectGroupByUsername(username);
+            rows = userRoleRelationService.selectRoleByUsername(username);
             int total = rows.size();
 
             data.put("total", total);
@@ -86,24 +87,24 @@ public class UserGroupRelationController {
     public String create(@PathVariable(value = "username") String username,Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
         try {
-            List<Group> rows = Lists.newArrayList();
+            List<Role> rows = Lists.newArrayList();
             User record = userService.selectByUsername(username);
-            List<Group> groupList = groupService.selectAll();
-            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(username);
-            for (Group group: groupList
+            List<Role> roleList = roleService.selectAll();
+            List<UserRoleRelation> UserRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
+            for (Role role: roleList
                  ) {
-                String groupName = ObjectUtils.getDisplayString(group.getGroupName());
+                String roleName = ObjectUtils.getDisplayString(role.getRoleName());
                 boolean exists = false;
-                for (UserGroupRelation userGroupRelation: userGroupRelationList
+                for (UserRoleRelation userRoleRelation: UserRoleRelationList
                      ) {
-                    String relGroupName = userGroupRelation.getGroupName();
-                    if(groupName.equals(relGroupName)){
+                    String relRoleName = userRoleRelation.getRoleName();
+                    if(roleName.equals(relRoleName)){
                         exists = true;
                         break;
                     }
                 }
                 if(!exists){
-                    rows.add(group);
+                    rows.add(role);
                 }
             }
             model.addAttribute("rows",rows);
@@ -112,38 +113,38 @@ public class UserGroupRelationController {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "create");
-        return "admin/user/user_group_create";
+        return "admin/user/user_role_create";
     }
 
     @RequestMapping(path = "user/save/{username}", method = RequestMethod.POST)
-    public String save(@PathVariable(value = "username") String username, @RequestParam(name = "groupNames") String groupNames, Model model) {
-        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username,groupNames);
+    public String save(@PathVariable(value = "username") String username, @RequestParam(name = "roleNames") String roleNames, Model model) {
+        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username, roleNames);
         User record = null;
         try {
             record = userService.selectByUsername(username);
 
-            String[] groupNameArray = groupNames.split(",");
-            List<UserGroupRelation> userGroupRelationList = Lists.newArrayList();
-            for (String groupName:groupNameArray
+            String[] roleNameArray = roleNames.split(",");
+            List<UserRoleRelation> userRoleRelationList = Lists.newArrayList();
+            for (String roleName:roleNameArray
                  ) {
-                UserGroupRelation userGroupRelation = new UserGroupRelation();
-                userGroupRelation.setUsername(username);
-                userGroupRelation.setGroupName(groupName);
-                userGroupRelation.setDef(Boolean.FALSE);
+                UserRoleRelation UserRoleRelation = new UserRoleRelation();
+                UserRoleRelation.setUsername(username);
+                UserRoleRelation.setRoleName(roleName);
+                UserRoleRelation.setDef(Boolean.FALSE);
 
-                userGroupRelationList.add(userGroupRelation);
+                userRoleRelationList.add(UserRoleRelation);
             }
 
-            int aff = userGroupRelationService.insert(userGroupRelationList);
+            int aff = userRoleRelationService.insert(userRoleRelationList);
 
 //            if (!bindingResult.hasErrors()) {
-//                userGroupRelationService.insert(record);
+//                userRoleRelationService.insert(record);
 //            } else {
 //                return "admin/group/create";
 //            }
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-            return "admin/user/user_group_create";
+            return "admin/user/user_role_create";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
         return "redirect:/admin/user/detail?id=" + record.getId();// detail(record, bindingResult, model);
@@ -151,12 +152,12 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = "user/async-delete", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delete(@Validated(value = Remove.class) UserGroupRelation record, BindingResult bindingResult) {
+    public Map<String, Object> delete(@Validated(value = Remove.class) UserRoleRelation record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            int aff = userGroupRelationService.deleteByPrimaryKey(record.getId());
+            int aff = userRoleRelationService.deleteByPrimaryKey(record.getId());
             result.put("success", true);
             result.put("message", "");
             result.put("data", aff);
@@ -172,12 +173,12 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = "user/async-update-def", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> updateDef(@Validated(value = Get.class) UserGroupRelation record, BindingResult bindingResult) {
+    public Map<String, Object> updateDef(@Validated(value = Get.class) UserRoleRelation record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            int aff = userGroupRelationService.updateDefByPrimaryKey(record.getId());
+            int aff = userRoleRelationService.updateDefByPrimaryKey(record.getId());
             result.put("success", true);
             result.put("message", "");
             result.put("data", aff);
@@ -191,46 +192,11 @@ public class UserGroupRelationController {
         return result;
     }
 
-
-    // ===
-    // group
-
-    @RequestMapping(path = {"group/async-query/{groupName}"}, method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> queryUser(@PathVariable(value = "groupName") String groupName) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", groupName);
-        Map<String, Object> result = Maps.newLinkedHashMap();
-        List<UserGroupRelation> rows = Lists.newArrayList();
-        Map<String, Object> data = Maps.newLinkedHashMap();
-        try {
-            rows = userGroupRelationService.selectUserByGroupname(groupName);
-            int total = rows.size();
-
-            data.put("total", total);
-            data.put("rows", rows);
-
-            result.put("success", true);
-            result.put("message", "");
-            result.put("data", data);
-
-        } catch (Exception ex) {
-            data.put("total", 0);
-            data.put("rows", rows);
-
-            result.put("success", false);
-            result.put("message", ExceptionUtils.getSimpleMessage(ex));
-            result.put("data", data);
-        }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "group/async-query");
-        return result;
-    }
-
-
 //    @RequestMapping(path = "edit", method = RequestMethod.GET)
 //    public String edit(@Validated(value = Edit.class) Group record, BindingResult bindingResult, Model model) {
 //        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
 //        try {
-//            model.addAttribute(userGroupRelationService.selectByPrimaryKey(record.getId()));
+//            model.addAttribute(userRoleRelationService.selectByPrimaryKey(record.getId()));
 //        } catch (Exception ex) {
 //            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
 //        }
@@ -243,7 +209,7 @@ public class UserGroupRelationController {
 //        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record);
 //        try {
 //            if (!bindingResult.hasErrors()) {
-//                userGroupRelationService.updateByPrimaryKey(record);
+//                userRoleRelationService.updateByPrimaryKey(record);
 //            } else {
 //                return "admin/group/edit";
 //            }
@@ -259,7 +225,7 @@ public class UserGroupRelationController {
 //    public String detail(@Validated(value = Detail.class) Group record, BindingResult bindingResult, Model model) {
 //        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail",record);
 //        try {
-//            model.addAttribute(userGroupRelationService.selectByPrimaryKey(record.getId()));
+//            model.addAttribute(userRoleRelationService.selectByPrimaryKey(record.getId()));
 //        } catch (Exception ex) {
 //            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
 //        }
@@ -274,7 +240,7 @@ public class UserGroupRelationController {
 //        Map<String, Object> result = Maps.newLinkedHashMap();
 //        Map<String, Object> data = Maps.newLinkedHashMap();
 //        try {
-//            int aff = userGroupRelationService.removeByPrimaryKey(record);
+//            int aff = userRoleRelationService.removeByPrimaryKey(record);
 //            result.put("success", true);
 //            result.put("message", "");
 //            result.put("data", aff);
