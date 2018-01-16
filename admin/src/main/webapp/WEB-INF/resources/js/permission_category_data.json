@@ -1,0 +1,7 @@
+[
+    {"text":"用户","value":"user","group":"系统管理"},
+    {"text":"群组","value":"group","group":"系统管理"},
+    {"text":"角色","value":"role","group":"系统管理"},
+    {"text":"权限","value":"permission","group":"系统管理"},
+    {"text":"配置","value":"config","group":"系统管理"}
+]

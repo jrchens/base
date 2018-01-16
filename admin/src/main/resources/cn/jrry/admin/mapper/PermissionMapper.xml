@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.admin.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.Permission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_permission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.admin.domain.Permission" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_permission (category, permission,
+      viewname, is_deleted, cruser, 
+      crtime
+      )
+    values (#{category,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR},
+      #{viewname,jdbcType=VARCHAR}, 0, #{cruser,jdbcType=VARCHAR},
+      #{crtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.Permission">
+    update sys_permission
+    set category = #{category,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      viewname = #{viewname,jdbcType=VARCHAR},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select <include refid="selectColumns"></include>
+    from sys_permission
+    where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="selectColumns"></include>
+    from sys_permission
+    WHERE is_deleted = 0
+  </select>
+
+
+  <sql id="selectColumns">
+    id, category, permission, viewname
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="category != null and category != ''">
+        and category = #{category,jdbcType=VARCHAR}
+      </if>
+      <if test="viewname != null and viewname != ''">
+        <bind name="viewname" value="'%' + viewname + '%'"/>
+        and viewname LIKE #{viewname,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.Role">
+    update sys_permission
+    set
+    is_deleted = 1,
+    mduser = #{mduser,jdbcType=VARCHAR},
+    mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from sys_permission
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from sys_permission
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+</mapper>
