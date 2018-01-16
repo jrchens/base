@@ -20,7 +20,7 @@
     delete from sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="cn.jrry.admin.domain.UserDO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.jrry.admin.domain.User" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user (username, viewname,
       password, password_salt, email, 
       is_disabled, is_locked, is_deleted, cruser, 
@@ -28,11 +28,11 @@
       )
     values (#{username,jdbcType=VARCHAR}, #{viewname,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{disabled,jdbcType=BIT}, #{locked,jdbcType=BIT}, #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, 
+      #{disabled,jdbcType=BIT}, #{locked,jdbcType=BIT}, 0, #{cruser,jdbcType=VARCHAR},
       #{crtime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.UserDO">
+    <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.User">
     update sys_user
     set viewname = #{viewname,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
@@ -50,27 +50,18 @@
         from sys_user
         where is_deleted = 0 AND username = #{username,jdbcType=VARCHAR}
     </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="UserDOResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="selectColumns"/>
         from sys_user
         where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
     </select>
-    <select id="selectAll" resultMap="UserDOResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="selectColumns"/>
         from sys_user
         where is_deleted = 0
     </select>
-
-    <resultMap id="UserDOResultMap" type="cn.jrry.admin.domain.UserDO">
-        <result column="id" jdbcType="BIGINT" property="id"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="viewname" jdbcType="VARCHAR" property="viewname"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="is_disabled" jdbcType="BIT" property="disabled"/>
-        <result column="is_locked" jdbcType="BIT" property="locked"/>
-    </resultMap>
 
     <sql id="selectColumns">
     id,username,viewname,email,is_disabled,is_locked
@@ -98,10 +89,10 @@
             </if>
         </where>
     </sql>
-    <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.UserDO">
+    <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.User">
     update sys_user
     set
-    is_deleted = #{deleted,jdbcType=BIT},
+    is_deleted = 1,
     mduser = #{mduser,jdbcType=VARCHAR},
     mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
@@ -111,7 +102,7 @@
         from sys_user
         <include refid="selectWhereCondition"/>
     </select>
-    <select id="select" resultMap="UserDOResultMap">
+    <select id="select" resultMap="BaseResultMap">
         select
         <include refid="selectColumns"/>
         from sys_user

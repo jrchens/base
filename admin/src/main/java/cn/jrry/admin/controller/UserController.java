@@ -1,13 +1,11 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.UserDO;
-import cn.jrry.admin.domain.UserVO;
+import cn.jrry.admin.domain.User;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +31,13 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
-    public String index(@Validated UserDO userDO, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", userDO.toString());
+    public String index(@Validated User record, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record.toString());
         try {
-            if (userDO == null) {
-                userDO = new UserDO();
+            if (record == null) {
+                record = new User();
             }
-            UserVO userVO = new UserVO();
-            PropertyUtils.copyProperties(userVO, userDO);
-            model.addAttribute(userVO);
+            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -54,7 +50,7 @@ public class UserController {
     public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        List<UserVO> rows = Lists.newArrayList();
+        List<User> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
 
@@ -82,19 +78,19 @@ public class UserController {
     }
 
     @RequestMapping(path = "create", method = RequestMethod.GET)
-    public String create(@Validated(value = Create.class) UserDO userDO, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", userDO.toString());
+    public String create(@Validated(value = Create.class) User record, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", record.toString());
         try {
-            if (userDO == null) {
-                userDO = new UserDO();
+            if (record == null) {
+                record = new User();
             }
-            userDO.setLocked(Boolean.FALSE);
-            userDO.setDisabled(Boolean.FALSE);
+            record.setLocked(Boolean.FALSE);
+            record.setDisabled(Boolean.FALSE);
 
 //            UserVO userVO = new UserVO();
 //            PropertyUtils.copyProperties(userVO, record);
 
-            model.addAttribute(userDO);
+            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -103,31 +99,30 @@ public class UserController {
     }
 
     @RequestMapping(path = "save", method = RequestMethod.POST)
-    public String save(@Validated(value = Save.class) UserDO userDO, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", userDO.toString());
+    public String save(@Validated(value = Save.class) User record, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "save", record.toString());
         try {
             if (!bindingResult.hasErrors()) {
-                userService.insert(userDO);
+                userService.insert(record);
             } else {
-                userDO.setPassword(null);
+                record.setPassword(null);
                 return "admin/user/create";
             }
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-            userDO.setPassword(null);
+            record.setPassword(null);
             return "admin/user/create";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "save");
-        return "redirect:detail?id=" + userDO.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
 
     @RequestMapping(path = "edit", method = RequestMethod.GET)
-    public String edit(@Validated(value = Edit.class) UserDO userDO, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", userDO.toString());
+    public String edit(@Validated(value = Edit.class) User record, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record.toString());
         try {
-            UserVO userVO = userService.selectByPrimaryKey(userDO.getId());
-            model.addAttribute(userVO);
+            model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -136,11 +131,11 @@ public class UserController {
     }
 
     @RequestMapping(path = "update", method = RequestMethod.POST)
-    public String update(@Validated(value = Update.class) UserDO userDO, BindingResult bindingResult, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", userDO.toString());
+    public String update(@Validated(value = Update.class) User record, BindingResult bindingResult, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record.toString());
         try {
             if (!bindingResult.hasErrors()) {
-                userService.updateByPrimaryKey(userDO);
+                userService.updateByPrimaryKey(record);
             } else {
                 return "admin/user/edit";
             }
@@ -149,14 +144,14 @@ public class UserController {
             return "admin/user/edit";
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
-        return "redirect:detail?id=" + userDO.getId();// detail(record, bindingResult, model);
+        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
     @RequestMapping(path = "detail", method = RequestMethod.GET)
-    public String detail(@Validated(value = Detail.class) UserDO userDO, BindingResult bindingResult, Model model) {
+    public String detail(@Validated(value = Detail.class) User record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail");
         try {
-            model.addAttribute(userService.selectByPrimaryKey(userDO.getId()));
+            model.addAttribute(userService.selectByPrimaryKey(record.getId()));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -166,12 +161,12 @@ public class UserController {
 
     @RequestMapping(path = "async-remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> remove(@Validated(value = Remove.class) UserDO userDO, BindingResult bindingResult) {
-        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-remove", userDO);
+    public Map<String, Object> remove(@Validated(value = Remove.class) User record, BindingResult bindingResult) {
+        logger.info("--> {}.{}({},{},{})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            int aff = userService.removeByPrimaryKey(userDO);
+            int aff = userService.removeByPrimaryKey(record);
             result.put("success", true);
             result.put("message", "");
             result.put("data", aff);

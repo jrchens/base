@@ -1,7 +1,6 @@
 package cn.jrry.admin.mapper;
 
 import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserDO;
 
 import java.util.List;
 import java.util.Map;
@@ -9,19 +8,19 @@ import java.util.Map;
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(UserDO record);
+    int insert(User record);
 
-    UserDO selectByPrimaryKey(Long id);
+    User selectByPrimaryKey(Long id);
 
-    List<UserDO> selectAll();
+    List<User> selectAll();
 
-    int updateByPrimaryKey(UserDO record);
+    int updateByPrimaryKey(User record);
 
-    int removeByPrimaryKey(UserDO record);
+    int removeByPrimaryKey(User record);
 
     int count(Map<String, Object> record);
 
-    List<UserDO> select(Map<String, Object> record);
+    List<User> select(Map<String, Object> record);
 
     User selectByUsername(String username);
 }

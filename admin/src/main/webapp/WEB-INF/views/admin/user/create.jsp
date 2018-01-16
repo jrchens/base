@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_user_create_form" method="post"
-           modelAttribute="userDO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="user" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-新增"
            data-options="inline: true" action="http://local.com/admin/user/save">
     <form:hidden path="disabled"/>

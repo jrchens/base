@@ -1,20 +1,38 @@
 package cn.jrry.admin.domain;
 
+import cn.jrry.validation.group.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-    private static final long serialVersionUID = 3583876395915728726L;
+    private static final long serialVersionUID = -1234942802910461273L;
+    @NotNull
+    @Min(value = 1L, groups = {Update.class, Remove.class})
+    @Max(value = Integer.MAX_VALUE, groups = {Update.class, Edit.class, Detail.class, Remove.class})
     private Long id;
 
+    @NotBlank
+    @Length(min = 2, max = 50, groups = {Save.class})
     private String username;
 
+    @NotBlank
+    @Length(min = 2, max = 50, groups = {Save.class, Update.class})
     private String viewname;
 
+    @NotBlank
+    @Length(min = 32, max = 32, groups = {Save.class})
     private String password;
 
     private String passwordSalt;
 
+    @NotBlank
+    @Length(min = 10, max = 50, groups = {Save.class, Update.class})
     private String email;
 
     private Boolean disabled;

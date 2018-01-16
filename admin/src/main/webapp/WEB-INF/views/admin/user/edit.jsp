@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_user_edit_form" method="post"
-           modelAttribute="userVO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="user" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-编辑"
            data-options="inline: true" action="http://local.com/admin/user/update">
     <form:hidden path="id"/>
@@ -41,7 +41,7 @@
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>
                     <%--onText:'Yes',offText:'No',reversed:true--%>
-                <span class="easyui-switchbutton" data-options="checked:${userVO.disabled},onChange:function(checked){
+                <span class="easyui-switchbutton" data-options="checked:${user.disabled},onChange:function(checked){
                             var form = $('#admin_user_edit_form');
                             $('#disabled',form).val(checked);
                         }"></span><form:errors path="disabled"/>
@@ -50,7 +50,7 @@
             <td>
                     <%--<form:input path="btinyint" cssClass="easyui-switchbutton" data-options=""/>--%>
                     <%--onText:'Yes',offText:'No',reversed:true--%>
-                <span class="easyui-switchbutton" data-options="checked:${userVO.locked},onChange:function(checked){
+                <span class="easyui-switchbutton" data-options="checked:${user.locked},onChange:function(checked){
                             var form = $('#admin_user_edit_form');
                             $('#locked',form).val(checked);
                         }"></span><form:errors path="locked"/>

@@ -3,6 +3,7 @@ package cn.jrry.admin.service;
 import cn.jrry.admin.domain.UserRoleRelation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserRoleRelationService {
     int deleteByPrimaryKey(Long id);
@@ -16,7 +17,9 @@ public interface UserRoleRelationService {
 
     int updateByPrimaryKey(UserRoleRelation record);
 
-    List<UserRoleRelation> selectRoleByUsername(String username);
+    int countRole(Map<String,Object> record);
+    List<UserRoleRelation> selectRole(Map<String,Object> record);
+
     List<UserRoleRelation> selectUserByRolename(String roleName);
     int updateDefByPrimaryKey(Long id);
 }

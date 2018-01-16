@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,16 +52,18 @@ public class UserGroupRelationController {
 //        return "admin/group/index";
 //    }
 
-    @RequestMapping(path = {"user/async-query/{username}"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"user/async-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@PathVariable(value = "username") String username) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", username);
+    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            rows = userGroupRelationService.selectGroupByUsername(username);
-            int total = rows.size();
+            int total = userGroupRelationService.countGroup(record);
+            if (total > 0) {
+                rows = userGroupRelationService.selectGroup(record);
+            }
 
             data.put("total", total);
             data.put("rows", rows);
@@ -84,31 +85,32 @@ public class UserGroupRelationController {
     }
 
     @RequestMapping(path = "user/create/{username}", method = RequestMethod.GET)
-    public String create(@PathVariable(value = "username") String username,Model model) {
+    public String create(@PathVariable(value = "username") String username, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
         try {
+            // TODO user create query
             List<Group> rows = Lists.newArrayList();
-            User record = userService.selectByUsername(username);
-            List<Group> groupList = groupService.selectAll();
-            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(username);
-            for (Group group: groupList
-                 ) {
-                String groupName = ObjectUtils.getDisplayString(group.getGroupName());
-                boolean exists = false;
-                for (UserGroupRelation userGroupRelation: userGroupRelationList
-                     ) {
-                    String relGroupName = userGroupRelation.getGroupName();
-                    if(groupName.equals(relGroupName)){
-                        exists = true;
-                        break;
-                    }
-                }
-                if(!exists){
-                    rows.add(group);
-                }
-            }
-            model.addAttribute("rows",rows);
-            model.addAttribute(record);
+//            User record = userService.selectByUsername(username);
+//            List<Group> groupList = groupService.selectAll();
+//            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroup(username);
+//            for (Group group: groupList
+//                 ) {
+//                String groupName = ObjectUtils.getDisplayString(group.getGroupName());
+//                boolean exists = false;
+//                for (UserGroupRelation userGroupRelation: userGroupRelationList
+//                     ) {
+//                    String relGroupName = userGroupRelation.getGroupName();
+//                    if(groupName.equals(relGroupName)){
+//                        exists = true;
+//                        break;
+//                    }
+//                }
+//                if(!exists){
+//                    rows.add(group);
+//                }
+//            }
+//            model.addAttribute("rows",rows);
+//            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -118,15 +120,15 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = "user/save/{username}", method = RequestMethod.POST)
     public String save(@PathVariable(value = "username") String username, @RequestParam(name = "groupNames") String groupNames, Model model) {
-        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username,groupNames);
+        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username, groupNames);
         User record = null;
         try {
             record = userService.selectByUsername(username);
 
             String[] groupNameArray = groupNames.split(",");
             List<UserGroupRelation> userGroupRelationList = Lists.newArrayList();
-            for (String groupName:groupNameArray
-                 ) {
+            for (String groupName : groupNameArray
+                    ) {
                 UserGroupRelation userGroupRelation = new UserGroupRelation();
                 userGroupRelation.setUsername(username);
                 userGroupRelation.setGroupName(groupName);
@@ -196,16 +198,20 @@ public class UserGroupRelationController {
     // ===
     // group
 
-    @RequestMapping(path = {"group/async-query/{groupName}"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"group/async-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> queryUser(@PathVariable(value = "groupName") String groupName) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", groupName);
+    public Map<String, Object> queryUser(Map<String, Object> record) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            rows = userGroupRelationService.selectUserByGroupname(groupName);
-            int total = rows.size();
+
+
+            int total = userGroupRelationService.countUser(record);
+            if (total > 0) {
+                rows = userGroupRelationService.selectUser(record);
+            }
 
             data.put("total", total);
             data.put("rows", rows);

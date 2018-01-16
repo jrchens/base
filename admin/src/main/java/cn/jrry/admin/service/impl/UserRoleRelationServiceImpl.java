@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserRoleRelationServiceImpl implements UserRoleRelationService {
@@ -112,9 +114,22 @@ public class UserRoleRelationServiceImpl implements UserRoleRelationService {
     }
 
     @Override
-    public List<UserRoleRelation> selectRoleByUsername(String username) {
+    public int countRole(Map<String,Object> record) {
         try {
-            return userRoleRelationMapper.selectRoleByUsername(username);
+            return userRoleRelationMapper.countRole(record);
+        } catch (Exception ex) {
+            logger.error("countRole error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public List<UserRoleRelation> selectRole(Map<String,Object> record) {
+        try {
+            int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
+            int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
+            record.put("offset", (page - 1) * rows);
+            return userRoleRelationMapper.selectRole(record);
         } catch (Exception ex) {
             logger.error("selectRoleByUsername error {}", ex);
             throw new ServiceException(ex.getCause());

@@ -4,6 +4,7 @@ import cn.jrry.admin.domain.*;
 import cn.jrry.admin.mapper.UserMapper;
 import cn.jrry.admin.service.ConfigService;
 import cn.jrry.admin.service.UserGroupRelationService;
+import cn.jrry.admin.service.UserRoleRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.common.exception.ServiceException;
 import com.google.common.collect.Lists;
@@ -32,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private ConfigService configService;
     @Autowired
     private UserGroupRelationService userGroupRelationService;
+    @Autowired
+    private UserRoleRelationService userRoleRelationService;
 
     private static final String DEFAULT_USER_GROUP_CODE = "6e1352df-2c9d-4811-8359-ac0d68e2291e";
     private static final String DEFAULT_USER_ROLE_CODE = "292d8ffc-e394-49ce-8aba-71499f35fa55";
@@ -47,13 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insert(UserDO record) {
+    public int insert(User record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
             record.setCruser(user);
             record.setCrtime(now);
-            record.setDeleted(Boolean.FALSE);
 
             String passwordSalt = RandomStringUtils.randomAlphanumeric(8);
             record.setPasswordSalt(passwordSalt);
@@ -71,7 +73,12 @@ public class UserServiceImpl implements UserService {
             userGroupRelationService.insert(ugr);
 
             Config roleValueConfig = configService.selectByPrimaryKey(DEFAULT_USER_ROLE_CODE);
-            logger.info("default user group_name :{}",roleValueConfig.getCfgValue());
+            logger.info("default user role_name :{}",roleValueConfig.getCfgValue());
+            UserRoleRelation urr = new UserRoleRelation();
+            urr.setUsername(record.getUsername());
+            urr.setRoleName(roleValueConfig.getCfgValue());
+            urr.setDef(Boolean.TRUE);
+            userRoleRelationService.insert(urr);
 
             return aff;
         } catch (Exception ex) {
@@ -81,12 +88,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserVO selectByPrimaryKey(Long id) {
+    public User selectByPrimaryKey(Long id) {
         try {
-            UserDO userDO = userMapper.selectByPrimaryKey(id);
-            UserVO userVO = new UserVO();
-            PropertyUtils.copyProperties(userVO, userDO);
-            return userVO;
+            return userMapper.selectByPrimaryKey(id);
         } catch (Exception ex) {
             logger.error("selectByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
@@ -104,18 +108,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserVO> selectAll() {
+    public List<User> selectAll() {
         try {
-            List<UserDO> userDOList = userMapper.selectAll();
-            List<UserVO> userVOList = Lists.newArrayList();
-            for (UserDO userDO : userDOList
-                    ) {
-                UserVO userVO = new UserVO();
-                PropertyUtils.copyProperties(userVO, userDO);
-                userVOList.add(userVO);
-            }
-            return userVOList;
-
+            return userMapper.selectAll();
         } catch (Exception ex) {
             logger.error("selectAll error {}", ex);
             throw new ServiceException(ex.getCause());
@@ -123,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateByPrimaryKey(UserDO record) {
+    public int updateByPrimaryKey(User record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -137,13 +132,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int removeByPrimaryKey(UserDO record) {
+    public int removeByPrimaryKey(User record) {
         try {
             String user = SecurityUtils.getSubject().getPrincipal().toString();
             Timestamp now = new Timestamp(System.currentTimeMillis());
             record.setMduser(user);
             record.setMdtime(now);
-            record.setDeleted(Boolean.TRUE);
             return userMapper.removeByPrimaryKey(record);
         } catch (Exception ex) {
             logger.error("removeByPrimaryKey error {}{}{}", record, System.lineSeparator(), ex);
@@ -162,21 +156,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserVO> select(Map<String, Object> record) {
+    public List<User> select(Map<String, Object> record) {
         try {
             int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
             int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
             record.put("offset", (page - 1) * rows);
-            List<UserDO> userDOList = userMapper.select(record);
-            List<UserVO> userVOList = Lists.newArrayList();
-            for (UserDO userDO : userDOList
-                    ) {
-                UserVO userVO = new UserVO();
-                PropertyUtils.copyProperties(userVO, userDO);
-                userVOList.add(userVO);
-            }
-            return userVOList;
-
+            return userMapper.select(record);
         } catch (Exception ex) {
             logger.error("select error {}{}{}", record, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());

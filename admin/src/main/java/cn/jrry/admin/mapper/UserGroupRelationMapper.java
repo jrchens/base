@@ -3,6 +3,7 @@ package cn.jrry.admin.mapper;
 import cn.jrry.admin.domain.UserGroupRelation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserGroupRelationMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,9 +16,10 @@ public interface UserGroupRelationMapper {
 
     int updateByPrimaryKey(UserGroupRelation record);
 
-
-    List<UserGroupRelation> selectUserByGroupname(String groupName);
-    List<UserGroupRelation> selectGroupByUsername(String username);
+    int countUser(Map<String,Object> record);
+    List<UserGroupRelation> selectUser(Map<String,Object> record);
+    int countGroup(Map<String,Object> record);
+    List<UserGroupRelation> selectGroup(Map<String,Object> record);
 
     int updateDefByUsername(String username);
     int updateDefByPrimaryKey(Long id);

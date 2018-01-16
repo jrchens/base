@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="admin_user_detail_form" method="post"
-           modelAttribute="userVO" cssStyle="padding: 5px; margin: 0px;"
+           modelAttribute="user" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-详情"
            data-options="inline: true" action="http://local.com/admin/user/async-remove">
     <form:hidden path="id"/>
@@ -44,7 +44,7 @@
                     <%--onText:'Yes',offText:'No',reversed:true--%>
                 <span class="easyui-switchbutton" data-options="
                     readonly:true,
-                    checked:${userVO.disabled},
+                    checked:${user.disabled},
                     onChange:function(checked){
                             var form = $('#admin_user_create_form');
                             $('#disabled',form).val(checked);
@@ -56,7 +56,7 @@
                     <%--onText:'Yes',offText:'No',reversed:true--%>
                 <span class="easyui-switchbutton" data-options="
                     readonly:true,
-                    checked:${userVO.locked},
+                    checked:${user.locked},
                     onChange:function(checked){
                             var form = $('#admin_user_create_form');
                             $('#locked',form).val(checked);
@@ -71,7 +71,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/user/edit?id=${userVO.id}';
+                        location.href = 'http://local.com/admin/user/edit?id=${user.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -86,7 +86,7 @@
                                 thisButton.linkbutton('disable')
                                 thisButton.linkbutton({text:'加载中...'});
 
-                                var reqData = {id:${userVO.id}};
+                                var reqData = {id:${user.id}};
                                 $.post('http://local.com/admin/user/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/user/index';
@@ -117,11 +117,14 @@
 <div class="ext-div-line"></div>
 <table id="admin_user_detail_group_datagrid" class="easyui-datagrid"
        data-options="title: '群组列表',
-            url: 'http://local.com/admin/user-group-relation/user/async-query/${userVO.username}',
+            url: 'http://local.com/admin/user-group-relation/user/async-query',
+            method: 'get',
+            queryParams: {username:'${user.username}'},
             cls: 'ext-datagrid-float-left',
             width:400,
-            method: 'get',
-            pagination: false,
+            pagination: true,
+            sortName: 'rel.id',
+            sortOrder: 'desc',
             singleSelect: true,
             rownumbers: true,
             minHeight: 300,
@@ -138,7 +141,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user-group-relation/user/create/${userVO.username}';
+                                location.href = 'http://local.com/admin/user-group-relation/user/create/${user.username}';
                             }
                         },
                         {
@@ -228,11 +231,14 @@
 
 <table id="admin_user_detail_role_datagrid" class="easyui-datagrid"
        data-options="title: '角色列表',
-            url: 'http://local.com/admin/user-role-relation/user/async-query/${userVO.username}',
+            url: 'http://local.com/admin/user-role-relation/user/async-query',
+            method: 'get',
+            queryParams: {username:'${user.username}'},
             cls: 'ext-datagrid-float-left',
             width:400,
-            method: 'get',
-            pagination: false,
+            sortName: 'rel.id',
+            sortOrder: 'desc',
+            pagination: true,
             singleSelect: true,
             rownumbers: true,
             minHeight: 300,
@@ -249,7 +255,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user-role-relation/user/create/${userVO.username}';
+                                location.href = 'http://local.com/admin/user-role-relation/user/create/${user.username}';
                             }
                         },
                         {

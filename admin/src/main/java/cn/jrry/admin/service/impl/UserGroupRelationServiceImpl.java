@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserGroupRelationServiceImpl implements UserGroupRelationService {
@@ -102,19 +104,46 @@ public class UserGroupRelationServiceImpl implements UserGroupRelationService {
     }
 
     @Override
-    public List<UserGroupRelation> selectUserByGroupname(String groupName) {
+    public int countUser(Map<String,Object> record) {
         try {
-            return userGroupRelationMapper.selectUserByGroupname(groupName);
+            return userGroupRelationMapper.countUser(record);
+        } catch (Exception ex) {
+            logger.error("countUserByGroupname error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public List<UserGroupRelation> selectUser(Map<String,Object> record) {
+        try {
+            int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
+            int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
+            record.put("offset", (page - 1) * rows);
+            return userGroupRelationMapper.selectUser(record);
         } catch (Exception ex) {
             logger.error("selectUserByGroupname error {}", ex);
             throw new ServiceException(ex.getCause());
         }
     }
 
+
     @Override
-    public List<UserGroupRelation> selectGroupByUsername(String username) {
+    public int countGroup(Map<String,Object> record) {
         try {
-            return userGroupRelationMapper.selectGroupByUsername(username);
+            return userGroupRelationMapper.countGroup(record);
+        } catch (Exception ex) {
+            logger.error("countGroupByUsername error {}", ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public List<UserGroupRelation> selectGroup(Map<String,Object> record) {
+        try {
+            int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
+            int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
+            record.put("offset", (page - 1) * rows);
+            return userGroupRelationMapper.selectGroup(record);
         } catch (Exception ex) {
             logger.error("selectGroupByUsername error {}", ex);
             throw new ServiceException(ex.getCause());

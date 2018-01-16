@@ -1,6 +1,5 @@
 package cn.jrry.admin.controller;
 
-import cn.jrry.admin.domain.Role;
 import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserRoleRelation;
 import cn.jrry.admin.service.RoleService;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,16 +51,18 @@ public class UserRoleRelationController {
 //        return "admin/group/index";
 //    }
 
-    @RequestMapping(path = {"user/async-query/{username}"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"user/async-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@PathVariable(value = "username") String username) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", username);
+    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserRoleRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            rows = userRoleRelationService.selectRoleByUsername(username);
-            int total = rows.size();
+            int total = userRoleRelationService.countRole(record);
+            if (total > 0) {
+                rows = userRoleRelationService.selectRole(record);
+            }
 
             data.put("total", total);
             data.put("rows", rows);
@@ -84,31 +84,32 @@ public class UserRoleRelationController {
     }
 
     @RequestMapping(path = "user/create/{username}", method = RequestMethod.GET)
-    public String create(@PathVariable(value = "username") String username,Model model) {
+    public String create(@PathVariable(value = "username") String username, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
         try {
-            List<Role> rows = Lists.newArrayList();
-            User record = userService.selectByUsername(username);
-            List<Role> roleList = roleService.selectAll();
-            List<UserRoleRelation> UserRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
-            for (Role role: roleList
-                 ) {
-                String roleName = ObjectUtils.getDisplayString(role.getRoleName());
-                boolean exists = false;
-                for (UserRoleRelation userRoleRelation: UserRoleRelationList
-                     ) {
-                    String relRoleName = userRoleRelation.getRoleName();
-                    if(roleName.equals(relRoleName)){
-                        exists = true;
-                        break;
-                    }
-                }
-                if(!exists){
-                    rows.add(role);
-                }
-            }
-            model.addAttribute("rows",rows);
-            model.addAttribute(record);
+            // TODO user create role
+//            List<Role> rows = Lists.newArrayList();
+//            User record = userService.selectByUsername(username);
+//            List<Role> roleList = roleService.selectAll();
+//            List<UserRoleRelation> UserRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
+//            for (Role role: roleList
+//                 ) {
+//                String roleName = ObjectUtils.getDisplayString(role.getRoleName());
+//                boolean exists = false;
+//                for (UserRoleRelation userRoleRelation: UserRoleRelationList
+//                     ) {
+//                    String relRoleName = userRoleRelation.getRoleName();
+//                    if(roleName.equals(relRoleName)){
+//                        exists = true;
+//                        break;
+//                    }
+//                }
+//                if(!exists){
+//                    rows.add(role);
+//                }
+//            }
+//            model.addAttribute("rows",rows);
+//            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -125,8 +126,8 @@ public class UserRoleRelationController {
 
             String[] roleNameArray = roleNames.split(",");
             List<UserRoleRelation> userRoleRelationList = Lists.newArrayList();
-            for (String roleName:roleNameArray
-                 ) {
+            for (String roleName : roleNameArray
+                    ) {
                 UserRoleRelation UserRoleRelation = new UserRoleRelation();
                 UserRoleRelation.setUsername(username);
                 UserRoleRelation.setRoleName(roleName);

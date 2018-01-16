@@ -1,8 +1,6 @@
 package cn.jrry.admin.service;
 
 import cn.jrry.admin.domain.User;
-import cn.jrry.admin.domain.UserDO;
-import cn.jrry.admin.domain.UserVO;
 
 import java.util.List;
 import java.util.Map;
@@ -10,19 +8,19 @@ import java.util.Map;
 public interface UserService {
     int deleteByPrimaryKey(Long id);
 
-    int insert(UserDO record);
+    int insert(User record);
 
-    UserVO selectByPrimaryKey(Long id);
+    User selectByPrimaryKey(Long id);
 
     User selectByUsername(String username);
 
-    List<UserVO> selectAll();
+    List<User> selectAll();
 
-    int updateByPrimaryKey(UserDO record);
+    int updateByPrimaryKey(User record);
 
-    int removeByPrimaryKey(UserDO record);
+    int removeByPrimaryKey(User record);
 
     int count(Map<String, Object> record);
 
-    List<UserVO> select(Map<String, Object> record);
+    List<User> select(Map<String, Object> record);
 }

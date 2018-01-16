@@ -3,6 +3,7 @@ package cn.jrry.admin.service;
 import cn.jrry.admin.domain.UserGroupRelation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserGroupRelationService {
     int deleteByPrimaryKey(Long id);
@@ -16,7 +17,11 @@ public interface UserGroupRelationService {
 
     int updateByPrimaryKey(UserGroupRelation record);
 
-    List<UserGroupRelation> selectUserByGroupname(String groupName);
-    List<UserGroupRelation> selectGroupByUsername(String username);
+    int countUser(Map<String,Object> record);
+    List<UserGroupRelation> selectUser(Map<String,Object> record);
+    
+    int countGroup(Map<String,Object> record);
+    List<UserGroupRelation> selectGroup(Map<String,Object> record);
+    
     int updateDefByPrimaryKey(Long id);
 }
