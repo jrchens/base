@@ -1,6 +1,7 @@
 package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.User;
+import cn.jrry.admin.domain.UserGroupRelation;
 import cn.jrry.admin.domain.UserRoleRelation;
 import cn.jrry.admin.service.RoleService;
 import cn.jrry.admin.service.UserRoleRelationService;
@@ -8,6 +9,7 @@ import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.Get;
 import cn.jrry.validation.group.Remove;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -87,29 +89,18 @@ public class UserRoleRelationController {
     public String create(@PathVariable(value = "username") String username, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
         try {
-            // TODO user create role
 //            List<Role> rows = Lists.newArrayList();
-//            User record = userService.selectByUsername(username);
+            User record = userService.selectByUsername(username);
 //            List<Role> roleList = roleService.selectAll();
-//            List<UserRoleRelation> UserRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
-//            for (Role role: roleList
-//                 ) {
-//                String roleName = ObjectUtils.getDisplayString(role.getRoleName());
-//                boolean exists = false;
-//                for (UserRoleRelation userRoleRelation: UserRoleRelationList
-//                     ) {
-//                    String relRoleName = userRoleRelation.getRoleName();
-//                    if(roleName.equals(relRoleName)){
-//                        exists = true;
-//                        break;
-//                    }
-//                }
-//                if(!exists){
-//                    rows.add(role);
-//                }
-//            }
-//            model.addAttribute("rows",rows);
-//            model.addAttribute(record);
+            List<UserRoleRelation> userRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
+            List<String> roleNames = Lists.newArrayList();
+            for (UserRoleRelation urr:userRoleRelationList
+                    ) {
+                roleNames.add(urr.getRoleName());
+            }
+
+            model.addAttribute("roleNames", Joiner.on(",").join(roleNames));
+            model.addAttribute(record);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }

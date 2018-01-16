@@ -104,9 +104,9 @@ public class UserRoleRelationServiceImpl implements UserRoleRelationService {
     }
 
     @Override
-    public List<UserRoleRelation> selectUserByRolename(String roleName) {
+    public List<UserRoleRelation> selectRoleByUsername(String username) {
         try {
-            return userRoleRelationMapper.selectUserByRolename(roleName);
+            return userRoleRelationMapper.selectRoleByUsername(username);
         } catch (Exception ex) {
             logger.error("selectUserByRolename error {}", ex);
             throw new ServiceException(ex.getCause());

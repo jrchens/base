@@ -54,6 +54,11 @@
         <bind name="viewname" value="'%' + viewname + '%'"/>
         and viewname LIKE #{viewname,jdbcType=VARCHAR}
       </if>
+      <if test="exclusiveRoleNames != null and exclusiveRoleNames.size > 0">
+        <foreach collection="exclusiveRoleNames" open="and (" close=")" item="roleName" separator="and">
+          role_name != #{roleName}
+        </foreach>
+      </if>
     </where>
   </sql>
   <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.Role">

@@ -20,6 +20,6 @@ public interface UserRoleRelationService {
     int countRole(Map<String,Object> record);
     List<UserRoleRelation> selectRole(Map<String,Object> record);
 
-    List<UserRoleRelation> selectUserByRolename(String roleName);
+    List<UserRoleRelation> selectRoleByUsername(String username);
     int updateDefByPrimaryKey(Long id);
 }

@@ -10,26 +10,15 @@
 
 <table id="admin_user_user_role_create_datagrid" class="easyui-datagrid"
        data-options="title: '角色列表',
-            pagination: false,
+            url: 'http://local.com/admin/role/async-query',
+            method: 'get',
+            queryParams: {exclusiveRoleNames:'${roleNames}'},
+            sortName: 'id',
+            sortOrder: 'desc',
+            pagination: true,
             rownumbers: true,
             minHeight: 520,
             striped: true,
-            data:[
-                <c:forEach items="${rows}" var="r" varStatus="s">
-                {roleName:'${r.roleName}',viewname:'${r.viewname}'}<c:if test="${not s.last}">,</c:if>
-                </c:forEach>
-            ],
-            onDblClickRow: function(index,row){
-                $('#admin_user_user_role_create_datagrid').datagrid('options');
-
-                console.log(options.toolbar);
-
-                if(row.def){
-
-                } else {
-
-                }
-            },
             toolbar: [
                         {
                             iconCls:'ext-icon fa fa-floppy-o',
@@ -55,7 +44,13 @@
                                 location.href = 'http://local.com/admin/user/detail?id=${user.id}';
                             }
                         }
-            ]
+            ],
+            loadFilter: function(data){
+                if(!data.success){
+                    $.messager.show({msg:data.message});
+                }
+                return data.data;
+            }
        ">
     <thead>
     <tr>

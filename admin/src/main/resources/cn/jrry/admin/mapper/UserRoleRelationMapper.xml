@@ -35,7 +35,11 @@
     from sys_user_role_relation
   </select>
 
-
+  <select id="selectRoleByUsername" resultMap="BaseResultMap">
+    select id, username, role_name, is_def
+    from sys_user_role_relation
+    WHERE username = #{username}
+  </select>
 
 
   <select id="countRole" resultType="int">
@@ -51,13 +55,6 @@
     WHERE r.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
     ORDER BY ${sort} ${order}
     limit ${offset},${rows}
-  </select>
-
-  <select id="selectUserByRolename" parameterType="string" resultMap="BaseResultMap">
-    select rel.id, u.username, u.viewname,rel.is_def
-    from sys_user_role_relation rel LEFT JOIN
-    sys_user u ON rel.username = u.username
-    WHERE u.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
   </select>
 
   <update id="updateDefByUsername" parameterType="string">
