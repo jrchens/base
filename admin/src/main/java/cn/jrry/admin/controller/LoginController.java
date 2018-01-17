@@ -3,7 +3,7 @@ package cn.jrry.admin.controller;
 import cn.jrry.common.dto.LoginUser;
 import cn.jrry.util.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,23 @@ public class LoginController {
             }
         } catch (Exception ex) {
             logger.error("", ex);
-            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
+            if (ex instanceof UnknownAccountException) {
+                return "redirect:/login?t=1";
+//                model.addAttribute("controller_error", "username wasn't in the system");
+            } else if (ex instanceof IncorrectCredentialsException) {
+                return "redirect:/login?t=2";
+//                model.addAttribute("controller_error", "password didn't match");
+            } else if (ex instanceof LockedAccountException) {
+                return "redirect:/login?t=3";
+//                model.addAttribute("controller_error", "account for that username is locked");
+            } else if (ex instanceof AuthenticationException) {
+                return "redirect:/login?t=4";
+//                model.addAttribute("controller_error", "unexpected condition");
+            } else {
+                return "redirect:/login?t=5";
+//                model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
+            }
+
         }
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "login");
         return "redirect:/index";

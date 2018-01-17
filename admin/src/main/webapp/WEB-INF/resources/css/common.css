@@ -60,7 +60,7 @@
 #overlay {
     background-color: #000000;
     opacity: 0.1;
-    z-index: 999;
+    z-index: 9999;
     position: absolute;
     left: 0;
     top: 0;
