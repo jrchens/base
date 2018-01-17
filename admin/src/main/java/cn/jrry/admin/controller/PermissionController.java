@@ -1,16 +1,20 @@
 package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.Permission;
+import cn.jrry.admin.domain.RolePermissionRelation;
 import cn.jrry.admin.service.PermissionService;
+import cn.jrry.admin.service.RolePermissionRelationService;
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.shiro.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,8 @@ public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
+    @Autowired
+    private RolePermissionRelationService rolePermissionRelationService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
     public String index(@Validated Permission record, BindingResult bindingResult, Model model) {
@@ -53,6 +59,17 @@ public class PermissionController {
         List<Permission> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
+
+            String exclusiveRoleName = ObjectUtils.getDisplayString(record.get("exclusiveRoleName"));
+            if(StringUtils.hasText(exclusiveRoleName)){
+                List<RolePermissionRelation> rolePermissionRelationList = rolePermissionRelationService.selectByRoleName(exclusiveRoleName);
+                List<String> exclusivePermissions = Lists.newArrayList();
+                for (RolePermissionRelation rolePermissionRelation:rolePermissionRelationList
+                     ) {
+                    exclusivePermissions.add(rolePermissionRelation.getPermission());
+                }
+                record.put("exclusivePermissions",exclusivePermissions);
+            }
 
             int total = permissionService.count(record);
             if (total > 0) {

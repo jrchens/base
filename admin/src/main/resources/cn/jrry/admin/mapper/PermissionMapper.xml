@@ -65,11 +65,6 @@
           permission != #{permission}
         </foreach>
       </if>
-      <if test="inclusivePermissions != null and inclusivePermissions.size > 0">
-        <foreach collection="inclusivePermissions" open="and (" close=")" item="permission" separator="or">
-          permission = #{permission}
-        </foreach>
-      </if>
     </where>
   </sql>
   <update id="removeByPrimaryKey" parameterType="cn.jrry.admin.domain.Role">

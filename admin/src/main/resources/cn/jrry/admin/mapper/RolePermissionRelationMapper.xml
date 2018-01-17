@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.admin.mapper.RolePermissionRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.admin.domain.RolePermissionRelation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_role_permission_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.admin.domain.RolePermissionRelation">
+    insert into sys_role_permission_relation (id, role_name, permission
+      )
+    values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.RolePermissionRelation">
+    update sys_role_permission_relation
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, role_name, permission
+    from sys_role_permission_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, role_name, permission
+    from sys_role_permission_relation
+  </select>
+
+
+  <select id="countPermission" parameterType="string" resultType="int">
+    select COUNT(1)
+    from sys_role_permission_relation rel LEFT JOIN
+    sys_permission p ON rel.permission = p.permission
+    WHERE p.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectPermission" parameterType="string" resultMap="BaseResultMap">
+    select rel.id, rel.permission, p.viewname
+    from sys_role_permission_relation rel LEFT JOIN
+    sys_permission p ON rel.permission = p.permission
+    WHERE p.is_deleted = 0 AND rel.role_name = #{roleName,jdbcType=VARCHAR}
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+  <select id="selectByRoleName" parameterType="string" resultMap="BaseResultMap">
+    select id, role_name, permission
+    from sys_role_permission_relation
+    WHERE role_name = #{roleName,jdbcType=VARCHAR}
+  </select>
+</mapper>

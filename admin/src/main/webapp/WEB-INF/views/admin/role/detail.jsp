@@ -85,7 +85,7 @@
             method: 'get',
             queryParams: {roleName:'${role.roleName}'},
             cls: 'ext-datagrid-float-left',
-            width:400,
+            width:450,
             pagination: true,
             sortName: 'rel.id',
             sortOrder: 'desc',
@@ -187,6 +187,77 @@
         <th data-options="field:'username'">用户名</th>
         <th data-options="field:'viewname'">显示名</th>
         <th data-options="field:'def'">默认</th>
+    </tr>
+    </thead>
+</table>
+
+<table id="admin_role_detail_permission_datagrid" class="easyui-datagrid"
+       data-options="title: '权限列表',
+            url: 'http://local.com/admin/role-permission-relation/async-permission-query',
+            method: 'get',
+            queryParams: {roleName:'${role.roleName}'},
+            cls: 'ext-datagrid-float-left',
+            width:450,
+            pagination: true,
+            sortName: 'rel.id',
+            sortOrder: 'desc',
+            singleSelect: true,
+            rownumbers: true,
+            minHeight: 300,
+            striped: true,
+            toolbar: [
+                        {   iconCls:'ext-icon fa fa-plus',
+                            handler:function(){
+                                location.href = 'http://local.com/admin/role-permission-relation/create?id=${role.id}';
+                            }
+                        },
+                        {
+                            id: 'admin_role_detail_permission_datagrid_delete',
+                            iconCls:'ext-icon fa fa-trash',
+                            handler:function(){
+                                var thisButton = $(this);
+                                var row = $('#admin_role_detail_permission_datagrid').datagrid('getSelected');
+                                if(row == null){
+                                    $.messager.alert('提示', '请先选择一行记录!', 'warning');
+                                    return false;
+                                }
+
+                                $.messager.confirm('确认', '确认删除记录吗?', function(r) {
+                                    if (r) {
+                                        // var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);
+                                        // $('#sys_group_datagrid').datagrid('deleteRow', index);
+
+                                        $('#overlay').show();
+                                        thisButton.linkbutton('disable');
+
+                                        var reqData = {id:row.id};
+                                        $.post('http://local.com/admin/role-permission-relation/async-delete',reqData,function(data,textStatus,jqXHR){
+                                            if(data.success){
+                                                $('#admin_role_detail_permission_datagrid').datagrid('reload');
+                                            }else{
+                                                $.messager.show({msg:data.message});
+                                            }
+                                        },'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){
+                                            $('#overlay').hide();
+                                            thisButton.linkbutton('enable');
+                                        });
+
+                                    }
+                                });
+                            }
+                        }
+            ],
+            loadFilter: function(data){
+                if(!data.success){
+                    $.messager.show({msg:data.message});
+                }
+                return data.data;
+            },
+       ">
+    <thead>
+    <tr>
+        <th data-options="field:'permission'">权限名</th>
+        <th data-options="field:'viewname'">显示名</th>
     </tr>
     </thead>
 </table>

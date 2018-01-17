@@ -86,7 +86,7 @@
             method: 'get',
             queryParams: {groupName:'${group.groupName}'},
             cls: 'ext-datagrid-float-left',
-            width:400,
+            width:450,
             pagination: true,
             sortName: 'rel.id',
             sortOrder: 'desc',
