@@ -12,7 +12,7 @@
        data-options="title: '群组列表',
             url: 'http://local.com/admin/group/async-query',
             method: 'get',
-            queryParams: {exclusiveGroupNames:'${groupNames}'},
+            queryParams: {exclusiveGroupNames:'${exclusiveGroupNames}'},
             sortName: 'id',
             sortOrder: 'desc',
             pagination: true,
@@ -61,6 +61,7 @@
     </thead>
 </table>
 
-<form id="admin_user_user_group_create_form" method="post" action="http://local.com/admin/user-group-relation/user/save/${user.username}">
+<form id="admin_user_user_group_create_form" method="post" action="http://local.com/admin/user-group-relation/save">
     <input type="hidden" id="groupNames" name="groupNames" value="">
+    <input type="hidden" id="id" name="id" value="${user.id}">
 </form>

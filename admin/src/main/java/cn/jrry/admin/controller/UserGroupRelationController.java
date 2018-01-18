@@ -52,10 +52,10 @@ public class UserGroupRelationController {
 //        return "admin/group/index";
 //    }
 
-    @RequestMapping(path = {"user/async-query"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"async-group-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-group-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -80,16 +80,16 @@ public class UserGroupRelationController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "user/async-query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-group-query");
         return result;
     }
 
-    @RequestMapping(path = "user/create/{username}", method = RequestMethod.GET)
-    public String create(@PathVariable(value = "username") String username, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
+    @RequestMapping(path = "create", method = RequestMethod.GET)
+    public String create(@RequestParam(name = "id") Long userId, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", userId);
         try {
-            User record = userService.selectByUsername(username);
-            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(username);
+            User record = userService.selectByPrimaryKey(userId);
+            List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(record.getUsername());
             List<String> groupNames = Lists.newArrayList();
             for (UserGroupRelation ugr:userGroupRelationList
                  ) {
@@ -97,7 +97,7 @@ public class UserGroupRelationController {
             }
 
             model.addAttribute(record);
-            model.addAttribute("groupNames", Joiner.on(",").join(groupNames));
+            model.addAttribute("exclusiveGroupNames",Joiner.on(",").join(groupNames));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -105,19 +105,19 @@ public class UserGroupRelationController {
         return "admin/user/user_group_create";
     }
 
-    @RequestMapping(path = "user/save/{username}", method = RequestMethod.POST)
-    public String save(@PathVariable(value = "username") String username, @RequestParam(name = "groupNames") String groupNames, Model model) {
-        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username, groupNames);
+    @RequestMapping(path = "save", method = RequestMethod.POST)
+    public String save(@RequestParam(name = "id") Long userId, @RequestParam(name = "groupNames") String groupNames, Model model) {
+        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "save", userId, groupNames);
         User record = null;
         try {
-            record = userService.selectByUsername(username);
+            record = userService.selectByPrimaryKey(userId);
 
             String[] groupNameArray = groupNames.split(",");
             List<UserGroupRelation> userGroupRelationList = Lists.newArrayList();
             for (String groupName : groupNameArray
                     ) {
                 UserGroupRelation userGroupRelation = new UserGroupRelation();
-                userGroupRelation.setUsername(username);
+                userGroupRelation.setUsername(record.getUsername());
                 userGroupRelation.setGroupName(groupName);
                 userGroupRelation.setDef(Boolean.FALSE);
 
@@ -139,10 +139,10 @@ public class UserGroupRelationController {
         return "redirect:/admin/user/detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
-    @RequestMapping(path = "user/async-delete", method = RequestMethod.POST)
+    @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> delete(@Validated(value = Remove.class) UserGroupRelation record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-delete", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -156,14 +156,14 @@ public class UserGroupRelationController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-delete");
         return result;
     }
 
-    @RequestMapping(path = "user/async-update-def", method = RequestMethod.POST)
+    @RequestMapping(path = "async-update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateDef(@Validated(value = Get.class) UserGroupRelation record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-update", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -177,17 +177,17 @@ public class UserGroupRelationController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-update");
         return result;
     }
 
     // ===
     // group
 
-    @RequestMapping(path = {"group/async-query"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "group/async-query", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-user-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -213,7 +213,7 @@ public class UserGroupRelationController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "group/async-query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-user-query");
         return result;
     }
 

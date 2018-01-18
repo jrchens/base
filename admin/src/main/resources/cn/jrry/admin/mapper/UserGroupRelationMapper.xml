@@ -62,7 +62,7 @@
     WHERE g.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectGroup" parameterType="string" resultMap="BaseResultMap">
-    select rel.id, g.group_name, g.viewname,rel.is_def
+    select rel.id, rel.group_name, g.viewname,rel.is_def
     from sys_user_group_relation rel LEFT JOIN
     sys_group g ON rel.group_name = g.group_name
     WHERE g.is_deleted = 0 AND rel.username = #{username,jdbcType=VARCHAR}
@@ -78,7 +78,7 @@
   </select>
 
   <select id="selectUser" parameterType="string" resultMap="BaseResultMap">
-    select rel.id, u.username, u.viewname,rel.is_def
+    select rel.id, rel.username, u.viewname,rel.is_def
     from sys_user_group_relation rel LEFT JOIN
     sys_user u ON rel.username = u.username
     WHERE u.is_deleted = 0 AND rel.group_name = #{groupName,jdbcType=VARCHAR}
