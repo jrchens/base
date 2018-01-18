@@ -61,6 +61,7 @@
     </thead>
 </table>
 
-<form id="admin_user_user_role_create_form" method="post" action="http://local.com/admin/user-role-relation/user/save/${user.username}">
+<form id="admin_user_user_role_create_form" method="post" action="http://local.com/admin/user-role-relation/save">
     <input type="hidden" id="roleNames" name="roleNames" value="">
+    <input type="hidden" id="id" name="id" value="${user.id}">
 </form>

@@ -52,10 +52,10 @@ public class UserRoleRelationController {
 //        return "admin/group/index";
 //    }
 
-    @RequestMapping(path = {"user/async-query"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"async-role-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-role-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserRoleRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -80,18 +80,18 @@ public class UserRoleRelationController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "user/async-query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-role-query");
         return result;
     }
 
-    @RequestMapping(path = "user/create/{username}", method = RequestMethod.GET)
-    public String create(@PathVariable(value = "username") String username, Model model) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", username);
+    @RequestMapping(path = "create", method = RequestMethod.GET)
+    public String create(@RequestParam(value = "id") Long userId, Model model) {
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "create", userId);
         try {
 //            List<Role> rows = Lists.newArrayList();
-            User record = userService.selectByUsername(username);
+            User record = userService.selectByPrimaryKey(userId);
 //            List<Role> roleList = roleService.selectAll();
-            List<UserRoleRelation> userRoleRelationList = userRoleRelationService.selectRoleByUsername(username);
+            List<UserRoleRelation> userRoleRelationList = userRoleRelationService.selectRoleByUsername(record.getUsername());
             List<String> roleNames = Lists.newArrayList();
             for (UserRoleRelation urr:userRoleRelationList
                     ) {
@@ -107,19 +107,19 @@ public class UserRoleRelationController {
         return "admin/user/user_role_create";
     }
 
-    @RequestMapping(path = "user/save/{username}", method = RequestMethod.POST)
-    public String save(@PathVariable(value = "username") String username, @RequestParam(name = "roleNames") String roleNames, Model model) {
-        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "user/save", username, roleNames);
+    @RequestMapping(path = "save", method = RequestMethod.POST)
+    public String save(@RequestParam(value = "id") Long userId, @RequestParam(name = "roleNames") String roleNames, Model model) {
+        logger.info("--> {}.{}({},{})", CONTROLLER_CLASS_NAME, "save", userId, roleNames);
         User record = null;
         try {
-            record = userService.selectByUsername(username);
+            record = userService.selectByPrimaryKey(userId);
 
             String[] roleNameArray = roleNames.split(",");
             List<UserRoleRelation> userRoleRelationList = Lists.newArrayList();
             for (String roleName : roleNameArray
                     ) {
                 UserRoleRelation UserRoleRelation = new UserRoleRelation();
-                UserRoleRelation.setUsername(username);
+                UserRoleRelation.setUsername(record.getUsername());
                 UserRoleRelation.setRoleName(roleName);
                 UserRoleRelation.setDef(Boolean.FALSE);
 
@@ -141,10 +141,10 @@ public class UserRoleRelationController {
         return "redirect:/admin/user/detail?id=" + record.getId();// detail(record, bindingResult, model);
     }
 
-    @RequestMapping(path = "user/async-delete", method = RequestMethod.POST)
+    @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> delete(@Validated(value = Remove.class) UserRoleRelation record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-delete", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -158,14 +158,14 @@ public class UserRoleRelationController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-delete");
         return result;
     }
 
-    @RequestMapping(path = "user/async-update-def", method = RequestMethod.POST)
+    @RequestMapping(path = "async-update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateDef(@Validated(value = Get.class) UserRoleRelation record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-update", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
@@ -179,16 +179,16 @@ public class UserRoleRelationController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-update");
         return result;
     }
 
 
 
-    @RequestMapping(path = {"user/async-user-query"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "user/async-query", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-user-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserRoleRelation> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -214,7 +214,7 @@ public class UserRoleRelationController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "user/async-query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-user-query");
         return result;
     }
 

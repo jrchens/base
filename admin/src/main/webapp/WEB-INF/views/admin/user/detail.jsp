@@ -231,7 +231,7 @@
 
 <table id="admin_user_detail_role_datagrid" class="easyui-datagrid"
        data-options="title: '角色列表',
-            url: 'http://local.com/admin/user-role-relation/user/async-query',
+            url: 'http://local.com/admin/user-role-relation/async-role-query',
             method: 'get',
             queryParams: {username:'${user.username}'},
             cls: 'ext-datagrid-float-left',
@@ -255,7 +255,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user-role-relation/user/create/${user.username}';
+                                location.href = 'http://local.com/admin/user-role-relation/create?id=${user.id}';
                             }
                         },
                         {
@@ -278,7 +278,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-role-relation/user/async-delete',reqData,function(data,textStatus,jqXHR){
+                                        $.post('http://local.com/admin/user-role-relation/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_role_datagrid').datagrid('reload');
                                             }else{
@@ -311,7 +311,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-role-relation/user/async-update-def',reqData,function(data,textStatus,jqXHR){
+                                        $.post('http://local.com/admin/user-role-relation/async-update',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_role_datagrid').datagrid('reload');
                                             }else{
