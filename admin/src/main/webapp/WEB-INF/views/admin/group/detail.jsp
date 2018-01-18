@@ -49,7 +49,7 @@
                                 thisButton.linkbutton('disable')
                                 thisButton.linkbutton({text:'加载中...'});
 
-                                var reqData = {id:${group.id}};
+                                var reqData = {id:'${group.id}'};
                                 $.post('http://local.com/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/group/index';

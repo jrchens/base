@@ -86,7 +86,7 @@
                                 thisButton.linkbutton('disable')
                                 thisButton.linkbutton({text:'加载中...'});
 
-                                var reqData = {id:${user.id}};
+                                var reqData = {id:'${user.id}'};
                                 $.post('http://local.com/admin/user/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/user/index';

@@ -57,7 +57,7 @@
                                 thisButton.linkbutton('disable')
                                 thisButton.linkbutton({text:'加载中...'});
 
-                                var reqData = {id:${permission.id}};
+                                var reqData = {id:'${permission.id}'};
                                 $.post('http://local.com/admin/permission/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/admin/permission/index';
