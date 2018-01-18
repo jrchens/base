@@ -1,6 +1,6 @@
 package cn.jrry.sample.controller;
 
-import cn.jrry.common.dto.LoginUser;
+import cn.jrry.common.domain.LoginUser;
 import cn.jrry.sample.service.SampleService;
 import cn.jrry.util.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;

@@ -1,6 +1,6 @@
 package cn.jrry.sys.controller;
 
-import cn.jrry.common.dto.LoginUser;
+import cn.jrry.common.domain.LoginUser;
 import cn.jrry.common.exception.UserNotFoundException;
 import cn.jrry.common.exception.UserPasswordErrorException;
 import cn.jrry.common.exception.UserStateException;
