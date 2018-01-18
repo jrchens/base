@@ -33,24 +33,7 @@ public class UserRoleRelationController {
     private UserRoleRelationService userRoleRelationService;
 
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private UserService userService;
-
-//    @RequestMapping(path = {"user/index"}, method = RequestMethod.GET)
-//    public String index(@Validated Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record);
-//        try {
-//            if (record == null) {
-//                record = new Group();
-//            }
-//            model.addAttribute(record);
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "index");
-//        return "admin/group/index";
-//    }
 
     @RequestMapping(path = {"async-role-query"}, method = RequestMethod.GET)
     @ResponseBody
@@ -183,8 +166,6 @@ public class UserRoleRelationController {
         return result;
     }
 
-
-
     @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
@@ -218,65 +199,4 @@ public class UserRoleRelationController {
         return result;
     }
 
-//    @RequestMapping(path = "edit", method = RequestMethod.GET)
-//    public String edit(@Validated(value = Edit.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
-//        try {
-//            model.addAttribute(userRoleRelationService.selectByPrimaryKey(record.getId()));
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "edit");
-//        return "admin/group/edit";
-//    }
-//
-//    @RequestMapping(path = "update", method = RequestMethod.POST)
-//    public String update(@Validated(value = Update.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record);
-//        try {
-//            if (!bindingResult.hasErrors()) {
-//                userRoleRelationService.updateByPrimaryKey(record);
-//            } else {
-//                return "admin/group/edit";
-//            }
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//            return "admin/group/edit";
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
-//        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
-//    }
-//
-//    @RequestMapping(path = "detail", method = RequestMethod.GET)
-//    public String detail(@Validated(value = Detail.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail",record);
-//        try {
-//            model.addAttribute(userRoleRelationService.selectByPrimaryKey(record.getId()));
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "detail");
-//        return "admin/group/detail";
-//    }
-//
-//    @RequestMapping(path = "async-remove", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> remove(@Validated(value = Remove.class) Group record, BindingResult bindingResult) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
-//        Map<String, Object> result = Maps.newLinkedHashMap();
-//        Map<String, Object> data = Maps.newLinkedHashMap();
-//        try {
-//            int aff = userRoleRelationService.removeByPrimaryKey(record);
-//            result.put("success", true);
-//            result.put("message", "");
-//            result.put("data", aff);
-//        } catch (Exception ex) {
-//            result.put("success", false);
-//            result.put("message", ExceptionUtils.getSimpleMessage(ex));
-//            result.put("data", 0);
-//        }
-//
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
-//        return result;
-//    }
 }

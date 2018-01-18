@@ -18,7 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
@@ -36,21 +39,6 @@ public class UserGroupRelationController {
     private GroupService groupService;
     @Autowired
     private UserService userService;
-
-//    @RequestMapping(path = {"user/index"}, method = RequestMethod.GET)
-//    public String index(@Validated Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "index", record);
-//        try {
-//            if (record == null) {
-//                record = new Group();
-//            }
-//            model.addAttribute(record);
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "index");
-//        return "admin/group/index";
-//    }
 
     @RequestMapping(path = {"async-group-query"}, method = RequestMethod.GET)
     @ResponseBody
@@ -91,13 +79,13 @@ public class UserGroupRelationController {
             User record = userService.selectByPrimaryKey(userId);
             List<UserGroupRelation> userGroupRelationList = userGroupRelationService.selectGroupByUsername(record.getUsername());
             List<String> groupNames = Lists.newArrayList();
-            for (UserGroupRelation ugr:userGroupRelationList
-                 ) {
+            for (UserGroupRelation ugr : userGroupRelationList
+                    ) {
                 groupNames.add(ugr.getGroupName());
             }
 
             model.addAttribute(record);
-            model.addAttribute("exclusiveGroupNames",Joiner.on(",").join(groupNames));
+            model.addAttribute("exclusiveGroupNames", Joiner.on(",").join(groupNames));
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -181,9 +169,6 @@ public class UserGroupRelationController {
         return result;
     }
 
-    // ===
-    // group
-
     @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
@@ -216,67 +201,4 @@ public class UserGroupRelationController {
         logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-user-query");
         return result;
     }
-
-
-//    @RequestMapping(path = "edit", method = RequestMethod.GET)
-//    public String edit(@Validated(value = Edit.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
-//        try {
-//            model.addAttribute(userGroupRelationService.selectByPrimaryKey(record.getId()));
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "edit");
-//        return "admin/group/edit";
-//    }
-//
-//    @RequestMapping(path = "update", method = RequestMethod.POST)
-//    public String update(@Validated(value = Update.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "update", record);
-//        try {
-//            if (!bindingResult.hasErrors()) {
-//                userGroupRelationService.updateByPrimaryKey(record);
-//            } else {
-//                return "admin/group/edit";
-//            }
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//            return "admin/group/edit";
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "update");
-//        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
-//    }
-//
-//    @RequestMapping(path = "detail", method = RequestMethod.GET)
-//    public String detail(@Validated(value = Detail.class) Group record, BindingResult bindingResult, Model model) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail",record);
-//        try {
-//            model.addAttribute(userGroupRelationService.selectByPrimaryKey(record.getId()));
-//        } catch (Exception ex) {
-//            model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
-//        }
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "detail");
-//        return "admin/group/detail";
-//    }
-//
-//    @RequestMapping(path = "async-remove", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> remove(@Validated(value = Remove.class) Group record, BindingResult bindingResult) {
-//        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
-//        Map<String, Object> result = Maps.newLinkedHashMap();
-//        Map<String, Object> data = Maps.newLinkedHashMap();
-//        try {
-//            int aff = userGroupRelationService.removeByPrimaryKey(record);
-//            result.put("success", true);
-//            result.put("message", "");
-//            result.put("data", aff);
-//        } catch (Exception ex) {
-//            result.put("success", false);
-//            result.put("message", ExceptionUtils.getSimpleMessage(ex));
-//            result.put("data", 0);
-//        }
-//
-//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
-//        return result;
-//    }
 }
