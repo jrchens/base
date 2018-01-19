@@ -24,6 +24,11 @@
             onDblClickRow: function(index,row){
                 location.href = 'http://local.com/admin/config/detail?cfgCode='+row.cfgCode;
             },
+            onClickRow: function(index,row){
+                var btn = $('#admin_config_index_clipboard_button');
+                btn.attr('data-clipboard-text',row.cfgCode);
+                btn.click();
+            },
             loadFilter: function(data){
                 if(!data.success){
                     $.messager.show({msg:data.message});
@@ -104,6 +109,19 @@
     </tr>
     </thead>
 </table>
+
+<div class="ext-div-line"></div>
+
+<div class="ext-warning">
+    点击表格行后，自动复制配置代码。
+</div>
+
+<div style="display: none">
+    <button id="admin_config_index_clipboard_button" class="btn" data-clipboard-text=""></button>
+    <script type="text/javascript">
+        var clipboard = new Clipboard('#admin_config_index_clipboard_button');
+    </script>
+</div>
 
 <form:form id="admin_config_query_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"

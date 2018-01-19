@@ -72,10 +72,10 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!--     <error-page> -->
-    <!--         <exception-type>org.springframework.web.multipart.MultipartException</exception-type> -->
-    <!--         <location>/error.json?type=multipartException</location> -->
-    <!--     </error-page> -->
+     <!--<error-page>-->
+         <!--<exception-type>org.springframework.web.multipart.MultipartException</exception-type>-->
+         <!--<location>/WEB-INF/views/attachment/index.jsp?errorType=multipartException</location>-->
+     <!--</error-page>-->
 
     <!--<welcome-file-list>-->
     <!--<welcome-file>index.html</welcome-file>-->

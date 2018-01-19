@@ -57,8 +57,10 @@
 
         <!--2018-01-17-->
         <!--sys_role_permission_relation-->
+        <!--2018-01-19-->
+        <!--attachment-->
 
-        <table schema="base" tableName="sys_role_permission_relation">
+        <table schema="base" tableName="attachment">
             <domainObjectRenamingRule searchString="^Sys" replaceString=""/>
             <columnRenamingRule searchString="^is_" replaceString=""/>
             <!--<columnOverride column="bnum" javaType="Double"/>-->

@@ -19,15 +19,15 @@
 
 <%--<script type="text/javascript" src="http://res.local.com/UUID.js/dist/uuid.core.js"></script>--%>
 
-<%--<script type="text/javascript" src="http://res.local.com/tinymce/tinymce.min.js"></script>--%>
-<%--<script type="text/javascript" src="http://res.local.com/tinymce/jquery.tinymce.min.js"></script>--%>
+<script type="text/javascript" src="http://res.local.com/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="http://res.local.com/tinymce/jquery.tinymce.min.js"></script>
 
 <%--<script src="http://res.local.com/plupload/js/plupload.min.js"></script>--%>
 <%--<script src="http://res.local.com/simple-module/dist/simple-module.min.js"></script>--%>
 <%--<script src="http://res.local.com/simple-uploader/dist/simple-uploader.min.js"></script>--%>
 
-<%--<script src="http://res.local.com/clipboard/dist/clipboard.min.js"></script>--%>
+<script src="http://res.local.com/clipboard/dist/clipboard.min.js"></script>
 
-<%--<script type="text/javascript" src="http://res.local.com/filesize/lib/filesize.js"></script>--%>
+<script type="text/javascript" src="http://res.local.com/filesize/lib/filesize.js"></script>
 
 <script type="text/javascript" src="/resources/js/common.js"></script>
