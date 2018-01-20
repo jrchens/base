@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.cms.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.cms.domain.Category">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.cms.domain.Category" useGeneratedKeys="true" keyProperty="id">
+    insert into cms_category (parent_id, category,
+      category_name, sort, is_deleted, cruser,
+      crtime
+      )
+    values (#{parentId,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR},
+      #{categoryName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 0, #{cruser,jdbcType=VARCHAR},
+      #{crtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.cms.domain.Category">
+    update cms_category
+    set
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from cms_category
+    where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from cms_category
+    WHERE is_deleted = 0
+  </select>
+
+
+
+  <sql id="selectColumns">
+    id, parent_id, category, category_name, sort
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="parentId != null and parentId > 0">
+        and parent_id LIKE #{parentId,jdbcType=BIGINT}
+      </if>
+    </where>
+  </sql>
+
+  <update id="removeByPrimaryKey" parameterType="cn.jrry.cms.domain.Category">
+    update cms_category
+    set
+    is_deleted = 1,
+    mduser = #{mduser,jdbcType=VARCHAR},
+    mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from cms_category
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from cms_category
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
+
+  <select id="selectByParentId" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from cms_category
+    where is_deleted = 0 AND parent_id = #{parentId,jdbcType=BIGINT}
+    ORDER BY sort asc
+  </select>
+
+</mapper>

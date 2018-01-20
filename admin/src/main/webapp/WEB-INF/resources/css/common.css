@@ -41,7 +41,7 @@
     border-color: #faebcc;
 }
 
-.ext-datagrid-float-left {
+.ext-datagrid-float-left,.ext-panel-float-left {
     float: left;
     margin-right: 10px;
 }

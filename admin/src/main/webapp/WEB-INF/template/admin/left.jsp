@@ -11,4 +11,6 @@
         <span style="display: block"><a href="http://local.com/admin/config/index">配置管理</a></span>
     </shiro:hasRole>
 
+    <span style="display: block"><a href="http://local.com/cms/category/index">类别管理</a></span>
+
 </div>

@@ -24,11 +24,11 @@
     insert into attachment (original_file_name, save_path,
       file_name, file_size, file_type, 
       file_sha1, owner, is_deleted, 
-      cruser, crtime)
+      cruser, crtime, mduser, mdtime)
     values (#{originalFileName,jdbcType=VARCHAR}, #{savePath,jdbcType=VARCHAR},
       #{fileName,jdbcType=VARCHAR}, #{fileSize,jdbcType=BIGINT}, #{fileType,jdbcType=VARCHAR}, 
       #{fileSha1,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, 0,
-      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP},#{mduser,jdbcType=VARCHAR}, #{mdtime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.jrry.web.domain.Attachment">
     update attachment
