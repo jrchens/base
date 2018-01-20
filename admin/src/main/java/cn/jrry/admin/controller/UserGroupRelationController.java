@@ -42,7 +42,7 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = {"async-group-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncGroupQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-group-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();
@@ -129,7 +129,7 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delete(@Validated(value = Remove.class) UserGroupRelation record, BindingResult bindingResult) {
+    public Map<String, Object> asyncDelete(@Validated(value = Remove.class) UserGroupRelation record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-delete", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -171,7 +171,7 @@ public class UserGroupRelationController {
 
     @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncUserQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-user-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserGroupRelation> rows = Lists.newArrayList();

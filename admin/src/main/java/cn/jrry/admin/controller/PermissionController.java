@@ -53,7 +53,7 @@ public class PermissionController {
 
     @RequestMapping(path = {"async-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<Permission> rows = Lists.newArrayList();
@@ -170,7 +170,7 @@ public class PermissionController {
 
     @RequestMapping(path = "async-remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> remove(@Validated(value = Remove.class) Permission record, BindingResult bindingResult) {
+    public Map<String, Object> asyncQuery(@Validated(value = Remove.class) Permission record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();

@@ -37,7 +37,7 @@ public class UserRoleRelationController {
 
     @RequestMapping(path = {"async-role-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncRoleQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-role-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserRoleRelation> rows = Lists.newArrayList();
@@ -126,7 +126,7 @@ public class UserRoleRelationController {
 
     @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delete(@Validated(value = Remove.class) UserRoleRelation record, BindingResult bindingResult) {
+    public Map<String, Object> asyncDelete(@Validated(value = Remove.class) UserRoleRelation record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-delete", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
@@ -168,7 +168,7 @@ public class UserRoleRelationController {
 
     @RequestMapping(path = {"async-user-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> queryUser(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncUserQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-user-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<UserRoleRelation> rows = Lists.newArrayList();

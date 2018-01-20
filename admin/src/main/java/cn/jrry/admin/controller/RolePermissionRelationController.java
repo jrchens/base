@@ -37,7 +37,7 @@ public class RolePermissionRelationController {
 
     @RequestMapping(path = {"async-permission-query"}, method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(required = false) Map<String, Object> record) {
+    public Map<String, Object> asyncPermissionQuery(@RequestParam(required = false) Map<String, Object> record) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-permission-query", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         List<RolePermissionRelation> rows = Lists.newArrayList();
@@ -110,7 +110,7 @@ public class RolePermissionRelationController {
 
     @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delete(@Validated(value = Remove.class) RolePermissionRelation record, BindingResult bindingResult) {
+    public Map<String, Object> asyncDelete(@Validated(value = Remove.class) RolePermissionRelation record, BindingResult bindingResult) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         try {
