@@ -1,6 +1,7 @@
 package cn.jrry.cms.service.impl;
 
 import cn.jrry.cms.domain.Category;
+import cn.jrry.cms.domain.TreeNode;
 import cn.jrry.cms.mapper.CategoryMapper;
 import cn.jrry.cms.service.CategoryService;
 import cn.jrry.common.exception.ServiceException;
@@ -129,6 +130,29 @@ public class CategoryServiceImpl implements CategoryService {
 
         } catch (Exception ex) {
             logger.error("selectByParentId error {}{}{}", parentId, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    private void selectAsTree(final List<TreeNode> treeNodeList) {
+        for (TreeNode treeNode : treeNodeList
+                ) {
+            List<TreeNode> treeNodes = categoryMapper.selectAsTreeNode(treeNode.getId());
+            if (treeNodes != null && treeNodes.size() > 0) {
+                treeNode.setChildren(treeNodes);
+                selectAsTree(treeNodes);
+            }
+        }
+    }
+
+    @Override
+    public List<TreeNode> selectAsTree(Long parentId) {
+        try {
+            List<TreeNode> treeNodeList = categoryMapper.selectAsTreeNode(parentId);
+            selectAsTree(treeNodeList);
+            return treeNodeList;
+        } catch (Exception ex) {
+            logger.error("selectAsTree error {}{}{}", parentId, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
         }
     }

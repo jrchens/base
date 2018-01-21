@@ -8,6 +8,7 @@
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="is_link" jdbcType="BIT" property="link" />
     <result column="cruser" jdbcType="VARCHAR" property="cruser" />
     <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
     <result column="mduser" jdbcType="VARCHAR" property="mduser" />
@@ -19,19 +20,21 @@
   </delete>
   <insert id="insert" parameterType="cn.jrry.cms.domain.Category" useGeneratedKeys="true" keyProperty="id">
     insert into cms_category (parent_id, category,
-      category_name, sort, is_deleted, cruser,
+      category_name, sort, is_link, is_deleted, cruser,
       crtime
       )
     values (#{parentId,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR},
-      #{categoryName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 0, #{cruser,jdbcType=VARCHAR},
+      #{categoryName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{link,jdbcType=BIT}, 0, #{cruser,jdbcType=VARCHAR},
       #{crtime,jdbcType=TIMESTAMP}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.jrry.cms.domain.Category">
     update cms_category
     set
+      category = #{category,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=INTEGER},
+      is_link = #{link,jdbcType=BIT},
       mduser = #{mduser,jdbcType=VARCHAR},
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
@@ -52,7 +55,7 @@
 
 
   <sql id="selectColumns">
-    id, parent_id, category, category_name, sort
+    id, parent_id, category, category_name, sort, is_link
   </sql>
   <sql id="selectWhereCondition">
     <where>
@@ -90,6 +93,20 @@
   <select id="selectByParentId" resultMap="BaseResultMap">
     select
     <include refid="selectColumns"/>
+    from cms_category
+    where is_deleted = 0 AND parent_id = #{parentId,jdbcType=BIGINT}
+    ORDER BY sort asc
+  </select>
+
+
+  <resultMap id="TreeNodeResultMap" type="cn.jrry.cms.domain.TreeNode">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+      <result column="category_name" jdbcType="VARCHAR" property="text" />
+  </resultMap>
+  <select id="selectAsTreeNode" resultMap="TreeNodeResultMap">
+    select
+    id, parent_id, category_name
     from cms_category
     where is_deleted = 0 AND parent_id = #{parentId,jdbcType=BIGINT}
     ORDER BY sort asc

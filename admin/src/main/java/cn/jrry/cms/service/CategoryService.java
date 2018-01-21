@@ -21,4 +21,5 @@ public interface CategoryService {
     int count(Map<String,Object> record);
     List<Category> select(Map<String,Object> record);
     List<Category> selectByParentId(Long parentId);
+    List<TreeNode> selectAsTree(Long parentId);
 }

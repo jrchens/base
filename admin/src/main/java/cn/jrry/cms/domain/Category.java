@@ -13,11 +13,20 @@ public class Category implements Serializable {
 
     private String categoryName;
     private Integer sort;
+    private Boolean link;
     private Boolean deleted;
     private String cruser;
     private Date crtime;
     private String mduser;
     private Date mdtime;
+
+    public Boolean getLink() {
+        return link;
+    }
+
+    public void setLink(Boolean link) {
+        this.link = link;
+    }
 
     public Integer getSort() {
         return sort;

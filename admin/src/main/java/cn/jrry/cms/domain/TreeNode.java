@@ -7,19 +7,32 @@ import java.util.List;
 public class TreeNode implements java.io.Serializable {
     private static final long serialVersionUID = -5673451005085305079L;
     private Long id;
+    private Long parentId;
     private String text;
     private String state;
     private List<TreeNode> children = Lists.newArrayList();
+//    public TreeNode(Long id, String text, String state) {
+//        this.id = id;
+//        this.text = text;
+//        this.state = state;
+//    }
+//    public TreeNode(Long id, String text) {
+//        this.id = id;
+//        this.text = text;
+//    }
+//
+//    public TreeNode(Long id, Long parentId, String text) {
+//        this.id = id;
+//        this.parentId = parentId;
+//        this.text = text;
+//    }
 
-    public TreeNode(Long id, String text, String state) {
-        this.id = id;
-        this.text = text;
-        this.state = state;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public TreeNode(Long id, String text) {
-        this.id = id;
-        this.text = text;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public List<TreeNode> getChildren() {

@@ -92,30 +92,30 @@ public class CategoryController {
         List<TreeNode> data = Lists.newArrayList();
         try {
 
-            rows = categoryService.selectByParentId(id);
-            for (Category category : rows
-                    ) {
+//            rows = categoryService.selectByParentId(id);
+//            for (Category category : rows
+//                    ) {
 //                List<TreeNode> children = Lists.newArrayList();
-                List<Category> categoryList = categoryService.selectByParentId(category.getId());
+//                List<Category> categoryList = categoryService.selectByParentId(category.getId());
 //                for (Category ca :
 //                        categoryList) {
 //                    children.add(new TreeNode(ca.getId(), ca.getCategoryName()));
+////                }
+//                String state = "open";
+//                if (categoryList!=null && categoryList.size()>0){
+//                    state = "closed";
 //                }
-                String state = "open";
-                if (categoryList!=null && categoryList.size()>0){
-                    state = "closed";
-                }
-                TreeNode node = new TreeNode(category.getId(), category.getCategoryName());
-                node.setState(state);
+//                TreeNode node = new TreeNode(category.getId(), category.getCategoryName());
+//                node.setState(state);
 //                if (children.size() > 0) {
 //                    node.setChildren(children);
-//                }
-                data.add(node);
-            }
+////                }
+//                data.add(node);
+//            }
 
             result.put("success", true);
             result.put("message", "");
-            result.put("data", data);
+            result.put("data", categoryService.selectAsTree(id));
 
         } catch (Exception ex) {
 

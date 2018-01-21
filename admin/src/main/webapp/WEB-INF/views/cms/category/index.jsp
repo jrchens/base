@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
 
-<div class="easyui-panel" data-options="cls: 'ext-panel-float-left',width:200,minHeight:500">
+<div class="easyui-panel" data-options="cls: 'ext-panel-float-left',width:200,minHeight:525">
     <ul id="cms_category_index_tree" class="easyui-tree" style="padding: 5px;"
         data-options="
         url:'http://local.com/cms/category/async-tree-query',
@@ -27,6 +27,7 @@
             form.form('clear');
 
             $('#parentId',form).val(node.id);
+            $('#link',form).val(0);
 
             var thisButton = $('#cms_category_index_save_form_save_button');
             thisButton.linkbutton({text:'保存'});
@@ -65,6 +66,13 @@
                     if(data.success){
                         var form = $('#cms_category_index_save_form');
                         form.form('load',data.data);
+
+                        if(data.data.link){
+                            $('#cms_category_index_save_form_link_switchbutton').switchbutton('check');
+                        }else{
+                            $('#cms_category_index_save_form_link_switchbutton').switchbutton('uncheck');
+                        }
+
                     }else{
                         $.messager.show({msg:data.message});
                     }
@@ -136,14 +144,24 @@
     </thead>
 </table>
 
-<div class="easyui-panel" data-options="cls: 'ext-panel-float-left',minWidth:520, minHeight:140" style="margin-top: 10px;">
+<div class="easyui-panel" data-options="cls: 'ext-panel-float-left',minWidth:520, minHeight:150" style="margin-top: 10px;">
     <form:form id="cms_category_index_save_form" method="post"
                modelAttribute="category" cssStyle="padding: 5px; margin: 0px;"
                data-options="inline: true" action="http://local.com/cms/category/async-save">
         <form:hidden path="id"/>
         <form:hidden path="parentId"/>
+        <form:hidden path="link"/>
         <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
             <tbody>
+            <tr>
+                <td>是否链接</td>
+                <td>
+                    <span id="cms_category_index_save_form_link_switchbutton" class="easyui-switchbutton" data-options="onChange:function(checked){
+                            var form = $('#cms_category_index_save_form');
+                            $('#link',form).val(checked);
+                        }"></span><form:errors path="link"/>
+                </td>
+            </tr>
             <tr>
                 <td>类别名</td>
                 <td><form:input path="category" cssClass="easyui-textbox" data-options="fit:false,width:200"></form:input></td>
@@ -166,6 +184,11 @@
                         onClick: function(){
                             var tree = $('#cms_category_index_tree');
                             var node = tree.tree('getSelected');
+
+                            if(node == null){
+                                $.messager.alert('提示', '请先选择节点记录!', 'warning');
+                                return false;
+                            }
 
                             var reqData = $('#cms_category_index_save_form').serializeJSON();
                             var url = 'http://local.com/cms/category/async-save';
@@ -203,13 +226,19 @@
                                                     <%--text: reqData.categoryName--%>
                                                 <%--}]--%>
                                         <%--});--%>
+
+                                        <%--var selectNodeId = node.id;--%>
+                                        <%--setTimeout(function(){--%>
+                                            <%--var node = $('#cms_category_index_tree').tree('find', selectNodeId);--%>
+                                            <%--$('#cms_category_index_tree').tree('select', node.target);--%>
+                                        <%--},5000);--%>
+
+                                        tree.tree('reload');
+
                                     }else{
                                         tree.tree('reload',node.target);
                                     }
-
-
-
-                                }else{
+                                } else {
                                     $.messager.show({msg:data.message});
                                 }
                             },'json').always(function(data_jqXHR, textStatus, jqXHR_errorThrown){
@@ -226,7 +255,7 @@
 </div>
 
 
-<div class="ext-warning" style="margin-top: 510px;">
+<div class="ext-warning" style="margin-top: 535px;">
     <pre>
     1、点击左侧树节点，新增子类别。
     2、点击类别管理-列表记录，下方更新类别。

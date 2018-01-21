@@ -1,6 +1,8 @@
 package cn.jrry.cms.mapper;
 
 import cn.jrry.cms.domain.Category;
+import cn.jrry.cms.domain.TreeNode;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +21,5 @@ public interface CategoryMapper {
     int count(Map<String,Object> record);
     List<Category> select(Map<String,Object> record);
     List<Category> selectByParentId(Long parentId);
+    List<TreeNode> selectAsTreeNode(Long parentId);
 }
