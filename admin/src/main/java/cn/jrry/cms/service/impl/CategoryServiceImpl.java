@@ -134,7 +134,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    private void selectAsTree(final List<TreeNode> treeNodeList) {
+    private void selectAsTree(List<TreeNode> treeNodeList) {
         for (TreeNode treeNode : treeNodeList
                 ) {
             List<TreeNode> treeNodes = categoryMapper.selectAsTreeNode(treeNode.getId());

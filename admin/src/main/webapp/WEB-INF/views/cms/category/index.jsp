@@ -36,13 +36,20 @@
         <%--,queryParams:{parentId:0}--%>
         ">
     </ul>
+    <%--<script type="text/javascript">--%>
+        <%--setTimeout(function () {--%>
+            <%--var tree = $('#cms_category_index_tree');--%>
+            <%--var rootNode = tree.tree('find',1);--%>
+            <%--tree.tree('select',rootNode.target);--%>
+        <%--},2000);--%>
+    <%--</script>--%>
 </div>
 
 <table id="cms_category_index_datagrid" class="easyui-datagrid"
        data-options="title: '类别管理-列表',
             url: 'http://local.com/cms/category/async-query',
             method: 'get',
-            queryParams: {parentId:1},
+            queryParams: {parentId:-1},
             sortName: 'sort',
             sortOrder: 'asc',
             pagination: true,
@@ -56,6 +63,11 @@
             cls: 'ext-datagrid-float-left',
             <%--toolbar: '#cms_category_index_query_form',--%>
             <%--onDblClickRow: function(index,row){--%>
+            onBeforeLoad:function(param){
+                if(param.parentId == -1){
+                    return false;
+                }
+            },
             onClickRow: function(index,row){
                 var thisButton = $('#cms_category_index_save_form_save_button');
                 $('#overlay').show();
@@ -203,38 +215,11 @@
                             thisButton.linkbutton('disable');
                             $.post(url,reqData,function(data,textStatus,jqXHR){
                                 if(data.success){
-
                                     var form = $('#cms_category_index_save_form');
                                     form.form('clear');
 
                                     if(!node.children || node.children.length == 0){
-                                        <%--tree.tree('append',{--%>
-                                            <%--parent: node.target,--%>
-                                            <%--data: {--%>
-                                                <%--success:true,--%>
-                                                <%--data:[{--%>
-                                                    <%--id: data.data,--%>
-                                                    <%--text: reqData.categoryName--%>
-                                                <%--}]--%>
-                                            <%--}--%>
-                                        <%--});--%>
-                                        // TODO first child node can't refresh
-                                        <%--tree.tree('append',{--%>
-                                            <%--parent: node.target,--%>
-                                            <%--data: [{--%>
-                                                    <%--id: data.data,--%>
-                                                    <%--text: reqData.categoryName--%>
-                                                <%--}]--%>
-                                        <%--});--%>
-
-                                        <%--var selectNodeId = node.id;--%>
-                                        <%--setTimeout(function(){--%>
-                                            <%--var node = $('#cms_category_index_tree').tree('find', selectNodeId);--%>
-                                            <%--$('#cms_category_index_tree').tree('select', node.target);--%>
-                                        <%--},5000);--%>
-
                                         tree.tree('reload');
-
                                     }else{
                                         tree.tree('reload',node.target);
                                     }
