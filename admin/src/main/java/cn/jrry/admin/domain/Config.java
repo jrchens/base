@@ -13,28 +13,38 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Config implements Serializable {
-    private static final long serialVersionUID = 9118063304074817477L;
+    private static final long serialVersionUID = 3264423862885814421L;
     private Long id;
 
     @NotBlank
-    @Length(min = 36,max = 36,groups = {Save.class, Remove.class, Update.class})
+    @Length(min = 36, max = 36, groups = {Save.class, Remove.class, Update.class})
     private String cfgCode;
     @NotBlank
-    @Length(min = 2,max = 50,groups = {Save.class, Update.class})
+    @Length(min = 2, max = 50, groups = {Save.class, Update.class})
     private String cfgName;
     @NotNull
-    @Min(value = 1,groups = {Save.class})
-    @Max(value = 32,groups = {Save.class})
+    @Min(value = 1, groups = {Save.class})
+    @Max(value = 32, groups = {Save.class})
     private Byte cfgType;
     @NotBlank
-    @Length(min = 1,max = 200,groups = {Save.class, Update.class})
+    @Length(min = 1, max = 200, groups = {Save.class, Update.class})
     private String cfgValue;
-
+    @NotBlank
+    @Length(min = 1, max = 50, groups = {Save.class, Update.class})
+    private String cfgGroup;
     private Boolean deleted;
     private String cruser;
     private Date crtime;
     private String mduser;
     private Date mdtime;
+
+    public String getCfgGroup() {
+        return cfgGroup;
+    }
+
+    public void setCfgGroup(String cfgGroup) {
+        this.cfgGroup = cfgGroup;
+    }
 
     public String getCfgName() {
         return cfgName;

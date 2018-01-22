@@ -6,6 +6,7 @@
     <result column="cfg_name" jdbcType="VARCHAR" property="cfgName" />
     <result column="cfg_type" jdbcType="TINYINT" property="cfgType" />
     <result column="cfg_value" jdbcType="VARCHAR" property="cfgValue" />
+    <result column="cfg_group" jdbcType="VARCHAR" property="cfgGroup" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="string">
     delete from sys_config
@@ -13,12 +14,12 @@
   </delete>
   <insert id="insert" parameterType="cn.jrry.admin.domain.Config" useGeneratedKeys="true" keyProperty="id">
     insert into sys_config (cfg_code, cfg_type, cfg_name,
-      cfg_value, is_deleted, cruser, 
-      crtime
+      cfg_value, is_deleted, cruser,
+      crtime, cfg_group
       )
     values (#{cfgCode,jdbcType=VARCHAR}, #{cfgType,jdbcType=TINYINT},#{cfgName,jdbcType=VARCHAR},
-      #{cfgValue,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, 
-      #{crtime,jdbcType=TIMESTAMP}
+      #{cfgValue,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR},
+      #{crtime,jdbcType=TIMESTAMP}, #{cfgGroup,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.jrry.admin.domain.Config">
@@ -26,17 +27,18 @@
     set
       cfg_name = #{cfgName,jdbcType=VARCHAR},
       cfg_value = #{cfgValue,jdbcType=VARCHAR},
+      cfg_group = #{cfgGroup,jdbcType=VARCHAR},
       mduser = #{mduser,jdbcType=VARCHAR},
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where cfg_code = #{cfgCode,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="string" resultMap="BaseResultMap">
-    select cfg_code, cfg_type, cfg_name, cfg_value
+    select cfg_code, cfg_type, cfg_name, cfg_value, cfg_group
     from sys_config
     where is_deleted = 0 AND cfg_code = #{cfgCode,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, cfg_code, cfg_type, cfg_name, cfg_value
+    select id, cfg_code, cfg_type, cfg_name, cfg_value, cfg_group
     from sys_config
     WHERE is_deleted = 0
   </select>
@@ -49,4 +51,37 @@
     mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where cfg_code = #{cfgCode,jdbcType=VARCHAR}
   </update>
+
+  <sql id="selectColumns">
+    id, cfg_code, cfg_type, cfg_name, cfg_value, cfg_group
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="cfgName != null and cfgName != ''">
+        <bind name="cfgName" value="'%' + cfgName + '%'"/>
+        and cfg_name LIKE #{cfgName,jdbcType=VARCHAR}
+      </if>
+      <if test="cfgGroup != null and cfgGroup != ''">
+        and cfg_group = #{cfgGroup,jdbcType=VARCHAR}
+      </if>
+
+    </where>
+  </sql>
+
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from sys_config
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from sys_config
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
 </mapper>

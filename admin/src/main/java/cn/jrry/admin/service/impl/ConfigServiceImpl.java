@@ -9,9 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
@@ -97,6 +99,32 @@ public class ConfigServiceImpl implements ConfigService {
             throw new ServiceException(ex.getCause());
         }
     }
+
+
+
+    @Override
+    public int count(Map<String,Object> record){
+        try {
+            return configMapper.count(record);
+        } catch (Exception ex) {
+            logger.error("count error {}{}{}", record, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+    @Override
+    public List<Config> select(Map<String,Object> record){
+        try {
+            int page = Integer.parseInt(ObjectUtils.getDisplayString(record.get("page")));
+            int rows = Integer.parseInt(ObjectUtils.getDisplayString(record.get("rows")));
+            record.put("offset", (page - 1) * rows);
+            return configMapper.select(record);
+
+        } catch (Exception ex) {
+            logger.error("select error {}{}{}", record, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
 
 
 }

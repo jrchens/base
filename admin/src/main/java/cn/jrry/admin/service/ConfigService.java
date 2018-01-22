@@ -3,6 +3,7 @@ package cn.jrry.admin.service;
 import cn.jrry.admin.domain.Config;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ConfigService {
     int deleteByPrimaryKey(String cfgCode);
@@ -15,5 +16,7 @@ public interface ConfigService {
 
     int updateByPrimaryKey(Config record);
     int removeByPrimaryKey(Config record);
+    int count(Map<String,Object> record);
+    List<Config> select(Map<String,Object> record);
 
 }

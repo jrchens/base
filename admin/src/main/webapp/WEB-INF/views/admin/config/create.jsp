@@ -26,6 +26,13 @@
             <td><form:input path="cfgValue" cssClass="easyui-textbox"
                             data-options="required:true,fit:true"/><form:errors path="cfgValue"/></td>
         </tr>
+        <tr>
+            <td>配置组</td>
+            <td><form:input path="cfgGroup" cssClass="easyui-textbox"
+                            data-options="required:true,fit:true"/><form:errors
+                    path="cfgName"/></td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
 
 
         <tr>

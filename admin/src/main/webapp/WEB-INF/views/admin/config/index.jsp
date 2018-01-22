@@ -11,10 +11,8 @@
        data-options="title: '配置管理-列表',
             url: 'http://local.com/admin/config/async-query',
             method: 'get',
-            sortName: 'id',
+            sortName: 'cfg_group asc,id',
             sortOrder: 'desc',
-            pageSize: 200,
-            pageList: [200],
             pagination: true,
             singleSelect: true,
             rownumbers: true,
@@ -102,6 +100,7 @@
        ">
     <thead>
     <tr>
+        <th data-options="field:'cfgGroup'">配置组</th>
         <th data-options="field:'cfgCode'">代码</th>
         <th data-options="field:'cfgName'">名称</th>
         <%--<th data-options="field:'cfgType'">类型</th>--%>

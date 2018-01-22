@@ -35,6 +35,14 @@
                     {text:'文章管理',attributes:{url:'http://local.com/cms/article/index'}},
                 ],
             },
+            {
+                text:'微信管理',
+                children:[
+                    {text:'基础配置',attributes:{url:'http://local.com/wx/config/index'}},
+                    {text:'菜单管理',attributes:{url:'http://local.com/wx/menu/index'}},
+                    {text:'用户管理',attributes:{url:'http://local.com/wx/user/index'}},
+                ],
+            },
         ];
     </script>
 

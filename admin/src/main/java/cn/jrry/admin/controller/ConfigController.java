@@ -54,8 +54,11 @@ public class ConfigController {
         List<Config> rows = Lists.newArrayList();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            rows = configService.selectAll();
-            int total = rows.size();
+
+            int total = configService.count(record);
+            if (total > 0) {
+                rows = configService.select(record);
+            }
             data.put("total", total);
             data.put("rows", rows);
 

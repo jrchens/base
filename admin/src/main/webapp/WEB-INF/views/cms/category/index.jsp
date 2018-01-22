@@ -241,8 +241,7 @@
 
 
 <div class="ext-warning" style="margin-top: 535px;">
-    <pre>
     1、点击左侧树节点，新增子类别。
+    <br>
     2、点击类别管理-列表记录，下方更新类别。
-    </pre>
 </div>

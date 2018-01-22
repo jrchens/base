@@ -1,11 +1,13 @@
 package cn.jrry.admin.mapper;
 
 import cn.jrry.admin.domain.Config;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ConfigMapper {
-    int deleteByPrimaryKey(String cfgCode);
+    int deleteByPrimaryKey(String cfgCode); // @Param(value = "cfgCode")
 
     int insert(Config record);
 
@@ -15,4 +17,6 @@ public interface ConfigMapper {
 
     int updateByPrimaryKey(Config record);
     int removeByPrimaryKey(Config record);
+    int count(Map<String,Object> record);
+    List<Config> select(Map<String,Object> record);
 }
