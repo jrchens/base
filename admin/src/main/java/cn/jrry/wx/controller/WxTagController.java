@@ -151,14 +151,16 @@ public class WxTagController {
         return "wx/tag/detail";
     }
 
-    @RequestMapping(path = "async-remove", method = RequestMethod.POST)
+    @RequestMapping(path = "async-delete", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> asyncQuery(@Validated(value = Remove.class) WxTag record, BindingResult bindingResult) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-remove", record);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-delete", record);
         Map<String, Object> result = Maps.newLinkedHashMap();
         Map<String, Object> data = Maps.newLinkedHashMap();
         try {
-            int aff = wxTagService.removeByPrimaryKey(record);
+            // TODO check wx_user_info_tag_relation
+
+            int aff = wxTagService.deleteByPrimaryKey(record.getId());
             result.put("success", true);
             result.put("message", "");
             result.put("data", aff);
@@ -168,7 +170,7 @@ public class WxTagController {
             result.put("data", 0);
         }
 
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-remove");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-delete");
         return result;
     }
 }

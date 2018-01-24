@@ -43,7 +43,7 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${wxTag.id}'};
-                                $.post('http://local.com/wx/tag/async-remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('http://local.com/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
                                         location.href = 'http://local.com/wx/tag/index';
                                     }else{

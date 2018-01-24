@@ -67,7 +67,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/wx/tag/async-remove',reqData,function(data,textStatus,jqXHR){
+                                        $.post('http://local.com/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#wx_tag_index_datagrid').datagrid('reload');
                                             }else{

@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class WxTag implements Serializable {
+public class WxTag extends WxResponse {
     private static final long serialVersionUID = 8482260777410947150L;
+
     @NotNull
     @Min(value = 1L,groups = {Detail.class,Edit.class,Remove.class})
     @Max(value = 1L,groups = {Detail.class,Edit.class,Remove.class})
