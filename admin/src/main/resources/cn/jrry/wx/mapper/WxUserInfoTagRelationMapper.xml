@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.wx.mapper.WxUserInfoTagRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.wx.domain.WxUserInfoTagRelation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="tag_id" jdbcType="BIGINT" property="tag_id" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_user_info_tag_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.wx.domain.WxUserInfoTagRelation">
+    insert into wx_user_info_tag_relation ( openid, tag_id
+      )
+    values (#{openid,jdbcType=VARCHAR}, #{tag_id,jdbcType=BIGINT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxUserInfoTagRelation">
+    update wx_user_info_tag_relation
+    set openid = #{openid,jdbcType=VARCHAR},
+      tag_id = #{tag_id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, openid, tag_id
+    from wx_user_info_tag_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, openid, tag_id
+    from wx_user_info_tag_relation
+  </select>
+
+  <select id="selectByOpenid" resultMap="BaseResultMap">
+    select id, openid, tag_id
+    from wx_user_info_tag_relation
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByOpenid" parameterType="string">
+    delete from wx_user_info_tag_relation
+    where openid = #{openid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByTagid" parameterType="long">
+    delete from wx_user_info_tag_relation
+    where tag_id = #{tag_id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByRelationIds">
+    delete from wx_user_info_tag_relation
+    where tag_id = #{tag_id,jdbcType=BIGINT} AND openid = #{openid,jdbcType=VARCHAR}
+  </delete>
+
+  <sql id="selectColumns">
+    id, openid, tag_id
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      1 = 1
+      <if test="openid != null and openid != ''">
+        and openid = #{openid,jdbcType=VARCHAR}
+      </if>
+      <if test="tag_id != null and tag_id > 0">
+        and tag_id = #{tag_id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </sql>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from wx_user_info_tag_relation
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_user_info_tag_relation
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
+</mapper>

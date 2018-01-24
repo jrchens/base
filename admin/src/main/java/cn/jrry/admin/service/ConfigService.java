@@ -12,6 +12,8 @@ public interface ConfigService {
 
     Config selectByPrimaryKey(String cfgCode);
     String getString(String cfgCode);
+    Integer getInteger(String cfgCode);
+    Long getLong(String cfgCode);
 
     List<Config> selectAll();
 

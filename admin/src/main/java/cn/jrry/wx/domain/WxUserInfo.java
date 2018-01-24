@@ -10,7 +10,7 @@ public class WxUserInfo extends WxResponse {
     private Long subscribe_time;
     private String remark;
     private Integer groupid;
-    private List<Integer> tagid_list;
+    private List<Long> tagid_list;
     private Long id;
     private String openid;
     private String viewname;
@@ -70,11 +70,11 @@ public class WxUserInfo extends WxResponse {
         this.groupid = groupid;
     }
 
-    public List<Integer> getTagid_list() {
+    public List<Long> getTagid_list() {
         return tagid_list;
     }
 
-    public void setTagid_list(List<Integer> tagid_list) {
+    public void setTagid_list(List<Long> tagid_list) {
         this.tagid_list = tagid_list;
     }
 
@@ -289,7 +289,7 @@ public class WxUserInfo extends WxResponse {
         sb.append(", headimgurl=").append(headimgurl);
         sb.append(", unionid=").append(unionid);
         sb.append(", deleted=").append(deleted);
-        sb.append(", enable=").append(enable);
+        sb.append(", deleted=").append(enable);
         sb.append(", cruser=").append(cruser);
         sb.append(", crtime=").append(crtime);
         sb.append(", mduser=").append(mduser);

@@ -17,9 +17,8 @@ public interface WxTagService {
 
     int updateByPrimaryKey(WxTag record);
 
-    int removeByPrimaryKey(WxTag record);
-
     int count(Map<String, Object> record);
 
     List<WxTag> select(Map<String, Object> record);
+
 }

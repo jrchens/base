@@ -3,7 +3,10 @@ package cn.jrry.wx.controller;
 import cn.jrry.admin.service.ConfigService;
 import cn.jrry.wx.domain.WxMessage;
 import cn.jrry.wx.domain.WxUserInfo;
+import cn.jrry.wx.domain.WxUserInfoTagRelation;
+import cn.jrry.wx.service.WxInvokeService;
 import cn.jrry.wx.service.WxUserInfoService;
+import cn.jrry.wx.service.WxUserInfoTagRelationService;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.hash.Hashing;
@@ -29,10 +32,15 @@ public class MessageController {
 
     private static final String UPLOAD_PATH_KEY = "34c10bf0-fe3b-4ff0-846d-66acf338e7fb";
     private static final String TOKEN_KEY = "7f2dbe5c-d201-4225-a1d0-777f43c8f3bc";
+    private static final String WX_DEFAULT_USER_TAG_KEY = "356bf3a4-418c-4bf3-9e33-c1c3446aa751";
     @Autowired
     private ConfigService configService;
     @Autowired
+    private WxInvokeService wxInvokeService;
+    @Autowired
     private WxUserInfoService wxUserInfoService;
+    @Autowired
+    private WxUserInfoTagRelationService wxUserInfoTagRelationService;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = {"text/plain; charset=UTF-8"})
@@ -96,7 +104,14 @@ public class MessageController {
                 //    Event	事件类型，subscribe(订阅)、unsubscribe(取消订阅)
                 String openid = message.getFromUserName();
                 if ("subscribe".equals(event)) {
-                    WxUserInfo wxUserInfo = wxUserInfoService.getUserInfo(openid);
+
+
+                    WxUserInfo wxUserInfo = wxInvokeService.getUserInfo(openid);
+
+                    // https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=ACCESS_TOKEN
+
+
+
 
 //                    String headimgurl = wxUserInfo.getHeadimgurl();
 //                    closeableHttpClient = HttpClients.createDefault();
@@ -112,9 +127,19 @@ public class MessageController {
 //                        FileCopyUtils.copy(entity.getContent(), new FileOutputStream(dest));
 //                        wxUserInfo.setHeadimgurl(fileName);
 //                    }
+
                     wxUserInfoService.insert(wxUserInfo);
+
+                    Long tagId = configService.getLong(WX_DEFAULT_USER_TAG_KEY);
+                    WxUserInfoTagRelation wxUserInfoTagRelation = new WxUserInfoTagRelation();
+                    wxUserInfoTagRelation.setOpenid(openid);
+                    wxUserInfoTagRelation.setTag_id(tagId);
+                    wxUserInfoTagRelationService.insert(wxUserInfoTagRelation);
+
                 } else if ("unsubscribe".equals(event)) {
-                    wxUserInfoService.deleteByOpenid(openid);
+                    WxUserInfo wxUserInfo = wxUserInfoService.selectByOpenid(openid);
+                    wxUserInfoTagRelationService.deleteByOpenid(wxUserInfo.getOpenid());
+                    wxUserInfoService.deleteByPrimaryKey(wxUserInfo.getId());
                 }
                 logger.info("event type : {}", event);
             } else if ("text".equals(msgType)) {

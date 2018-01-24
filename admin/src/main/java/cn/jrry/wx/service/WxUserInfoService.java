@@ -17,14 +17,10 @@ public interface WxUserInfoService {
     int updateByPrimaryKey(WxUserInfo record);
 
 
-    int deleteByOpenid(String openid);
-
     int count(Map<String, Object> record);
 
     List<WxUserInfo> select(Map<String, Object> record);
 
+    WxUserInfo selectByOpenid(String openid);
 
-    WxUserInfo getUserInfo(String openid);
-    int deleteByPrimaryKey(Long id,int cascade);
-    WxUserInfo selectByPrimaryKey(Long id,int cascade);
 }

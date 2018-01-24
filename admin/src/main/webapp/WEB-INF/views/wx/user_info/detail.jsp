@@ -53,6 +53,19 @@
             <td colspan="2">&nbsp;</td>
         </tr>
 
+
+
+        <tr>
+            <td>标签</td>
+            <td colspan="3">
+                <c:forEach var="tag" items="${wxTagList}" varStatus="status">
+                    <label for="tag_${status.index}">
+                        <input type="checkbox" id="tag_${status.index}" name="tagid_list[${status.index}]" value="${tag.id}" <c:if test="${tag.checked}">checked</c:if>>${tag.name}
+                    </label>
+                </c:forEach>
+            </td>
+        </tr>
+
         <tr>
             <td colspan="4">
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-pencil ', width: 80,

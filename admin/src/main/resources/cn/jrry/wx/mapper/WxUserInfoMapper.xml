@@ -59,10 +59,12 @@
   </select>
 
 
-  <update id="deleteByOpenid" parameterType="string">
-    delete from wx_user_info
+  <select id="selectByOpenid" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_user_info
     where openid = #{openid,jdbcType=VARCHAR}
-  </update>
+  </select>
 
   <sql id="selectColumns">
     id, openid, viewname, mobile, nickname, sex, province, city, country, headimgurl,

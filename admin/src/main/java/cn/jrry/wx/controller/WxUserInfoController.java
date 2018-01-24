@@ -2,8 +2,12 @@ package cn.jrry.wx.controller;
 
 import cn.jrry.util.ExceptionUtils;
 import cn.jrry.validation.group.*;
+import cn.jrry.wx.domain.WxTag;
 import cn.jrry.wx.domain.WxUserInfo;
+import cn.jrry.wx.domain.WxUserInfoTagRelation;
+import cn.jrry.wx.service.WxTagService;
 import cn.jrry.wx.service.WxUserInfoService;
+import cn.jrry.wx.service.WxUserInfoTagRelationService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -29,6 +33,10 @@ public class WxUserInfoController {
 
     @Autowired
     private WxUserInfoService wxUserInfoService;
+    @Autowired
+    private WxUserInfoTagRelationService wxUserInfoTagRelationService;
+    @Autowired
+    private WxTagService wxTagService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
     public String index(@Validated WxUserInfo record, BindingResult bindingResult, Model model) {
@@ -109,12 +117,36 @@ public class WxUserInfoController {
 //        return "redirect:detail?id=" + record.getId();// detail(record, bindingResult, model);
 //    }
 
+    private void initTag(String openid,Model model){
+        List<WxTag> wxTagList = wxTagService.selectAll();
+
+        List<WxUserInfoTagRelation> wxUserInfoTagRelationList = wxUserInfoTagRelationService.selectByOpenid(openid);
+
+        for (WxTag wxTag: wxTagList
+                ) {
+            Long id = wxTag.getId();
+            wxTag.setChecked(Boolean.FALSE);
+            for (WxUserInfoTagRelation wxUserInfoTagRelation: wxUserInfoTagRelationList
+                    ) {
+                Long tagid = wxUserInfoTagRelation.getTag_id();
+                if(tagid.longValue() == id.longValue()){
+                    wxTag.setChecked(Boolean.TRUE);
+                    break;
+                }
+            }
+
+        }
+        model.addAttribute(wxTagList);
+    }
 
     @RequestMapping(path = "edit", method = RequestMethod.GET)
     public String edit(@Validated(value = Edit.class) WxUserInfo record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "edit", record);
         try {
-            model.addAttribute(wxUserInfoService.selectByPrimaryKey(record.getId()));
+            WxUserInfo wxUserInfo = wxUserInfoService.selectByPrimaryKey(record.getId());
+            model.addAttribute(wxUserInfo);
+            initTag(wxUserInfo.getOpenid(),model);
+
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -143,7 +175,9 @@ public class WxUserInfoController {
     public String detail(@Validated(value = Detail.class) WxUserInfo record, BindingResult bindingResult, Model model) {
         logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "detail", record);
         try {
-            model.addAttribute(wxUserInfoService.selectByPrimaryKey(record.getId()));
+            WxUserInfo wxUserInfo = wxUserInfoService.selectByPrimaryKey(record.getId());
+            model.addAttribute(wxUserInfo);
+            initTag(wxUserInfo.getOpenid(),model);
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -158,7 +192,6 @@ public class WxUserInfoController {
 //        Map<String, Object> result = Maps.newLinkedHashMap();
 //        Map<String, Object> data = Maps.newLinkedHashMap();
 //        try {
-//            // TODO cascade wx_user_info_tag_relation
 //
 //            int aff = wxUserInfoService.deleteByPrimaryKey(record.getId());
 //            result.put("success", true);

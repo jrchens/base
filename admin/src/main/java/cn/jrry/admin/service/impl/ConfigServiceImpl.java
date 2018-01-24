@@ -67,10 +67,40 @@ public class ConfigServiceImpl implements ConfigService {
             }
             return null;
         } catch (Exception ex) {
-            logger.error("selectByPrimaryKey error {}{}{}", cfgCode, System.lineSeparator(), ex);
+            logger.error("getString error {}{}{}", cfgCode, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
         }
     }
+
+    @Override
+    public Integer getInteger(String cfgCode){
+        try {
+            Config config = configMapper.selectByPrimaryKey(cfgCode);
+            if(config != null){
+                return Integer.parseInt(config.getCfgValue());
+            }
+            return null;
+        } catch (Exception ex) {
+            logger.error("getInteger error {}{}{}", cfgCode, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public Long getLong(String cfgCode){
+        try {
+            Config config = configMapper.selectByPrimaryKey(cfgCode);
+            if(config != null){
+                return Long.parseLong(config.getCfgValue());
+            }
+            return null;
+        } catch (Exception ex) {
+            logger.error("getLong error {}{}{}", cfgCode, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+
 
     @Override
     public List<Config> selectAll() {

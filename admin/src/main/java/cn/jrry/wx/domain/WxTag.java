@@ -7,30 +7,34 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 public class WxTag extends WxResponse {
     private static final long serialVersionUID = 8482260777410947150L;
 
     @NotNull
-    @Min(value = 1L,groups = {Detail.class,Edit.class,Remove.class})
-    @Max(value = 1L,groups = {Detail.class,Edit.class,Remove.class})
+    @Min(value = 1L, groups = {Detail.class, Edit.class, Remove.class})
+    @Max(value = 1L, groups = {Detail.class, Edit.class, Remove.class})
     private Long id;
 
     @NotBlank(groups = {Save.class, Update.class})
-    @Length(min = 2,max = 50,groups = {Save.class, Update.class})
+    @Length(min = 2, max = 50, groups = {Save.class, Update.class})
     private String name;
 
     private Boolean deleted;
-
+    private Boolean checked;
     private String cruser;
-
     private Date crtime;
-
     private String mduser;
-
     private Date mdtime;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
 
     public Long getId() {
         return id;
@@ -101,12 +105,13 @@ public class WxTag extends WxResponse {
         }
         WxTag other = (WxTag) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
-            && (this.getCruser() == null ? other.getCruser() == null : this.getCruser().equals(other.getCruser()))
-            && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
-            && (this.getMduser() == null ? other.getMduser() == null : this.getMduser().equals(other.getMduser()))
-            && (this.getMdtime() == null ? other.getMdtime() == null : this.getMdtime().equals(other.getMdtime()));
+                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+                && (this.getChecked() == null ? other.getChecked() == null : this.getChecked().equals(other.getChecked()))
+                && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
+                && (this.getCruser() == null ? other.getCruser() == null : this.getCruser().equals(other.getCruser()))
+                && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
+                && (this.getMduser() == null ? other.getMduser() == null : this.getMduser().equals(other.getMduser()))
+                && (this.getMdtime() == null ? other.getMdtime() == null : this.getMdtime().equals(other.getMdtime()));
     }
 
     @Override
@@ -115,6 +120,7 @@ public class WxTag extends WxResponse {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getChecked() == null) ? 0 : getChecked().hashCode());
         result = prime * result + ((getDeleted() == null) ? 0 : getDeleted().hashCode());
         result = prime * result + ((getCruser() == null) ? 0 : getCruser().hashCode());
         result = prime * result + ((getCrtime() == null) ? 0 : getCrtime().hashCode());
@@ -131,6 +137,7 @@ public class WxTag extends WxResponse {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", checked=").append(checked);
         sb.append(", deleted=").append(deleted);
         sb.append(", cruser=").append(cruser);
         sb.append(", crtime=").append(crtime);

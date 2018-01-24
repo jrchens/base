@@ -17,11 +17,10 @@ public interface WxUserInfoMapper {
 
     int updateByPrimaryKey(WxUserInfo record);
 
-
-    int deleteByOpenid(@Param(value = "openid") String openid);
-
     int count(Map<String, Object> record);
 
     List<WxUserInfo> select(Map<String, Object> record);
+
+    WxUserInfo selectByOpenid(@Param(value = "openid") String openid);
 
 }

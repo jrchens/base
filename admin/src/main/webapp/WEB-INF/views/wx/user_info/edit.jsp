@@ -13,6 +13,7 @@
            data-options="inline: true" action="http://local.com/wx/user-info/update">
     <form:hidden path="id"/>
     <form:hidden path="enable"/>
+    <form:hidden path="openid"/>
 
     <table class="ext-data-table">
         <tbody>
@@ -51,6 +52,17 @@
                         }"></span>
                 <form:errors path="enable"/></td>
             <td colspan="2">&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td>标签</td>
+            <td colspan="3">
+                    <c:forEach var="tag" items="${wxTagList}" varStatus="status">
+                        <label for="tag_${status.index}">
+                            <input type="checkbox" id="tag_${status.index}" name="tagid_list" value="${tag.id}" <c:if test="${tag.checked}">checked</c:if>>${tag.name}
+                        </label>
+                    </c:forEach>
+                </td>
         </tr>
 
         <tr>
