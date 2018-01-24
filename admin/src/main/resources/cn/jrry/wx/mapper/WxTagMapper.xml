@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.wx.mapper.WxTagMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.wx.domain.WxTag">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_tag
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.wx.domain.WxTag">
+    insert into wx_tag (id, `name`, is_deleted,
+      cruser, crtime)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 0,
+      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxTag">
+    update wx_tag
+    set `name` = #{name,jdbcType=VARCHAR},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_tag
+    where is_deleted = 0 AND id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_tag
+    WHERE is_deleted = 0
+  </select>
+
+
+  <update id="removeByPrimaryKey" parameterType="cn.jrry.wx.domain.WxTag">
+    update wx_tag
+    set is_deleted = 1,
+    mduser = #{mduser,jdbcType=VARCHAR},
+    mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <sql id="selectColumns">
+    id, `name`
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="name != null and name != ''">
+        <bind name="name" value="'%' + name + '%'"/>
+        and `name` LIKE #{name,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from wx_tag
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_tag
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+</mapper>

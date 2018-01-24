@@ -61,8 +61,12 @@
         <!--attachment-->
         <!--2018-01-20-->
         <!--cms_category-->
+        <!--2018-01-23-->
+        <!--wx_user_info-->
+        <!--2018-01-24-->
+        <!--wx_tag-->
 
-        <table schema="base" tableName="wx_user_info">
+        <table schema="base" tableName="wx_tag">
             <!--<domainObjectRenamingRule searchString="^Wx" replaceString=""/>-->
             <property name="useActualColumnNames" value="true"/>
             <columnRenamingRule searchString="^is_" replaceString=""/>

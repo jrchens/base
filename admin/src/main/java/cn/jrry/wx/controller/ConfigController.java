@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Controller(value = "wxController")
+@Controller(value = "wxConfigController")
 @RequestMapping(path = "wx/config")
 public class ConfigController {
     private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
