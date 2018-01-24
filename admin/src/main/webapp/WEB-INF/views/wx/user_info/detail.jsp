@@ -50,18 +50,12 @@
                             $('#enable',form).val(checked);
                         },readonly:true"></span><form:errors path="enable"/>
             </td>
-            <td colspan="2">&nbsp;</td>
-        </tr>
-
-
-
-        <tr>
             <td>标签</td>
-            <td colspan="3">
+            <td>
                 <c:forEach var="tag" items="${wxTagList}" varStatus="status">
-                    <label for="tag_${status.index}">
-                        <input type="checkbox" id="tag_${status.index}" name="tagid_list[${status.index}]" value="${tag.id}" <c:if test="${tag.checked}">checked</c:if>>${tag.name}
-                    </label>
+                    <c:if test="${tag.checked}">
+                        ${tag.name}<c:if test="${not status.last}">, </c:if>
+                    </c:if>
                 </c:forEach>
             </td>
         </tr>
