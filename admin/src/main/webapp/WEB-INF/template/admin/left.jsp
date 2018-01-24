@@ -40,7 +40,7 @@
                 children:[
                     {text:'基础配置',attributes:{url:'http://local.com/wx/config/index'}},
                     {text:'菜单管理',attributes:{url:'http://local.com/wx/menu/index'}},
-                    {text:'用户管理',attributes:{url:'http://local.com/wx/user/index'}},
+                    {text:'用户管理',attributes:{url:'http://local.com/wx/user-info/index'}},
                     {text:'标签管理',attributes:{url:'http://local.com/wx/tag/index'}},
                 ],
             },

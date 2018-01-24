@@ -225,4 +225,27 @@ public class WxUserInfoServiceImpl implements WxUserInfoService {
         return wxUserInfo;
 
     }
+
+
+    @Override
+    public int deleteByPrimaryKey(Long id,int cascade) {
+        try {
+            return wxUserInfoMapper.deleteByPrimaryKey(id);
+        } catch (Exception ex) {
+            logger.error("deleteByPrimaryKey cascade {} error {}{}{}", cascade, id, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public WxUserInfo selectByPrimaryKey(Long id,int cascade) {
+        try {
+            return wxUserInfoMapper.selectByPrimaryKey(id);
+        } catch (Exception ex) {
+            logger.error("selectByPrimaryKey cascade: {} error {}{}{}", cascade,id, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+
 }

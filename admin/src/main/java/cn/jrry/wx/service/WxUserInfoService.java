@@ -25,4 +25,6 @@ public interface WxUserInfoService {
 
 
     WxUserInfo getUserInfo(String openid);
+    int deleteByPrimaryKey(Long id,int cascade);
+    WxUserInfo selectByPrimaryKey(Long id,int cascade);
 }

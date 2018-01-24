@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <form:form id="wx_tag_edit_form" method="post"
            modelAttribute="wxTag" cssStyle="padding: 5px; margin: 0px;"
-           cssClass="easyui-panel" title="角色管理-编辑"
+           cssClass="easyui-panel" title="标签管理-编辑"
            data-options="inline: true" action="http://local.com/wx/tag/update">
     <form:hidden path="id"/>
 

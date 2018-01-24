@@ -7,9 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
-<table id="wx_config_index_datagrid" class="easyui-datagrid"
-       data-options="title: '配置管理-列表',
-            url: 'http://local.com/wx/config/async-query',
+<table id="wx_user_info_index_datagrid" class="easyui-datagrid"
+       data-options="title: '关注用户管理-列表',
+            url: 'http://local.com/wx/user-info/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -18,41 +18,36 @@
             rownumbers: true,
             minHeight: 520,
             striped: true,
-            toolbar: '#wx_config_query_form',
+            toolbar: '#wx_user_info_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/wx/config/detail?cfgCode='+row.cfgCode;
-            },
-            onClickRow: function(index,row){
-                var btn = $('#wx_config_index_clipboard_button');
-                btn.attr('data-clipboard-text',row.cfgCode);
-                btn.click();
+                location.href = 'http://local.com/wx/user-info/detail?id='+row.id;
             },
             loadFilter: function(data){
                 if(!data.success){
                     $.messager.show({msg:data.message});
                 }
-                var pager = $('#wx_config_index_datagrid').datagrid('getPager');
+                var pager = $('#wx_user_info_index_datagrid').datagrid('getPager');
                 pager.pagination({
                     buttons:[
                         <%--{   iconCls:'ext-icon fa fa-plus',--%>
                             <%--handler:function(){--%>
-                                <%--location.href = 'http://local.com/wx/config/create';--%>
+                                <%--location.href = 'http://local.com/wx/user-info/create';--%>
                             <%--}--%>
                         <%--},--%>
                         {   iconCls:'ext-icon fa fa-pencil',
                             handler:function(){
-                                var row = $('#wx_config_index_datagrid').datagrid('getSelected');
+                                var row = $('#wx_user_info_index_datagrid').datagrid('getSelected');
                                 if(row == null){
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/wx/config/edit?cfgCode='+row.cfgCode;
+                                location.href = 'http://local.com/wx/user-info/edit?id='+row.id;
                             }
-                        }
+                        },
                         <%--{   iconCls:'ext-icon fa fa-trash',--%>
                             <%--handler:function(){--%>
                                 <%--var thisButton = $(this);--%>
-                                <%--var row = $('#wx_config_index_datagrid').datagrid('getSelected');--%>
+                                <%--var row = $('#wx_user_info_index_datagrid').datagrid('getSelected');--%>
                                 <%--if(row == null){--%>
                                     <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
                                     <%--return false;--%>
@@ -60,16 +55,14 @@
 
                                 <%--$.messager.confirm('确认', '确认删除记录吗?', function(r) {--%>
                                     <%--if (r) {--%>
-                                        <%--// var index = $('#sys_group_datagrid').datagrid('getRowIndex', row);--%>
-                                        <%--// $('#sys_group_datagrid').datagrid('deleteRow', index);--%>
 
                                         <%--$('#overlay').show();--%>
                                         <%--thisButton.linkbutton('disable');--%>
 
-                                        <%--var reqData = {cfgCode:row.cfgCode};--%>
-                                        <%--$.post('http://local.com/wx/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
+                                        <%--var reqData = {id:row.id};--%>
+                                        <%--$.post('http://local.com/wx/user-info/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                             <%--if(data.success){--%>
-                                                <%--$('#wx_config_index_datagrid').datagrid('reload');--%>
+                                                <%--$('#wx_user_info_index_datagrid').datagrid('reload');--%>
                                             <%--}else{--%>
                                                 <%--$.messager.show({msg:data.message});--%>
                                             <%--}--%>
@@ -84,56 +77,55 @@
                         <%--},--%>
                         <%--{   iconCls:'ext-icon fa fa-eye',--%>
                             <%--handler:function(){--%>
-                                <%--var row = $('#wx_config_index_datagrid').datagrid('getSelected');--%>
+                                <%--var row = $('#wx_user_info_index_datagrid').datagrid('getSelected');--%>
                                 <%--if(row == null){--%>
                                     <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
                                     <%--return false;--%>
                                 <%--}--%>
-                                <%--location.href = 'http://local.com/wx/config/detail?cfgCode='+row.cfgCode;--%>
+                                <%--location.href = 'http://local.com/wx/user-info/detail?id='+row.id;--%>
                             <%--}--%>
                         <%--}--%>
                     ]
                 });
+
                 return data.data;
             },
        ">
     <thead>
     <tr>
-        <th data-options="field:'cfgCode'">代码</th>
-        <th data-options="field:'cfgName'">名称</th>
-        <%--<th data-options="field:'cfgType'">类型</th>--%>
-        <th data-options="field:'cfgValue'">值</th>
+        <th data-options="field:'viewname'">显示名</th>
+        <th data-options="field:'mobile'">手机号</th>
+        <th data-options="field:'nickname'">微信昵称</th>
+        <th data-options="field:'sex',formatter:function(value,row,index){
+        <%--值为1时是男性，值为2时是女性，值为0时是未知--%>
+            if(1 == value){
+                return '男';
+            }else if(2 == value){
+                return '女';
+            }else{
+                return '未知';
+            }
+        }">性别</th>
     </tr>
     </thead>
 </table>
 
-<div class="ext-div-line"></div>
-
-<div class="ext-warning">
-    点击表格行后，自动复制配置代码。
-</div>
-
-<div style="display: none">
-    <button id="wx_config_index_clipboard_button" class="btn" data-clipboard-text=""></button>
-    <script type="text/javascript">
-        var clipboard = new Clipboard('#wx_config_index_clipboard_button');
-    </script>
-</div>
-
-<form:form id="wx_config_query_form" method="post"
-           modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/wx/config/async-query">
+<form:form id="wx_user_info_query_form" method="post"
+           modelAttribute="wxUserInfo" cssStyle="padding: 5px; margin: 0px;"
+           data-options="inline: true" action="http://local.com/wx/user-info/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>
-            <td>名称</td>
-            <td><form:input path="cfgName" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
+            <td>显示名</td>
+            <td><form:input path="viewname" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
+            <td>手机号</td>
+            <td><form:input path="mobile" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
             <td colspan="2" style="text-align: left"><a href="javascript:;" class="easyui-linkbutton" data-options="
                     width: 80,
                     iconCls:'ext-icon fa fa-search',
                     onClick: function(){
-                        var reqData = $('#wx_config_query_form').serializeJSON();
-                        $('#wx_config_index_datagrid').datagrid('reload',reqData);
+                        var reqData = $('#wx_user_info_query_form').serializeJSON();
+                        $('#wx_user_info_index_datagrid').datagrid('reload',reqData);
                     }">查询</a></td>
         </tr>
         </tbody>
