@@ -38,8 +38,19 @@
                 <form:option value="0">未知</form:option>
                 <form:option value="1">男</form:option>
                 <form:option value="2">女</form:option>
-            </form:select>
+            </form:select><form:errors path="sex"/>
             </td>
+        </tr>
+
+        <tr>
+            <td>启用</td>
+            <td><span class="easyui-switchbutton"
+                      data-options="checked:${empty wxUserInfo.enable ? false : wxUserInfo.enable},onChange:function(checked){
+                            var form = $('#wx_user_info_detail_form');
+                            $('#enable',form).val(checked);
+                        },readonly:true"></span><form:errors path="enable"/>
+            </td>
+            <td colspan="2">&nbsp;</td>
         </tr>
 
         <tr>

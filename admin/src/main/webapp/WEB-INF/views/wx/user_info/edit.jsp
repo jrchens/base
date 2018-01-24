@@ -7,11 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../common/taglib.jsp" %>
-<form:form id="wx/user_info_edit_form" method="post"
+<form:form id="wx_user_info_edit_form" method="post"
            modelAttribute="wxUserInfo" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="关注用户管理-编辑"
            data-options="inline: true" action="http://local.com/wx/user-info/update">
     <form:hidden path="id"/>
+    <form:hidden path="enable"/>
 
     <table class="ext-data-table">
         <tbody>
@@ -42,6 +43,17 @@
         </tr>
 
         <tr>
+            <td>启用</td>
+            <td><span class="easyui-switchbutton"
+                      data-options="checked:${empty wxUserInfo.enable ? false : wxUserInfo.enable},onChange:function(checked){
+                            var form = $('#wx_user_info_edit_form');
+                            $('#enable',form).val(checked);
+                        }"></span>
+                <form:errors path="enable"/></td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+
+        <tr>
             <td colspan="4">
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-pencil ', width: 80,
                     onClick: function(){
@@ -49,7 +61,7 @@
                     var thisButton = $(this);
                     thisButton.linkbutton('disable');
                     thisButton.linkbutton({text:'加载中...'});
-                    var form = $('#wx/user_info_edit_form');
+                    var form = $('#wx_user_info_edit_form');
                     form.submit();
                     }">更新</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,

@@ -106,6 +106,7 @@
                 return '未知';
             }
         }">性别</th>
+        <th data-options="field:'enable'">启用</th>
     </tr>
     </thead>
 </table>

@@ -14,6 +14,7 @@
     <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
     <result column="unionid" jdbcType="VARCHAR" property="unionid" />
     <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="is_enable" jdbcType="BIT" property="enable" />
     <result column="cruser" jdbcType="VARCHAR" property="cruser" />
     <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
     <result column="mduser" jdbcType="VARCHAR" property="mduser" />
@@ -27,26 +28,20 @@
     insert into wx_user_info (openid, viewname,
       mobile, nickname, sex, 
       province, city, country, 
-      headimgurl, unionid, is_deleted, 
-      cruser, crtime)
+      headimgurl, unionid, is_deleted,
+      is_enable, cruser, crtime)
     values (#{openid,jdbcType=VARCHAR}, #{viewname,jdbcType=VARCHAR},
       #{mobile,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
       #{headimgurl,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, 0,
-      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+      0, #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxUserInfo">
     update wx_user_info
-    set openid = #{openid,jdbcType=VARCHAR},
+    set
+      is_enable = #{enable,jdbcType=BIT},
       viewname = #{viewname,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      country = #{country,jdbcType=VARCHAR},
-      headimgurl = #{headimgurl,jdbcType=VARCHAR},
-      unionid = #{unionid,jdbcType=VARCHAR},
       mduser = #{mduser,jdbcType=VARCHAR},
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
@@ -71,7 +66,7 @@
 
   <sql id="selectColumns">
     id, openid, viewname, mobile, nickname, sex, province, city, country, headimgurl,
-    unionid
+    unionid,is_enable
   </sql>
   <sql id="selectWhereCondition">
     <where>

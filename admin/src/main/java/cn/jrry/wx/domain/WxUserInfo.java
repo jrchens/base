@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 public class WxUserInfo extends WxResponse {
-    private static final long serialVersionUID = 6848394955614772819L;
 
+    private static final long serialVersionUID = -6043746698282263159L;
     private Integer subscribe;
     private Long subscribe_time;
     private String remark;
@@ -23,11 +23,20 @@ public class WxUserInfo extends WxResponse {
     private String headimgurl;
     private String unionid;
     private Boolean deleted;
+    private Boolean enable;
     private String cruser;
     private Date crtime;
     private String mduser;
     private Date mdtime;
     private String privilege;
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
 
     public Integer getSubscribe() {
         return subscribe;
@@ -228,6 +237,7 @@ public class WxUserInfo extends WxResponse {
                 && (this.getCountry() == null ? other.getCountry() == null : this.getCountry().equals(other.getCountry()))
                 && (this.getHeadimgurl() == null ? other.getHeadimgurl() == null : this.getHeadimgurl().equals(other.getHeadimgurl()))
                 && (this.getUnionid() == null ? other.getUnionid() == null : this.getUnionid().equals(other.getUnionid()))
+                && (this.getEnable() == null ? other.getEnable() == null : this.getEnable().equals(other.getEnable()))
                 && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
                 && (this.getCruser() == null ? other.getCruser() == null : this.getCruser().equals(other.getCruser()))
                 && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
@@ -251,6 +261,7 @@ public class WxUserInfo extends WxResponse {
         result = prime * result + ((getCountry() == null) ? 0 : getCountry().hashCode());
         result = prime * result + ((getHeadimgurl() == null) ? 0 : getHeadimgurl().hashCode());
         result = prime * result + ((getUnionid() == null) ? 0 : getUnionid().hashCode());
+        result = prime * result + ((getEnable() == null) ? 0 : getEnable().hashCode());
         result = prime * result + ((getDeleted() == null) ? 0 : getDeleted().hashCode());
         result = prime * result + ((getCruser() == null) ? 0 : getCruser().hashCode());
         result = prime * result + ((getCrtime() == null) ? 0 : getCrtime().hashCode());
@@ -278,6 +289,7 @@ public class WxUserInfo extends WxResponse {
         sb.append(", headimgurl=").append(headimgurl);
         sb.append(", unionid=").append(unionid);
         sb.append(", deleted=").append(deleted);
+        sb.append(", enable=").append(enable);
         sb.append(", cruser=").append(cruser);
         sb.append(", crtime=").append(crtime);
         sb.append(", mduser=").append(mduser);
