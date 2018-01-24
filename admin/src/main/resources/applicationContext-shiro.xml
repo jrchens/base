@@ -23,12 +23,13 @@
         </property> -->
         <property name="filterChainDefinitions">
             <value>
-                /resources/** = anon
                 # some example chain definitions:
                 /admin/** = authc, roles[admin]
+                /cms/** = authc, roles[cms]
+                /wx/** = authc, roles[wx]
                 # /docs/** = authc, perms[document:read]
-                /sample/** = authc,roles[admin]
-                /** = authc
+                # /sample/** = authc,roles[admin]
+                /** = anon
                 # more URL-to-FilterChain definitions here
             </value>
         </property>

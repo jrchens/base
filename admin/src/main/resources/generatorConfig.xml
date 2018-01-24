@@ -29,17 +29,17 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="cn.jrry.cms.domain"
+        <javaModelGenerator targetPackage="cn.jrry.wx.domain"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="cn.jrry.cms.mapper"
+        <sqlMapGenerator targetPackage="cn.jrry.wx.mapper"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="cn.jrry.cms.mapper" targetProject="src/main/java">
+                             targetPackage="cn.jrry.wx.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
@@ -62,8 +62,9 @@
         <!--2018-01-20-->
         <!--cms_category-->
 
-        <table schema="base" tableName="cms_category">
-            <domainObjectRenamingRule searchString="^Cms" replaceString=""/>
+        <table schema="base" tableName="wx_user_info">
+            <!--<domainObjectRenamingRule searchString="^Wx" replaceString=""/>-->
+            <property name="useActualColumnNames" value="true"/>
             <columnRenamingRule searchString="^is_" replaceString=""/>
             <!--<columnOverride column="bnum" javaType="Double"/>-->
             <!--<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID() + 1"/>-->

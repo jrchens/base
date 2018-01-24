@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.wx.mapper.WxUserInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.wx.domain.WxUserInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="viewname" jdbcType="VARCHAR" property="viewname" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="unionid" jdbcType="VARCHAR" property="unionid" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_user_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.wx.domain.WxUserInfo">
+    insert into wx_user_info (openid, viewname,
+      mobile, nickname, sex, 
+      province, city, country, 
+      headimgurl, unionid, is_deleted, 
+      cruser, crtime)
+    values (#{openid,jdbcType=VARCHAR}, #{viewname,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+      #{headimgurl,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, 0,
+      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxUserInfo">
+    update wx_user_info
+    set openid = #{openid,jdbcType=VARCHAR},
+      viewname = #{viewname,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      headimgurl = #{headimgurl,jdbcType=VARCHAR},
+      unionid = #{unionid,jdbcType=VARCHAR},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_user_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_user_info
+  </select>
+
+
+  <update id="deleteByOpenid" parameterType="string">
+    delete from wx_user_info
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
+
+  <sql id="selectColumns">
+    id, openid, viewname, mobile, nickname, sex, province, city, country, headimgurl,
+    unionid
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="viewname != null and viewname != ''">
+        <bind name="viewname" value="'%' + viewname + '%'"/>
+        and viewname LIKE #{viewname,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from wx_user_info
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_user_info
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
+</mapper>

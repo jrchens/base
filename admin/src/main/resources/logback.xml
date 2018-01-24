@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- <property name="LOG_HOME" value="${logback.file.path}" /> -->
+
+    <!--<property name="LOG_HOME" value="${logback.file.path}" />-->
     <!--<property resource="config.properties"/>-->
-    <!--     <appender name="FILE" -->
-    <!--         class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
-    <!--         <file>${logback.file.path}/xxfw.log</file> -->
-    <!--         <rollingPolicy -->
-    <!--             class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"> -->
-    <!--             <fileNamePattern>${logback.file.path}/${logback.file.size.time.name.pattern} -->
-    <!--             </fileNamePattern> -->
-    <!--             <maxFileSize>100MB</maxFileSize> -->
-    <!--             <maxHistory>31</maxHistory> -->
-    <!--             <totalSizeCap>3GB</totalSizeCap> -->
-    <!--         </rollingPolicy> -->
-    <!--         <encoder> -->
-    <!--             <pattern>%-4r %d %-5level %logger{36} - %msg%n</pattern> -->
-    <!--         </encoder> -->
-    <!--     </appender> -->
+
+         <appender name="FILE"
+             class="ch.qos.logback.core.rolling.RollingFileAppender">
+             <file>/usr/local/var/log/jracd-wx.log</file>
+             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                 <fileNamePattern>/usr/local/var/log/jracd-wx.%i.%d{yyyy-MM-dd}.zip</fileNamePattern>
+                 <maxFileSize>100MB</maxFileSize>
+                 <maxHistory>31</maxHistory>
+                 <totalSizeCap>3GB</totalSizeCap>
+             </rollingPolicy>
+             <encoder>
+                 <pattern>%-4r %d %-5level %logger{36} - %msg%n</pattern>
+             </encoder>
+         </appender>
 
     <!--     <appender name="FILE" -->
     <!--         class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
@@ -62,10 +62,10 @@
     <!--   <logger name="org.springframework.jdbc.core.namedparam" level="DEBUG" /> -->
     <!--   <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/> -->
 
-    <!--<root level="INFO">-->
-    <!--<appender-ref ref="FILE"/>-->
-    <!--</root>-->
-    <root level="debug">
-        <appender-ref ref="STDOUT"/>
+    <root level="DEBUG">
+    <appender-ref ref="FILE"/>
     </root>
+    <!--<root level="DEBUG">-->
+        <!--<appender-ref ref="STDOUT"/>-->
+    <!--</root>-->
 </configuration>

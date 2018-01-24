@@ -76,6 +76,7 @@
 
     <import resource="classpath:applicationContext-mybatis.xml"/>
     <import resource="classpath:applicationContext-shiro.xml"/>
+    <import resource="classpath:applicationContext-task.xml"/>
     <!--<import resource="classpath:cacheConfig.xml"/>-->
     <!--<import resource="classpath:shiroConfig.xml"/>-->
 

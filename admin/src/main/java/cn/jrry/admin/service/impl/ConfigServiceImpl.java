@@ -59,6 +59,20 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    public String getString(String cfgCode){
+        try {
+            Config config = configMapper.selectByPrimaryKey(cfgCode);
+            if(config != null){
+                return config.getCfgValue();
+            }
+            return null;
+        } catch (Exception ex) {
+            logger.error("selectByPrimaryKey error {}{}{}", cfgCode, System.lineSeparator(), ex);
+            throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
     public List<Config> selectAll() {
         try {
             return configMapper.selectAll();

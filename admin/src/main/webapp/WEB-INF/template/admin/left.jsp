@@ -41,11 +41,11 @@
                     {text:'基础配置',attributes:{url:'http://local.com/wx/config/index'}},
                     {text:'菜单管理',attributes:{url:'http://local.com/wx/menu/index'}},
                     {text:'用户管理',attributes:{url:'http://local.com/wx/user/index'}},
+                    {text:'标签管理',attributes:{url:'http://local.com/wx/user_tag/index'}},
                 ],
             },
         ];
     </script>
-
 
         <ul id="cms_category_index_tree" class="easyui-tree"
             data-options="

@@ -61,7 +61,7 @@
     <where>
       is_deleted = 0
       <if test="parentId != null and parentId > 0">
-        and parent_id LIKE #{parentId,jdbcType=BIGINT}
+        and parent_id = #{parentId,jdbcType=BIGINT}
       </if>
     </where>
   </sql>

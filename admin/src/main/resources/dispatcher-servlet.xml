@@ -63,6 +63,8 @@
 
     <mvc:resources location="/WEB-INF/resources/" mapping="/resources/**" cache-period="86400"></mvc:resources>
     <mvc:resources location="/favicon.ico" mapping="/favicon.ico" cache-period="86400"></mvc:resources>
+    <mvc:resources location="/MP_verify_18tLgLKbrDMZDUTI.txt" mapping="/MP_verify_18tLgLKbrDMZDUTI.txt" cache-period="86400"></mvc:resources>
+    <mvc:resources location="/MP_verify_MNDTlakVcLrQRLNi.txt" mapping="/MP_verify_MNDTlakVcLrQRLNi.txt" cache-period="86400"></mvc:resources>
 
     <!-- <bean id="viewResolver" -->
     <!-- class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->

@@ -11,6 +11,7 @@ public interface ConfigService {
     int insert(Config record);
 
     Config selectByPrimaryKey(String cfgCode);
+    String getString(String cfgCode);
 
     List<Config> selectAll();
 

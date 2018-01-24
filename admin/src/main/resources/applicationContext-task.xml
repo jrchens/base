@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+
+
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- <task:annotation-driven /> -->
+    <bean id="wxAccessTokenService" class="cn.jrry.task.impl.WxAccessTokenTaskImpl"/>
+    <task:scheduler id="defaultScheduler" pool-size="5"/>
+    <task:scheduled-tasks scheduler="defaultScheduler">
+        <!--1 hour-->
+        <!--second, minute, hour, day, month, week [,year]-->
+        <!--<task:scheduled ref="wxAccessTokenService" method="generate" cron="* * */1 * * *"/>-->
+        <!--90 minute -->
+
+        <!--initial-delay="60000"-->
+        <task:scheduled ref="wxAccessTokenService" method="generate" initial-delay="60000" fixed-rate="5400000"/>
+    </task:scheduled-tasks>
+
+</beans>

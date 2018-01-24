@@ -20,5 +20,9 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>hdtyi-wx</finalName>
+    </build>
+
 
 </project>
