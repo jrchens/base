@@ -86,9 +86,8 @@ public class CategoryController {
     @RequestMapping(path = {"async-tree-query"}, method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> asyncTreeQuery(@RequestParam(required = false, defaultValue = "0") Long id) {
-        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-query", id);
+        logger.info("--> {}.{}({})", CONTROLLER_CLASS_NAME, "async-tree-query", id);
         Map<String, Object> result = Maps.newLinkedHashMap();
-        List<Category> rows = Lists.newArrayList();
         List<TreeNode> data = Lists.newArrayList();
         try {
 
@@ -123,7 +122,7 @@ public class CategoryController {
             result.put("message", ExceptionUtils.getSimpleMessage(ex));
             result.put("data", data);
         }
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-query");
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-tree-query");
         return result;
     }
 

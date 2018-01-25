@@ -18,7 +18,7 @@
 
 .ext-data-table > tbody > tr > td:nth-child(odd) {
     background: #f3f3f3;
-    width: 100px;
+    width: 200px;
     text-align: right;
     padding-right: 16px;
 }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.wx.mapper.WxMenuMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.wx.domain.WxMenu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parent_id" />
+    <result column="node_type" jdbcType="VARCHAR" property="node_type" />
+    <result column="node_name" jdbcType="VARCHAR" property="node_name" />
+    <result column="node_key" jdbcType="VARCHAR" property="node_key" />
+    <result column="node_url" jdbcType="VARCHAR" property="node_url" />
+    <result column="node_media_id" jdbcType="VARCHAR" property="node_media_id" />
+    <result column="node_appid" jdbcType="VARCHAR" property="node_appid" />
+    <result column="node_pagepath" jdbcType="VARCHAR" property="node_pagepath" />
+    <result column="view_scope" jdbcType="VARCHAR" property="view_scope" />
+    <result column="is_custom" jdbcType="BIT" property="custom" />
+    <result column="menuid" jdbcType="BIGINT" property="menuid" />
+    <result column="rich_content" jdbcType="VARCHAR" property="rich_content" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="url_state" jdbcType="VARCHAR" property="url_state" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.wx.domain.WxMenu" useGeneratedKeys="true" keyProperty="id">
+    insert into wx_menu (parent_id, node_type,
+      node_name, node_key, node_url, 
+      node_media_id, node_appid, node_pagepath, 
+      view_scope, is_custom, menuid, 
+      rich_content, sort, is_deleted,url_state
+      cruser, crtime)
+    values (#{parent_id,jdbcType=BIGINT}, 'view',
+      #{node_name,jdbcType=VARCHAR}, #{node_key,jdbcType=VARCHAR}, #{node_url,jdbcType=VARCHAR}, 
+      #{node_media_id,jdbcType=VARCHAR}, #{node_appid,jdbcType=VARCHAR}, #{node_pagepath,jdbcType=VARCHAR}, 
+      'snsapi_base', 0, #{menuid,jdbcType=BIGINT},
+      #{rich_content,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 0, '',
+      #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxMenu">
+    update wx_menu
+    set
+      node_type = #{node_type,jdbcType=VARCHAR},
+      node_name = #{node_name,jdbcType=VARCHAR},
+      node_key = #{node_key,jdbcType=VARCHAR},
+      node_url = #{node_url,jdbcType=VARCHAR},
+      node_media_id = #{node_media_id,jdbcType=VARCHAR},
+      node_appid = #{node_appid,jdbcType=VARCHAR},
+      node_pagepath = #{node_pagepath,jdbcType=VARCHAR},
+      view_scope = #{view_scope,jdbcType=VARCHAR},
+      menuid = #{menuid,jdbcType=BIGINT},
+      rich_content = #{rich_content,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      url_state = #{url_state,jdbcType=VARCHAR},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_menu
+    WHERE is_deleted = 0
+  </select>
+
+
+  <sql id="selectColumns">
+    id, parent_id, node_type, node_name, node_key, node_url, node_media_id, node_appid,
+    node_pagepath, view_scope, is_custom, menuid, rich_content, sort, url_state
+  </sql>
+  <sql id="selectWhereCondition">
+    <where>
+      is_deleted = 0
+      <if test="parent_id != null">
+        and `parent_id` = #{parent_id,jdbcType=BIGINT}
+      </if>
+    </where>
+  </sql>
+  <select id="count" resultType="int">
+    select
+    COUNT(1)
+    from wx_menu
+    <include refid="selectWhereCondition"/>
+  </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_menu
+    <include refid="selectWhereCondition"/>
+    ORDER BY ${sort} ${order}
+    limit ${offset},${rows}
+  </select>
+
+  <select id="selectByParentId" resultMap="BaseResultMap">
+    select
+    <include refid="selectColumns"/>
+    from wx_menu
+    WHERE is_deleted = 0 AND parent_id = #{parent_id,jdbcType=BIGINT}
+    ORDER BY sort ASC
+  </select>
+
+  <resultMap id="TreeNodeResultMap" type="cn.jrry.cms.domain.TreeNode">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="node_name" jdbcType="VARCHAR" property="text" />
+  </resultMap>
+  <select id="selectAsTreeNode" resultMap="TreeNodeResultMap">
+    select
+    id, parent_id, node_name
+    from wx_menu
+    where is_deleted = 0 AND parent_id = #{parent_id,jdbcType=BIGINT}
+    ORDER BY sort ASC
+  </select>
+
+
+  <update id="updateMenuid" parameterType="cn.jrry.wx.domain.WxMenu">
+    update wx_menu
+    set
+    menuid = #{menuid,jdbcType=BIGINT},
+    mduser = #{mduser,jdbcType=VARCHAR},
+    mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
