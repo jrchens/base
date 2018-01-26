@@ -10,8 +10,8 @@ import java.util.Map;
 public interface WxInvokeService {
 
 
-    void generate(); // access token
-    void refresh(); // web access token
+    void getAccessTokenTask(); // access token
+    void refreshWebAccessTokenTask(); // web access token
 
     String getAccessToken();
 

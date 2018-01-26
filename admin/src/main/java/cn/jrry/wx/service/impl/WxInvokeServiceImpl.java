@@ -51,7 +51,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
-    public void generate() {
+    public void getAccessTokenTask() {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
         try {
@@ -81,7 +81,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             HttpEntity entity = closeableHttpResponse.getEntity();
 
             String json = EntityUtils.toString(entity, "UTF-8");
-            logger.info("get access_token response json : {}", json);
+            logger.info("task --> get access_token response json : {}", json);
 
             Gson gson = new Gson();
 
@@ -109,7 +109,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
-    public void refresh() {
+    public void refreshWebAccessTokenTask() {
         try {
             Date expiresTime = DateTime.now().plusMinutes(10).toDate();
             List<String> refreshTokenList = wxWebAccessTokenMapper.selectNeedRefresh(expiresTime);
@@ -122,11 +122,12 @@ public class WxInvokeServiceImpl implements WxInvokeService {
                     wxWebAccessToken.setRefresh_token(refreshTokenResponse.getRefresh_token());
                     wxWebAccessToken.setScope(refreshTokenResponse.getScope());
                     wxWebAccessToken.setExpires_time(DateTime.now().plusMinutes(90).toDate());
+                    wxWebAccessToken.setOpenid(refreshTokenResponse.getOpenid());
                     wxWebAccessTokenMapper.updateByOpenid(wxWebAccessToken);
                 }
             }
         } catch (Exception ex) {
-            logger.error("refresh web access token error {}", ex);
+            logger.error("task --> refresh web_access_token error {}", ex);
         }
     }
 
