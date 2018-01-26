@@ -51,7 +51,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
-    public void getAccessTokenTask() {
+    public void refreshAccessTokenTask() {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
         try {
@@ -81,7 +81,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             HttpEntity entity = closeableHttpResponse.getEntity();
 
             String json = EntityUtils.toString(entity, "UTF-8");
-            logger.info("task --> get access_token response json : {}", json);
+            logger.info("task --> refresh access_token response json : {}", json);
 
             Gson gson = new Gson();
 
@@ -96,7 +96,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
                 // TODO send notification to admin
             }
         } catch (Exception ex) {
-            logger.error("generate error {}", ex);
+            logger.error("refresh access_token error {}", ex);
         } finally {
             try {
                 closeableHttpResponse.close();

@@ -6,7 +6,6 @@
     <result column="access_token" jdbcType="VARCHAR" property="access_token" />
     <result column="expires_in" jdbcType="INTEGER" property="expires_in" />
     <result column="expires_time" jdbcType="TIMESTAMP" property="expires_time" />
-    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from wx_access_token

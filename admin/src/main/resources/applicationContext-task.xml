@@ -19,8 +19,8 @@
         <!--90 minute -->
 
         <!--initial-delay="60000"-->
-        <task:scheduled ref="wxInvokeServiceImpl" method="getAccessTokenTask" initial-delay="30000" fixed-rate="6000000"/><!--100-->
-        <task:scheduled ref="wxInvokeServiceImpl" method="refreshWebAccessTokenTask" fixed-rate="600000"/><!--10-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refreshAccessTokenTask" fixed-rate="6000000"/><!--100-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refreshWebAccessTokenTask" initial-delay="60000" fixed-rate="600000"/><!--10-->
     </task:scheduled-tasks>
 
 </beans>
