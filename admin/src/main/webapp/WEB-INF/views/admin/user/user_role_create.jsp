@@ -10,7 +10,7 @@
 
 <table id="admin_user_user_role_create_datagrid" class="easyui-datagrid"
        data-options="title: '角色列表',
-            url: 'http://local.com/admin/role/async-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/role/async-query',
             method: 'get',
             queryParams: {exclusiveRoleNames:'${roleNames}'},
             sortName: 'id',
@@ -41,7 +41,7 @@
                         },{
                             iconCls:'ext-icon fa fa-arrow-left',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user/detail?id=${user.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/user/detail?id=${user.id}';
                             }
                         }
             ],
@@ -61,7 +61,7 @@
     </thead>
 </table>
 
-<form id="admin_user_user_role_create_form" method="post" action="http://local.com/admin/user-role-relation/save">
+<form id="admin_user_user_role_create_form" method="post" action="${WEB_ROOT_CONTEXT}/admin/user-role-relation/save">
     <input type="hidden" id="roleNames" name="roleNames" value="">
     <input type="hidden" id="id" name="id" value="${user.id}">
 </form>

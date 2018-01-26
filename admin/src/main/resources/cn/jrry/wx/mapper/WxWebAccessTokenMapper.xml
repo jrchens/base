@@ -42,9 +42,24 @@
     from wx_web_access_token
   </select>
 
-  <select id="selectByOpenid" parameterType="string" resultType="string">
-    select access_token
-    from wx_web_access_token
+  <delete id="deleteByOpenid" parameterType="string">
+    delete from wx_web_access_token
     where openid = #{openid,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectNeedRefresh" parameterType="date" resultType="string">
+    select refresh_token
+    from wx_web_access_token
+    where expires_time &lt; #{expires_time,jdbcType=TIMESTAMP}
   </select>
+
+
+  <update id="updateByOpenid" parameterType="cn.jrry.wx.domain.WxWebAccessToken">
+    update wx_web_access_token
+    set access_token = #{access_token,jdbcType=VARCHAR},
+    expires_time = #{expires_time,jdbcType=TIMESTAMP},
+    refresh_token = #{refresh_token,jdbcType=VARCHAR},
+    scope = #{scope,jdbcType=VARCHAR}
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
 </mapper>

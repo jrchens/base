@@ -14,12 +14,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>${PAGE_CONTEXT_TITLE}</title>
-    <script src="http://local.com/resources/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://local.com/resources/weui/1.1.2/weui.min.css"/>
+    <script src="${WEB_ROOT_CONTEXT}/resources/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="${WEB_ROOT_CONTEXT}/resources/weui/1.1.2/weui.min.css"/>
 
-    <script src="http://local.com/resources/js/zepto.min.js"></script>
-    <script src="http://local.com/resources/js/jweixin-1.0.0.js"></script>
-    <script src="http://local.com/resources/weuijs/1.0.0/weui.min.js"></script>
+    <script src="${WEB_ROOT_CONTEXT}/resources/js/zepto.min.js"></script>
+    <script src="${WEB_ROOT_CONTEXT}/resources/js/jweixin-1.0.0.js"></script>
+    <script src="${WEB_ROOT_CONTEXT}/resources/weuijs/1.0.0/weui.min.js"></script>
 
 </head>
 

@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<link rel="shortcut icon" href="http://local.com/favicon.ico" type="image/x-icon">
-<link rel="icon" href="http://local.com/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="${WEB_ROOT_CONTEXT}/favicon.ico" type="image/x-icon">
+<link rel="icon" href="${WEB_ROOT_CONTEXT}/favicon.ico" type="image/x-icon">
 
 <link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/gray/easyui.css">
 <link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/icon.css">

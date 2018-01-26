@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="admin_group_index_datagrid" class="easyui-datagrid"
        data-options="title: '群组管理-列表',
-            url: 'http://local.com/admin/group/async-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/group/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -20,7 +20,7 @@
             striped: true,
             toolbar: '#admin_group_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/admin/group/detail?id='+row.id;
+                location.href = '${WEB_ROOT_CONTEXT}/admin/group/detail?id='+row.id;
             },
             loadFilter: function(data){
                 if(!data.success){
@@ -31,7 +31,7 @@
                     buttons:[
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/group/create';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/group/create';
                             }
                         },
                         {   iconCls:'ext-icon fa fa-pencil',
@@ -41,7 +41,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/admin/group/edit?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/group/edit?id='+row.id;
                             }
                         },
                         {   iconCls:'ext-icon fa fa-trash',
@@ -62,7 +62,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_group_index_datagrid').datagrid('reload');
                                             }else{
@@ -84,7 +84,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/admin/group/detail?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/group/detail?id='+row.id;
                             }
                         }
                     ]
@@ -103,7 +103,7 @@
 
 <form:form id="admin_group_query_form" method="post"
            modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/admin/group/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/group/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

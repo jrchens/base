@@ -10,7 +10,7 @@
 <form:form id="admin_permission_detail_form" method="post"
            modelAttribute="permission" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="权限管理-详情"
-           data-options="inline: true" action="http://local.com/admin/permission/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/permission/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -19,7 +19,7 @@
         <tr>
             <td>类别</td>
             <td><form:input path="category" cssClass="easyui-combobox"
-                            data-options="required:true,fit:true,url:'http://local.com/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group',readonly:true"/><form:errors
+                            data-options="required:true,fit:true,url:'${WEB_ROOT_CONTEXT}/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group',readonly:true"/><form:errors
                     path="category"/></td>
             <td>显示名</td>
             <td><form:input path="viewname" cssClass="easyui-textbox"
@@ -42,7 +42,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/permission/edit?id=${permission.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/permission/edit?id=${permission.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -58,9 +58,9 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${permission.id}'};
-                                $.post('http://local.com/admin/permission/async-remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('${WEB_ROOT_CONTEXT}/admin/permission/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
-                                        location.href = 'http://local.com/admin/permission/index';
+                                        location.href = '${WEB_ROOT_CONTEXT}/admin/permission/index';
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
@@ -76,7 +76,7 @@
                     }">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/permission/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/permission/index';
                     }">返回</a>
             </td>
         </tr>

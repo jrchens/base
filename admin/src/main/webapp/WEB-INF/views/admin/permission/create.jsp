@@ -10,7 +10,7 @@
 <form:form id="admin_permission_create_form" method="post"
            modelAttribute="permission" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="权限管理-新增"
-           data-options="inline: true" action="http://local.com/admin/permission/save">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/permission/save">
 
     <table class="ext-data-table">
         <tbody>
@@ -18,7 +18,7 @@
         <tr>
             <td>类别</td>
             <td><form:input path="category" cssClass="easyui-combobox"
-                            data-options="required:true,fit:true,url:'http://local.com/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group'"/><form:errors
+                            data-options="required:true,fit:true,url:'${WEB_ROOT_CONTEXT}/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group'"/><form:errors
                     path="category"/></td>
             <td>显示名</td>
             <td><form:input path="viewname" cssClass="easyui-textbox"
@@ -47,7 +47,7 @@
                         }">保存</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                         onClick: function(){
-                        location.href = 'http://local.com/admin/permission/index';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/permission/index';
                         }">返回</a>
 
             </td>

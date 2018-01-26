@@ -3,10 +3,7 @@ package cn.jrry.wx.service.impl;
 import cn.jrry.admin.service.ConfigService;
 import cn.jrry.common.exception.ServiceException;
 import cn.jrry.common.exception.WxInvokeException;
-import cn.jrry.wx.domain.WxMenu;
-import cn.jrry.wx.domain.WxResponse;
-import cn.jrry.wx.domain.WxUserInfo;
-import cn.jrry.wx.domain.WxWebAccessToken;
+import cn.jrry.wx.domain.*;
 import cn.jrry.wx.mapper.WxAccessTokenMapper;
 import cn.jrry.wx.mapper.WxWebAccessTokenMapper;
 import cn.jrry.wx.service.WxInvokeService;
@@ -40,18 +37,144 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(value = "wxInvokeServiceImpl")
 public class WxInvokeServiceImpl implements WxInvokeService {
     private static final Logger logger = LoggerFactory.getLogger(WxInvokeService.class);
     private static final String APP_ID_KEY = "76900565-ac11-4a9f-a990-1475db91db2f";
     private static final String APP_SECRET_KEY = "8128125a-d95b-40cb-840e-477abfc594a7";
-    private static final String WX_DEFAULT_USER_TAG_KEY = "356bf3a4-418c-4bf3-9e33-c1c3446aa751";
     @Autowired
     private WxAccessTokenMapper wxAccessTokenMapper;
     @Autowired
     private WxWebAccessTokenMapper wxWebAccessTokenMapper;
     @Autowired
     private ConfigService configService;
+
+
+    @Override
+    public void generate() {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String appid = configService.getString(APP_ID_KEY);
+            String secret = configService.getString(APP_SECRET_KEY);
+
+            // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/cgi-bin/token";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("grant_type", "client_credential"));
+            nvps.add(new BasicNameValuePair("appid", appid));
+            nvps.add(new BasicNameValuePair("secret", secret));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get access_token response json : {}", json);
+
+            Gson gson = new Gson();
+
+            AccessTokenResponse accessTokenResponse = gson.fromJson(json, AccessTokenResponse.class);
+            if (accessTokenResponse.getErrcode() == null) {
+                WxAccessToken wxAccessToken = new WxAccessToken();
+                wxAccessToken.setAccess_token(accessTokenResponse.getAccess_token());
+                wxAccessToken.setExpires_in(accessTokenResponse.getExpires_in());
+                wxAccessToken.setExpires_time(DateTime.now().plusMinutes(90).toDate());
+                wxAccessTokenMapper.insert(wxAccessToken);
+            } else {
+                // TODO send notification to admin
+            }
+        } catch (Exception ex) {
+            logger.error("generate error {}", ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception e) {
+                logger.error("close error {}", e);
+            }
+        }
+    }
+
+
+    @Override
+    public void refresh() {
+        try {
+            Date expiresTime = DateTime.now().plusMinutes(10).toDate();
+            List<String> refreshTokenList = wxWebAccessTokenMapper.selectNeedRefresh(expiresTime);
+            for (String refreshToken : refreshTokenList
+                    ) {
+                RefreshTokenResponse refreshTokenResponse = refresh(refreshToken);
+                if (refreshTokenResponse.getErrcode() == null) {
+                    WxWebAccessToken wxWebAccessToken = new WxWebAccessToken();
+                    wxWebAccessToken.setAccess_token(refreshTokenResponse.getAccess_token());
+                    wxWebAccessToken.setRefresh_token(refreshTokenResponse.getRefresh_token());
+                    wxWebAccessToken.setScope(refreshTokenResponse.getScope());
+                    wxWebAccessToken.setExpires_time(DateTime.now().plusMinutes(90).toDate());
+                    wxWebAccessTokenMapper.updateByOpenid(wxWebAccessToken);
+                }
+            }
+        } catch (Exception ex) {
+            logger.error("refresh web access token error {}", ex);
+        }
+    }
+
+
+    private RefreshTokenResponse refresh(String refresh_token) {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String appid = configService.getString(APP_ID_KEY);
+
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/sns/oauth2/refresh_token";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("appid", appid));
+            nvps.add(new BasicNameValuePair("grant_type", "refresh_token"));
+            nvps.add(new BasicNameValuePair("refresh_token", refresh_token));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("refresh web_access_token response json : {}", json);
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(json, RefreshTokenResponse.class);
+        } catch (Exception ex) {
+            logger.error("refresh web_access_token error {}", ex);
+            throw new WxInvokeException("refresh web_access_token", ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception e) {
+                logger.error("close error {}", e);
+            }
+        }
+    }
 
     public String getAccessToken() {
         try {
@@ -71,7 +194,6 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             String appid = configService.getString(APP_ID_KEY);
             String secret = configService.getString(APP_SECRET_KEY);
             String grant_type = "authorization_code";
-            String accessToken = getAccessToken();
 
             // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
 
@@ -127,6 +249,15 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             } catch (Exception ex) {
                 logger.error("close error {}", ex);
             }
+        }
+    }
+
+    public int deleteWebAccessTokenByOpenid(String openid){
+        try {
+            return wxWebAccessTokenMapper.deleteByOpenid(openid);
+        } catch (Exception ex) {
+            logger.error("deleteWebAccessTokenByOpenid error {}", ex);
+            throw new ServiceException("deleteWebAccessTokenByOpenid error",ex);
         }
     }
 
@@ -244,6 +375,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
+    @Deprecated
     public String getTag() {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
@@ -293,6 +425,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
     }
 
     @Override
+    @Deprecated
     public Long insertTag(Map<String, Object> params) {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
@@ -346,6 +479,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
+    @Deprecated
     public WxResponse updateTag(Map<String, Object> params) {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
@@ -393,6 +527,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
 
     @Override
+    @Deprecated
     public WxResponse deleteTag(Map<String, Object> params) {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;

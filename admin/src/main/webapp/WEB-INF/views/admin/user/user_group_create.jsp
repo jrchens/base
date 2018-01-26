@@ -10,7 +10,7 @@
 
 <table id="admin_user_user_group_create_datagrid" class="easyui-datagrid"
        data-options="title: '群组列表',
-            url: 'http://local.com/admin/group/async-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/group/async-query',
             method: 'get',
             queryParams: {exclusiveGroupNames:'${exclusiveGroupNames}'},
             sortName: 'id',
@@ -41,7 +41,7 @@
                         },{
                             iconCls:'ext-icon fa fa-arrow-left',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user/detail?id=${user.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/user/detail?id=${user.id}';
                             }
                         }
             ],
@@ -61,7 +61,7 @@
     </thead>
 </table>
 
-<form id="admin_user_user_group_create_form" method="post" action="http://local.com/admin/user-group-relation/save">
+<form id="admin_user_user_group_create_form" method="post" action="${WEB_ROOT_CONTEXT}/admin/user-group-relation/save">
     <input type="hidden" id="groupNames" name="groupNames" value="">
     <input type="hidden" id="id" name="id" value="${user.id}">
 </form>

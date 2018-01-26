@@ -10,7 +10,7 @@
 <form:form id="admin_config_create_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="配置管理-新增"
-           data-options="inline: true" action="http://local.com/admin/config/save">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/config/save">
     <form:hidden path="cfgCode"/>
     <form:hidden path="cfgType"/>
 
@@ -48,7 +48,7 @@
                         }">保存</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                         onClick: function(){
-                        location.href = 'http://local.com/admin/config/index';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/config/index';
                         }">返回</a>
 
             </td>

@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="wx_user_info_index_datagrid" class="easyui-datagrid"
        data-options="title: '关注用户管理-列表',
-            url: 'http://local.com/wx/user-info/async-query',
+            url: '${WEB_ROOT_CONTEXT}/wx/user-info/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -20,7 +20,7 @@
             striped: true,
             toolbar: '#wx_user_info_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/wx/user-info/detail?id='+row.id;
+                location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/detail?id='+row.id;
             },
             loadFilter: function(data){
                 if(!data.success){
@@ -31,7 +31,7 @@
                     buttons:[
                         <%--{   iconCls:'ext-icon fa fa-plus',--%>
                             <%--handler:function(){--%>
-                                <%--location.href = 'http://local.com/wx/user-info/create';--%>
+                                <%--location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/create';--%>
                             <%--}--%>
                         <%--},--%>
                         {   iconCls:'ext-icon fa fa-pencil',
@@ -41,7 +41,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/wx/user-info/edit?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/edit?id='+row.id;
                             }
                         },
                         <%--{   iconCls:'ext-icon fa fa-trash',--%>
@@ -60,7 +60,7 @@
                                         <%--thisButton.linkbutton('disable');--%>
 
                                         <%--var reqData = {id:row.id};--%>
-                                        <%--$.post('http://local.com/wx/user-info/async-remove',reqData,function(data,textStatus,jqXHR){--%>
+                                        <%--$.post('${WEB_ROOT_CONTEXT}/wx/user-info/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                             <%--if(data.success){--%>
                                                 <%--$('#wx_user_info_index_datagrid').datagrid('reload');--%>
                                             <%--}else{--%>
@@ -82,12 +82,12 @@
                                     <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
                                     <%--return false;--%>
                                 <%--}--%>
-                                <%--location.href = 'http://local.com/wx/user-info/detail?id='+row.id;--%>
+                                <%--location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/detail?id='+row.id;--%>
                             <%--}--%>
                         <%--}--%>
                         {   iconCls:'ext-icon fa fa-cloud-download',
                             handler:function(){
-                                location.href = 'http://local.com/wx/user-info/download';
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/download';
                             }
                         }
                     ]
@@ -118,7 +118,7 @@
 
 <form:form id="wx_user_info_query_form" method="post"
            modelAttribute="wxUserInfo" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/wx/user-info/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/user-info/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

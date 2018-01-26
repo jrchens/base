@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/task/spring-task.xsd">
 
     <!-- <task:annotation-driven /> -->
-    <bean id="wxAccessTokenService" class="cn.jrry.task.impl.WxAccessTokenTaskImpl"/>
+    <!--<bean id="wxAccessTokenService" class="cn.jrry.task.impl.WxAccessTokenTaskImpl"/>-->
     <task:scheduler id="defaultScheduler" pool-size="5"/>
     <task:scheduled-tasks scheduler="defaultScheduler">
         <!--1 hour-->
@@ -19,7 +19,8 @@
         <!--90 minute -->
 
         <!--initial-delay="60000"-->
-        <task:scheduled ref="wxAccessTokenService" method="generate" initial-delay="60000" fixed-rate="5400000"/>
+        <task:scheduled ref="wxInvokeServiceImpl" method="generate" initial-delay="30000" fixed-rate="6000000"/><!--100-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refresh" initial-delay="60000" fixed-rate="600000"/><!--10-->
     </task:scheduled-tasks>
 
 </beans>

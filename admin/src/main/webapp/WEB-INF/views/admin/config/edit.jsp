@@ -10,7 +10,7 @@
 <form:form id="admin_config_edit_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="配置管理-编辑"
-           data-options="inline: true" action="http://local.com/admin/config/update">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/config/update">
     <form:hidden path="cfgCode"/>
     <table class="ext-data-table">
         <tbody>
@@ -46,7 +46,7 @@
                     }">更新</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/config/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/config/index';
                     }">返回</a>
             </td>
         </tr>

@@ -10,7 +10,7 @@
 <form:form id="admin_config_detail_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="配置管理-详情"
-           data-options="inline: true" action="http://local.com/admin/config/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/config/async-remove">
     <form:hidden path="cfgCode"/>
     <table class="ext-data-table">
         <tbody>
@@ -40,7 +40,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/config/edit?cfgCode=${config.cfgCode}';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/config/edit?cfgCode=${config.cfgCode}';
                     }">编辑</a>
                 <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,--%>
                     <%--onClick: function(){--%>
@@ -56,9 +56,9 @@
                                 <%--thisButton.linkbutton({text:'加载中...'});--%>
 
                                 <%--var reqData = {cfgCode:'${config.cfgCode}'};--%>
-                                <%--$.post('http://local.com/admin/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
+                                <%--$.post('${WEB_ROOT_CONTEXT}/admin/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                     <%--if(data.success){--%>
-                                        <%--location.href = 'http://local.com/admin/config/index';--%>
+                                        <%--location.href = '${WEB_ROOT_CONTEXT}/admin/config/index';--%>
                                     <%--}else{--%>
                                         <%--$.messager.show({msg:data.message});--%>
                                     <%--}--%>
@@ -74,7 +74,7 @@
                     <%--}">删除</a>--%>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/config/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/config/index';
                     }">返回</a>
             </td>
         </tr>

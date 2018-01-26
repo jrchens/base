@@ -9,18 +9,27 @@ import java.util.Map;
 
 public interface WxInvokeService {
 
+
+    void generate(); // access token
+    void refresh(); // web access token
+
     String getAccessToken();
 
     WxWebAccessToken getWebAccessToken(String code);
+    int deleteWebAccessTokenByOpenid(String openid);
     int insertWebAccessToken(WxWebAccessToken wxWebAccessToken);
 
     WxUserInfo getUserInfo(String openid);
 
     String getUserInfo();
 
+    @Deprecated
     String getTag();
+    @Deprecated
     Long insertTag(Map<String, Object> params);
+    @Deprecated
     WxResponse updateTag(Map<String, Object> params);
+    @Deprecated
     WxResponse deleteTag(Map<String, Object> params);
 
 

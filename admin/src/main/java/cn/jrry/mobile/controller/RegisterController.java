@@ -49,6 +49,7 @@ public class RegisterController {
 
 
             WxWebAccessToken wxWebAccessToken = wxInvokeService.getWebAccessToken(code);
+            wxInvokeService.deleteWebAccessTokenByOpenid(wxWebAccessToken.getOpenid());
             wxInvokeService.insertWebAccessToken(wxWebAccessToken);
 
             model.addAttribute("state", state);

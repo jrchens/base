@@ -1,18 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../../views/common/taglib.jsp" %>
 <div>
-    <%--<span style="display: block"><a href="http://local.com/sample/index">样例</a></span>--%>
+    <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/sample/index">样例</a></span>--%>
 
     <%--<shiro:hasRole name="admin">--%>
-        <%--<span style="display: block"><a href="http://local.com/admin/user/index">用户管理</a></span>--%>
-        <%--<span style="display: block"><a href="http://local.com/admin/group/index">群组管理</a></span>--%>
-        <%--<span style="display: block"><a href="http://local.com/admin/role/index">角色管理</a></span>--%>
-        <%--<span style="display: block"><a href="http://local.com/admin/permission/index">权限管理</a></span>--%>
-        <%--<span style="display: block"><a href="http://local.com/admin/config/index">配置管理</a></span>--%>
+        <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/admin/user/index">用户管理</a></span>--%>
+        <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/admin/group/index">群组管理</a></span>--%>
+        <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/admin/role/index">角色管理</a></span>--%>
+        <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/admin/permission/index">权限管理</a></span>--%>
+        <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/admin/config/index">配置管理</a></span>--%>
     <%--</shiro:hasRole>--%>
 
-    <%--<span style="display: block"><a href="http://local.com/cms/category/index">类别管理</a></span>--%>
-    <%--<span style="display: block"><a href="http://local.com/cms/article/index">文章管理</a></span>--%>
+    <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/cms/category/index">类别管理</a></span>--%>
+    <%--<span style="display: block"><a href="${WEB_ROOT_CONTEXT}/cms/article/index">文章管理</a></span>--%>
 
     <script type="text/javascript">
         var admin_left_tree_data = [
@@ -20,28 +20,28 @@
             {
                 text:'系统管理',
                 children:[
-                    {text:'用户管理',attributes:{url:'http://local.com/admin/user/index'}},
-                    {text:'群组管理',attributes:{url:'http://local.com/admin/group/index'}},
-                    {text:'角色管理',attributes:{url:'http://local.com/admin/role/index'}},
-                    {text:'权限管理',attributes:{url:'http://local.com/admin/permission/index'}},
-                    {text:'配置管理',attributes:{url:'http://local.com/admin/config/index'}},
+                    {text:'用户管理',attributes:{url:'${WEB_ROOT_CONTEXT}/admin/user/index'}},
+                    {text:'群组管理',attributes:{url:'${WEB_ROOT_CONTEXT}/admin/group/index'}},
+                    {text:'角色管理',attributes:{url:'${WEB_ROOT_CONTEXT}/admin/role/index'}},
+                    {text:'权限管理',attributes:{url:'${WEB_ROOT_CONTEXT}/admin/permission/index'}},
+                    {text:'配置管理',attributes:{url:'${WEB_ROOT_CONTEXT}/admin/config/index'}},
                 ],
             },
             </shiro:hasRole>
             {
                 text:'内容管理',
                 children:[
-                    {text:'类别管理',attributes:{url:'http://local.com/cms/category/index'}},
-                    {text:'文章管理',attributes:{url:'http://local.com/cms/article/index'}},
+                    {text:'类别管理',attributes:{url:'${WEB_ROOT_CONTEXT}/cms/category/index'}},
+                    {text:'文章管理',attributes:{url:'${WEB_ROOT_CONTEXT}/cms/article/index'}},
                 ],
             },
             {
                 text:'微信管理',
                 children:[
-                    {text:'基础配置',attributes:{url:'http://local.com/wx/config/index'}},
-                    {text:'菜单管理',attributes:{url:'http://local.com/wx/menu/index'}},
-                    {text:'用户管理',attributes:{url:'http://local.com/wx/user-info/index'}},
-                    <%--{text:'标签管理',attributes:{url:'http://local.com/wx/tag/index'}},--%>
+                    {text:'基础配置',attributes:{url:'${WEB_ROOT_CONTEXT}/wx/config/index'}},
+                    {text:'菜单管理',attributes:{url:'${WEB_ROOT_CONTEXT}/wx/menu/index'}},
+                    {text:'用户管理',attributes:{url:'${WEB_ROOT_CONTEXT}/wx/user-info/index'}},
+                    <%--{text:'标签管理',attributes:{url:'${WEB_ROOT_CONTEXT}/wx/tag/index'}},--%>
                 ],
             },
         ];

@@ -10,7 +10,7 @@
 <form:form id="wx_user_info_edit_form" method="post"
            modelAttribute="wxUserInfo" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="关注用户管理-编辑"
-           data-options="inline: true" action="http://local.com/wx/user-info/update">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/user-info/update">
     <form:hidden path="id"/>
     <form:hidden path="enable"/>
     <form:hidden path="openid"/>
@@ -74,7 +74,7 @@
                     }">更新</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/wx/user-info/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/index';
                     }">返回</a>
             </td>
         </tr>

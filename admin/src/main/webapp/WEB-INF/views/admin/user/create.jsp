@@ -10,7 +10,7 @@
 <form:form id="admin_user_create_form" method="post"
            modelAttribute="user" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-新增"
-           data-options="inline: true" action="http://local.com/admin/user/save">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/user/save">
     <form:hidden path="disabled"/>
     <form:hidden path="locked"/>
 
@@ -77,7 +77,7 @@
                         }">保存</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                         onClick: function(){
-                        location.href = 'http://local.com/admin/user/index';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/user/index';
                         }">返回</a>
 
             </td>

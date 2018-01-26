@@ -9,7 +9,7 @@
 <%@ include file="../common/taglib.jsp" %>
 
 <form id="attachment_save_form" method="post" class="easyui-panel" title="附件管理-上传" enctype="multipart/form-data"
-      data-options="inline: true" action="http://local.com/attachment/save">
+      data-options="inline: true" action="${WEB_ROOT_CONTEXT}/attachment/save">
     <table class="ext-data-table" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>
@@ -37,7 +37,7 @@
 
 <table id="attachment_index_datagrid" class="easyui-datagrid"
        data-options="title: '附件管理-列表',
-            url: 'http://local.com/attachment/async-query',
+            url: '${WEB_ROOT_CONTEXT}/attachment/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -104,7 +104,7 @@
 
 <form id="attachment_index_query_form" method="post"
            style="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/attachment/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/attachment/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

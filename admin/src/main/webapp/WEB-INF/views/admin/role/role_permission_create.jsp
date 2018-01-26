@@ -10,7 +10,7 @@
 
 <table id="admin_role_role_permission_create_datagrid" class="easyui-datagrid"
        data-options="title: '权限列表',
-            url: 'http://local.com/admin/permission/async-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/permission/async-query',
             method: 'get',
             queryParams: {exclusiveRoleName:'${role.roleName}'},
             sortName: 'category',
@@ -41,7 +41,7 @@
                         },{
                             iconCls:'ext-icon fa fa-arrow-left',
                             handler:function(){
-                                location.href = 'http://local.com/admin/role/detail?id=${role.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/role/detail?id=${role.id}';
                             }
                         }
             ],
@@ -61,7 +61,7 @@
     </thead>
 </table>
 
-<form id="admin_role_role_permission_create_form" method="post" action="http://local.com/admin/role-permission-relation/save">
+<form id="admin_role_role_permission_create_form" method="post" action="${WEB_ROOT_CONTEXT}/admin/role-permission-relation/save">
     <input type="hidden" id="permissions" name="permissions" value="">
     <input type="hidden" id="id" name="id" value="${role.id}">
 </form>

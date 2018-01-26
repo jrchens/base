@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="wx_tag_index_datagrid" class="easyui-datagrid"
        data-options="title: '标签管理-列表',
-            url: 'http://local.com/wx/tag/async-query',
+            url: '${WEB_ROOT_CONTEXT}/wx/tag/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -20,7 +20,7 @@
             striped: true,
             toolbar: '#wx_tag_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/wx/tag/detail?id='+row.id;
+                location.href = '${WEB_ROOT_CONTEXT}/wx/tag/detail?id='+row.id;
             },
             onClickRow: function(index,row){
                 var btn = $('#wx_tag_index_clipboard_button');
@@ -37,7 +37,7 @@
                         {   iconCls:'ext-icon fa fa-plus',
                             text: '新增',
                             handler:function(){
-                                location.href = 'http://local.com/wx/tag/create';
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/tag/create';
                             }
                         },
                         {   iconCls:'ext-icon fa fa-pencil',
@@ -48,7 +48,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/wx/tag/edit?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/tag/edit?id='+row.id;
                             }
                         },
                         {   iconCls:'ext-icon fa fa-trash',
@@ -70,7 +70,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#wx_tag_index_datagrid').datagrid('reload');
                                             }else{
@@ -93,13 +93,13 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/wx/tag/detail?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/tag/detail?id='+row.id;
                             }
                         },
                         {   iconCls:'ext-icon fa fa-cloud-download',
                             text: '下载',
                             handler:function(){
-                                location.href = 'http://local.com/wx/tag/download';
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/tag/download';
                             }
                         }
                     ]
@@ -118,7 +118,7 @@
 
 <form:form id="wx_tag_query_form" method="post"
            modelAttribute="wxTag" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/wx/tag/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/tag/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

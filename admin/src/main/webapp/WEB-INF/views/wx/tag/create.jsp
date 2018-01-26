@@ -10,7 +10,7 @@
 <form:form id="wx_tag_create_form" method="post"
            modelAttribute="wxTag" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="标签管理-新增"
-           data-options="inline: true" action="http://local.com/wx/tag/save">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/tag/save">
     <table class="ext-data-table">
         <tbody>
 
@@ -34,7 +34,7 @@
                         }">保存</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                         onClick: function(){
-                        location.href = 'http://local.com/wx/tag/index';
+                        location.href = '${WEB_ROOT_CONTEXT}/wx/tag/index';
                         }">返回</a>
 
             </td>

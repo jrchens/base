@@ -1,9 +1,14 @@
 package cn.jrry.task.impl;
 
 import cn.jrry.admin.service.ConfigService;
+import cn.jrry.common.exception.WxInvokeException;
 import cn.jrry.task.WxAccessTokenTask;
+import cn.jrry.wx.domain.AccessTokenResponse;
+import cn.jrry.wx.domain.RefreshTokenResponse;
 import cn.jrry.wx.domain.WxAccessToken;
+import cn.jrry.wx.domain.WxWebAccessToken;
 import cn.jrry.wx.mapper.WxAccessTokenMapper;
+import cn.jrry.wx.mapper.WxWebAccessTokenMapper;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
@@ -33,11 +38,13 @@ public class WxAccessTokenTaskImpl implements WxAccessTokenTask {
     private ConfigService configService;
     @Autowired
     private WxAccessTokenMapper wxAccessTokenMapper;
+    @Autowired
+    private WxWebAccessTokenMapper wxWebAccessTokenMapper;
 
     @Override
     public void generate() {
-        CloseableHttpClient httpclient = null;
-        CloseableHttpResponse response = null;
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
         try {
 
             String appid = configService.getString(APP_ID_KEY);
@@ -58,31 +65,21 @@ public class WxAccessTokenTaskImpl implements WxAccessTokenTask {
             builder.addParameters(nvps);
 
 
-            httpclient = HttpClients.createDefault();
+            closeableHttpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(builder.build().toString());
 
-            response = httpclient.execute(httpGet);
-            HttpEntity entity = response.getEntity();
-
-
-            // access_token,expires_in
-            // errcode,errmsg
-            // AccessToken
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
 
             String json = EntityUtils.toString(entity, "UTF-8");
             logger.info("get access_token response json : {}", json);
 
-
-            WxAccessToken wxAccessToken = gson.fromJson(json, WxAccessToken.class);
-            Integer errcode = wxAccessToken.getErrcode();
-            if (errcode == null || errcode.intValue() == 0) {
-                // wxAccessTokenMapper.delete();
-//                Integer expiresIn = wxAccessToken.getExpires_in();
-//                double plusSecond = expiresIn.intValue() * 0.8d;
-//                Date expiresTime = DateTime.now().plusSeconds(Double.valueOf(plusSecond).intValue()).toDate();
-                Date expiresTime = DateTime.now().plusMinutes(90).toDate();
-                wxAccessToken.setExpires_time(expiresTime);
-                wxAccessToken.setCrtime(DateTime.now().toDate());
+            AccessTokenResponse accessTokenResponse = gson.fromJson(json, AccessTokenResponse.class);
+            if (accessTokenResponse.getErrcode() == null) {
+                WxAccessToken wxAccessToken = new WxAccessToken();
+                wxAccessToken.setAccess_token(accessTokenResponse.getAccess_token());
+                wxAccessToken.setExpires_in(accessTokenResponse.getExpires_in());
+                wxAccessToken.setExpires_time(DateTime.now().plusMinutes(90).toDate());
                 wxAccessTokenMapper.insert(wxAccessToken);
             } else {
                 // TODO send notification to admin
@@ -91,11 +88,80 @@ public class WxAccessTokenTaskImpl implements WxAccessTokenTask {
             logger.error("generate error {}", ex);
         } finally {
             try {
-                response.close();
-                httpclient.close();
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
             } catch (Exception e) {
                 logger.error("close error {}", e);
             }
         }
     }
+
+
+    @Override
+    public void refresh() {
+        try {
+            Date expiresTime = DateTime.now().plusMinutes(10).toDate();
+            List<String> refreshTokenList = wxWebAccessTokenMapper.selectNeedRefresh(expiresTime);
+            for (String refreshToken : refreshTokenList
+                    ) {
+                RefreshTokenResponse refreshTokenResponse = refresh(refreshToken);
+                if (refreshTokenResponse.getErrcode() == null) {
+                    WxWebAccessToken wxWebAccessToken = new WxWebAccessToken();
+                    wxWebAccessToken.setAccess_token(refreshTokenResponse.getAccess_token());
+                    wxWebAccessToken.setRefresh_token(refreshTokenResponse.getRefresh_token());
+                    wxWebAccessToken.setScope(refreshTokenResponse.getScope());
+                    wxWebAccessToken.setExpires_time(DateTime.now().plusMinutes(90).toDate());
+                    wxWebAccessTokenMapper.updateByOpenid(wxWebAccessToken);
+                }
+            }
+        } catch (Exception ex) {
+            logger.error("refresh web access token error {}", ex);
+        }
+    }
+
+
+    private RefreshTokenResponse refresh(String refresh_token) {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String appid = configService.getString(APP_ID_KEY);
+
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/sns/oauth2/refresh_token";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("appid", appid));
+            nvps.add(new BasicNameValuePair("grant_type", "refresh_token"));
+            nvps.add(new BasicNameValuePair("refresh_token", refresh_token));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("refresh web_access_token response json : {}", json);
+
+            return gson.fromJson(json, RefreshTokenResponse.class);
+        } catch (Exception ex) {
+            logger.error("refresh web_access_token error {}", ex);
+            throw new WxInvokeException("refresh web_access_token", ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception e) {
+                logger.error("close error {}", e);
+            }
+        }
+    }
+
+
 }

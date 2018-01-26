@@ -10,7 +10,7 @@
 <form:form id="admin_role_detail_form" method="post"
            modelAttribute="role" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="角色管理-详情"
-           data-options="inline: true" action="http://local.com/admin/role/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/role/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -34,7 +34,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/role/edit?id=${role.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/role/edit?id=${role.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -50,9 +50,9 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${role.id}'};
-                                $.post('http://local.com/admin/role/async-remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('${WEB_ROOT_CONTEXT}/admin/role/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
-                                        location.href = 'http://local.com/admin/role/index';
+                                        location.href = '${WEB_ROOT_CONTEXT}/admin/role/index';
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
@@ -68,7 +68,7 @@
                     }">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/role/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/role/index';
                     }">返回</a>
             </td>
         </tr>
@@ -81,7 +81,7 @@
 <div class="ext-div-line"></div>
 <table id="admin_role_detail_user_datagrid" class="easyui-datagrid"
        data-options="title: '用户列表',
-            url: 'http://local.com/admin/user-role-relation/async-user-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/user-role-relation/async-user-query',
             method: 'get',
             queryParams: {roleName:'${role.roleName}'},
             cls: 'ext-datagrid-float-left',
@@ -111,7 +111,7 @@
 
 <table id="admin_role_detail_permission_datagrid" class="easyui-datagrid"
        data-options="title: '权限列表',
-            url: 'http://local.com/admin/role-permission-relation/async-permission-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/role-permission-relation/async-permission-query',
             method: 'get',
             queryParams: {roleName:'${role.roleName}'},
             cls: 'ext-datagrid-float-left',
@@ -126,7 +126,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/role-permission-relation/create?id=${role.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/role-permission-relation/create?id=${role.id}';
                             }
                         },
                         {
@@ -149,7 +149,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/role-permission-relation/async-delete',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/role-permission-relation/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_role_detail_permission_datagrid').datagrid('reload');
                                             }else{

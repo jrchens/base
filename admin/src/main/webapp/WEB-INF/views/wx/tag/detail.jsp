@@ -10,7 +10,7 @@
 <form:form id="wx_tag_detail_form" method="post"
            modelAttribute="wxTag" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="标签管理-详情"
-           data-options="inline: true" action="http://local.com/wx/tag/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/tag/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -30,7 +30,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/wx/tag/edit?id=${wxTag.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/wx/tag/edit?id=${wxTag.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -43,9 +43,9 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${wxTag.id}'};
-                                $.post('http://local.com/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
+                                $.post('${WEB_ROOT_CONTEXT}/wx/tag/async-delete',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
-                                        location.href = 'http://local.com/wx/tag/index';
+                                        location.href = '${WEB_ROOT_CONTEXT}/wx/tag/index';
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
@@ -60,7 +60,7 @@
                     }">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/wx/tag/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/wx/tag/index';
                     }">返回</a>
             </td>
         </tr>

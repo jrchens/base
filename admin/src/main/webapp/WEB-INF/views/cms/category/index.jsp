@@ -11,7 +11,7 @@
 <div class="easyui-panel" data-options="cls: 'ext-panel-float-left',width:200,minHeight:525">
     <ul id="cms_category_index_tree" class="easyui-tree" style="padding: 5px;"
         data-options="
-        url:'http://local.com/cms/category/async-tree-query',
+        url:'${WEB_ROOT_CONTEXT}/cms/category/async-tree-query',
         method:'get',
         loadFilter: function(data,parent){
             if(data.success){
@@ -47,7 +47,7 @@
 
 <table id="cms_category_index_datagrid" class="easyui-datagrid"
        data-options="title: '类别管理-列表',
-            url: 'http://local.com/cms/category/async-query',
+            url: '${WEB_ROOT_CONTEXT}/cms/category/async-query',
             method: 'get',
             queryParams: {parentId:-1},
             sortName: 'sort',
@@ -72,7 +72,7 @@
                 var thisButton = $('#cms_category_index_save_form_save_button');
                 $('#overlay').show();
                 thisButton.linkbutton('disable');
-                var url = 'http://local.com/cms/category/async-detail';
+                var url = '${WEB_ROOT_CONTEXT}/cms/category/async-detail';
                 var reqData = {id:row.id};
                 $.get(url,reqData,function(data,textStatus,jqXHR){
                     if(data.success){
@@ -119,7 +119,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/cms/category/async-remove',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/cms/category/async-remove',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 var tree = $('#cms_category_index_tree');
                                                 var node = tree.tree('getSelected');
@@ -159,7 +159,7 @@
 <div class="easyui-panel" data-options="cls: 'ext-panel-float-left',minWidth:520, minHeight:150" style="margin-top: 10px;">
     <form:form id="cms_category_index_save_form" method="post"
                modelAttribute="category" cssStyle="padding: 5px; margin: 0px;"
-               data-options="inline: true" action="http://local.com/cms/category/async-save">
+               data-options="inline: true" action="${WEB_ROOT_CONTEXT}/cms/category/async-save">
         <form:hidden path="id"/>
         <form:hidden path="parentId"/>
         <form:hidden path="link"/>
@@ -203,9 +203,9 @@
                             }
 
                             var reqData = $('#cms_category_index_save_form').serializeJSON();
-                            var url = 'http://local.com/cms/category/async-save';
+                            var url = '${WEB_ROOT_CONTEXT}/cms/category/async-save';
                             if(reqData.id > 0){
-                                url = 'http://local.com/cms/category/async-update';
+                                url = '${WEB_ROOT_CONTEXT}/cms/category/async-update';
                             } else {
                                 reqData.parentId = node.id;
                             }

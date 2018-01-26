@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="wx_config_index_datagrid" class="easyui-datagrid"
        data-options="title: '配置管理-列表',
-            url: 'http://local.com/wx/config/async-query',
+            url: '${WEB_ROOT_CONTEXT}/wx/config/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -20,7 +20,7 @@
             striped: true,
             toolbar: '#wx_config_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/wx/config/detail?cfgCode='+row.cfgCode;
+                location.href = '${WEB_ROOT_CONTEXT}/wx/config/detail?cfgCode='+row.cfgCode;
             },
             onClickRow: function(index,row){
                 var btn = $('#wx_config_index_clipboard_button');
@@ -36,7 +36,7 @@
                     buttons:[
                         <%--{   iconCls:'ext-icon fa fa-plus',--%>
                             <%--handler:function(){--%>
-                                <%--location.href = 'http://local.com/wx/config/create';--%>
+                                <%--location.href = '${WEB_ROOT_CONTEXT}/wx/config/create';--%>
                             <%--}--%>
                         <%--},--%>
                         {   iconCls:'ext-icon fa fa-pencil',
@@ -46,7 +46,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/wx/config/edit?cfgCode='+row.cfgCode;
+                                location.href = '${WEB_ROOT_CONTEXT}/wx/config/edit?cfgCode='+row.cfgCode;
                             }
                         }
                         <%--{   iconCls:'ext-icon fa fa-trash',--%>
@@ -67,7 +67,7 @@
                                         <%--thisButton.linkbutton('disable');--%>
 
                                         <%--var reqData = {cfgCode:row.cfgCode};--%>
-                                        <%--$.post('http://local.com/wx/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
+                                        <%--$.post('${WEB_ROOT_CONTEXT}/wx/config/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                             <%--if(data.success){--%>
                                                 <%--$('#wx_config_index_datagrid').datagrid('reload');--%>
                                             <%--}else{--%>
@@ -89,7 +89,7 @@
                                     <%--$.messager.alert('提示', '请先选择一行记录!', 'warning');--%>
                                     <%--return false;--%>
                                 <%--}--%>
-                                <%--location.href = 'http://local.com/wx/config/detail?cfgCode='+row.cfgCode;--%>
+                                <%--location.href = '${WEB_ROOT_CONTEXT}/wx/config/detail?cfgCode='+row.cfgCode;--%>
                             <%--}--%>
                         <%--}--%>
                     ]
@@ -122,7 +122,7 @@
 
 <form:form id="wx_config_query_form" method="post"
            modelAttribute="config" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/wx/config/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/config/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>

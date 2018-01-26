@@ -34,7 +34,7 @@
            modelAttribute="loginUser" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-window" title="用户登陆"
            data-options="width:420, height:150, collapsible:false,minimizable:false,maximizable:false,closable:false,draggable:false,resizable:false"
-           action="http://local.com/login">
+           action="${WEB_ROOT_CONTEXT}/login">
 
     <table class="ext-data-table" style="width:400px;">
         <tbody>

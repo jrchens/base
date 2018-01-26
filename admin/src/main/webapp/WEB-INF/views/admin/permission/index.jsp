@@ -9,7 +9,7 @@
 <%@ include file="../../common/taglib.jsp" %>
 <table id="admin_permission_index_datagrid" class="easyui-datagrid"
        data-options="title: '权限管理-列表',
-            url: 'http://local.com/admin/permission/async-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/permission/async-query',
             method: 'get',
             sortName: 'id',
             sortOrder: 'desc',
@@ -20,7 +20,7 @@
             striped: true,
             toolbar: '#admin_permission_query_form',
             onDblClickRow: function(index,row){
-                location.href = 'http://local.com/admin/permission/detail?id='+row.id;
+                location.href = '${WEB_ROOT_CONTEXT}/admin/permission/detail?id='+row.id;
             },
             loadFilter: function(data){
                 if(!data.success){
@@ -31,7 +31,7 @@
                     buttons:[
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/permission/create';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/permission/create';
                             }
                         },
                         {   iconCls:'ext-icon fa fa-pencil',
@@ -41,7 +41,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/admin/permission/edit?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/permission/edit?id='+row.id;
                             }
                         },
                         {   iconCls:'ext-icon fa fa-trash',
@@ -62,7 +62,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/permission/async-remove',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/permission/async-remove',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_permission_index_datagrid').datagrid('reload');
                                             }else{
@@ -84,7 +84,7 @@
                                     $.messager.alert('提示', '请先选择一行记录!', 'warning');
                                     return false;
                                 }
-                                location.href = 'http://local.com/admin/permission/detail?id='+row.id;
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/permission/detail?id='+row.id;
                             }
                         }
                     ]
@@ -103,12 +103,12 @@
 
 <form:form id="admin_permission_query_form" method="post"
            modelAttribute="permission" cssStyle="padding: 5px; margin: 0px;"
-           data-options="inline: true" action="http://local.com/admin/permission/async-query">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/permission/async-query">
     <table class="ext-data-table" style="width: 100%" cellspacing="0" cellpadding="0">
         <tbody>
         <tr>
             <td>类别</td>
-            <td><form:input path="category" cssClass="easyui-combobox" data-options="fit:true,url:'http://local.com/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group'"></form:input></td>
+            <td><form:input path="category" cssClass="easyui-combobox" data-options="fit:true,url:'${WEB_ROOT_CONTEXT}/resources/js/permission_category_data.json',method:'get',groupField:'group',groupField:'group'"></form:input></td>
             <td>显示名</td>
             <td><form:input path="viewname" cssClass="easyui-textbox" data-options="fit:true"></form:input></td>
             <td colspan="2" style="text-align: left"><a href="javascript:;" class="easyui-linkbutton" data-options="

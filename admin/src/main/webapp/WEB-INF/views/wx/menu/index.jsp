@@ -19,7 +19,7 @@
 <div class="easyui-panel" data-options="cls: 'ext-panel-float-left',width:200,minHeight:500">
     <ul id="wx_menu_index_tree" class="easyui-tree" style="padding: 5px;"
         data-options="
-        url:'http://local.com/wx/menu/async-tree-query',
+        url:'${WEB_ROOT_CONTEXT}/wx/menu/async-tree-query',
         method:'get',
         <%--,queryParams:{parentId:0}--%>
         loadFilter: function(data,parent){
@@ -84,7 +84,7 @@
             current_node_id = node.id;
             var reqData = {id:current_node_id};
             $('#overlay').show();
-            $.get('http://local.com/wx/menu/async-detail',reqData,function(data,textStatus,jqXHR){
+            $.get('${WEB_ROOT_CONTEXT}/wx/menu/async-detail',reqData,function(data,textStatus,jqXHR){
                 if(data.success){
                     var form = $('#wx_menu_index_update_form');
                     form.form('load',data.data);
@@ -127,7 +127,7 @@
 
         var reqData = {parent_id:current_node_id,node_name:'新菜单'};
         $('#overlay').show();
-        $.post('http://local.com/wx/menu/async-save',reqData,function(data,textStatus,jqXHR){
+        $.post('${WEB_ROOT_CONTEXT}/wx/menu/async-save',reqData,function(data,textStatus,jqXHR){
             if(data.success){
                 $('#wx_menu_index_tree').tree('reload');
             }else{
@@ -148,7 +148,7 @@
                 current_node_id = tree.tree('find',current_node_id).parentId;
 
                 $('#overlay').show();
-                $.post('http://local.com/wx/menu/async-delete',reqData,function(data,textStatus,jqXHR){
+                $.post('${WEB_ROOT_CONTEXT}/wx/menu/async-delete',reqData,function(data,textStatus,jqXHR){
                     if(data.success){
                         tree.tree('reload');
                     }else{
@@ -167,7 +167,7 @@
 
                 var reqData = {id:current_node_id};
                 $('#overlay').show();
-                $.get('http://local.com/wx/menu/async-detail',reqData,function(data,textStatus,jqXHR){
+                $.get('${WEB_ROOT_CONTEXT}/wx/menu/async-detail',reqData,function(data,textStatus,jqXHR){
                     if(data.success){
                         var form = $('#wx_menu_index_update_form');
                         form.form('load',data.data);
@@ -188,7 +188,7 @@
     <div id="wx_menu_index_tree_context_menu_publish_button" style="display: none" onclick="{
         var reqData = {id:current_node_id};
         $('#overlay').show();
-        $.post('http://local.com/wx/menu/async-publish',reqData,function(data,textStatus,jqXHR){
+        $.post('${WEB_ROOT_CONTEXT}/wx/menu/async-publish',reqData,function(data,textStatus,jqXHR){
             if(data.success){
                 $.messager.show({msg:'发布成功'});
             }else{
@@ -200,7 +200,7 @@
     }" data-options="iconCls:'ext-icon fa fa-cloud-upload'">发布</div>
 
     <div id="wx_menu_index_tree_context_menu_download_button" style="display: none" onclick="{
-        location.href = 'http://local.com/wx/menu/download';
+        location.href = '${WEB_ROOT_CONTEXT}/wx/menu/download';
     }" data-options="iconCls:'ext-icon fa fa-cloud-download'">下载</div>
 
 </div>
@@ -208,7 +208,7 @@
 <div class="easyui-panel" data-options="title:'菜单信息',cls: 'ext-panel-float-left',width:620, minHeight:500">
     <form id="wx_menu_index_update_form" method="post"
                style="padding: 5px; margin: 0px;"
-               data-options="inline: true" action="http://local.com/wx/menu/async-update">
+               data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/menu/async-update">
         <input type="hidden" id="id" name="id">
         <input type="hidden" id="parent_id" name="parent_id">
         <input type="hidden" id="node_media_id" name="node_media_id">
@@ -394,7 +394,7 @@
                         onClick: function(){
 
                             var reqData = $('#wx_menu_index_update_form').serializeJSON();
-                            var url = 'http://local.com/wx/menu/async-update';
+                            var url = '${WEB_ROOT_CONTEXT}/wx/menu/async-update';
 
                             var thisButton = $(this);
                             $('#overlay').show();

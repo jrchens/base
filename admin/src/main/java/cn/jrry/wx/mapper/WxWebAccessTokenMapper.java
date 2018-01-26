@@ -1,7 +1,9 @@
 package cn.jrry.wx.mapper;
 
 import cn.jrry.wx.domain.WxWebAccessToken;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface WxWebAccessTokenMapper {
@@ -15,5 +17,7 @@ public interface WxWebAccessTokenMapper {
 
     int updateByPrimaryKey(WxWebAccessToken record);
 
-    String selectByOpenid(String openid);
+    List<String> selectNeedRefresh(@Param(value = "expires_time") Date expires_time);
+    int updateByOpenid(WxWebAccessToken record);
+    int deleteByOpenid(@Param(value = "openid") String openid);
 }

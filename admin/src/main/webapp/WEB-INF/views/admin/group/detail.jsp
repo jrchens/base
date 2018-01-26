@@ -10,7 +10,7 @@
 <form:form id="admin_group_detail_form" method="post"
            modelAttribute="group" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="群组管理-详情"
-           data-options="inline: true" action="http://local.com/admin/group/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/group/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -34,7 +34,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/group/edit?id=${group.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/group/edit?id=${group.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -50,9 +50,9 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${group.id}'};
-                                $.post('http://local.com/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('${WEB_ROOT_CONTEXT}/admin/group/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
-                                        location.href = 'http://local.com/admin/group/index';
+                                        location.href = '${WEB_ROOT_CONTEXT}/admin/group/index';
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
@@ -68,7 +68,7 @@
                     }">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/group/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/group/index';
                     }">返回</a>
             </td>
         </tr>
@@ -81,7 +81,7 @@
 <div class="ext-div-line"></div>
 <table id="admin_group_detail_user_datagrid" class="easyui-datagrid"
        data-options="title: '用户列表',
-            url: 'http://local.com/admin/user-group-relation/async-user-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/user-group-relation/async-user-query',
             method: 'get',
             queryParams: {groupName:'${group.groupName}'},
             cls: 'ext-datagrid-float-left',

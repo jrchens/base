@@ -10,7 +10,7 @@
 <form:form id="admin_user_detail_form" method="post"
            modelAttribute="user" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="用户管理-详情"
-           data-options="inline: true" action="http://local.com/admin/user/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/admin/user/async-remove">
     <form:hidden path="id"/>
     <form:hidden path="disabled"/>
     <form:hidden path="locked"/>
@@ -71,7 +71,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/admin/user/edit?id=${user.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/admin/user/edit?id=${user.id}';
                     }">编辑</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,
                     onClick: function(){
@@ -87,9 +87,9 @@
                                 thisButton.linkbutton({text:'加载中...'});
 
                                 var reqData = {id:'${user.id}'};
-                                $.post('http://local.com/admin/user/async-remove',reqData,function(data,textStatus,jqXHR){
+                                $.post('${WEB_ROOT_CONTEXT}/admin/user/async-remove',reqData,function(data,textStatus,jqXHR){
                                     if(data.success){
-                                        location.href = 'http://local.com/admin/user/index';
+                                        location.href = '${WEB_ROOT_CONTEXT}/admin/user/index';
                                     }else{
                                         $.messager.show({msg:data.message});
                                     }
@@ -105,7 +105,7 @@
                     }">删除</a>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/admin/user/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/admin/user/index';
                     }">返回</a>
             </td>
         </tr>
@@ -117,7 +117,7 @@
 <div class="ext-div-line"></div>
 <table id="admin_user_detail_group_datagrid" class="easyui-datagrid"
        data-options="title: '群组列表',
-            url: 'http://local.com/admin/user-group-relation/async-group-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/user-group-relation/async-group-query',
             method: 'get',
             queryParams: {username:'${user.username}'},
             cls: 'ext-datagrid-float-left',
@@ -141,7 +141,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user-group-relation/create?id=${user.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/user-group-relation/create?id=${user.id}';
                             }
                         },
                         {
@@ -164,7 +164,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-group-relation/async-delete',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/user-group-relation/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_group_datagrid').datagrid('reload');
                                             }else{
@@ -197,7 +197,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-group-relation/async-update',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/user-group-relation/async-update',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_group_datagrid').datagrid('reload');
                                             }else{
@@ -231,7 +231,7 @@
 
 <table id="admin_user_detail_role_datagrid" class="easyui-datagrid"
        data-options="title: '角色列表',
-            url: 'http://local.com/admin/user-role-relation/async-role-query',
+            url: '${WEB_ROOT_CONTEXT}/admin/user-role-relation/async-role-query',
             method: 'get',
             queryParams: {username:'${user.username}'},
             cls: 'ext-datagrid-float-left',
@@ -255,7 +255,7 @@
             toolbar: [
                         {   iconCls:'ext-icon fa fa-plus',
                             handler:function(){
-                                location.href = 'http://local.com/admin/user-role-relation/create?id=${user.id}';
+                                location.href = '${WEB_ROOT_CONTEXT}/admin/user-role-relation/create?id=${user.id}';
                             }
                         },
                         {
@@ -278,7 +278,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-role-relation/async-delete',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/user-role-relation/async-delete',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_role_datagrid').datagrid('reload');
                                             }else{
@@ -311,7 +311,7 @@
                                         thisButton.linkbutton('disable');
 
                                         var reqData = {id:row.id};
-                                        $.post('http://local.com/admin/user-role-relation/async-update',reqData,function(data,textStatus,jqXHR){
+                                        $.post('${WEB_ROOT_CONTEXT}/admin/user-role-relation/async-update',reqData,function(data,textStatus,jqXHR){
                                             if(data.success){
                                                 $('#admin_user_detail_role_datagrid').datagrid('reload');
                                             }else{

@@ -10,7 +10,7 @@
 <form:form id="wx_user_info_detail_form" method="post"
            modelAttribute="wxUserInfo" cssStyle="padding: 5px; margin: 0px;"
            cssClass="easyui-panel" title="关注用户管理-详情"
-           data-options="inline: true" action="http://local.com/wx/user-info/async-remove">
+           data-options="inline: true" action="${WEB_ROOT_CONTEXT}/wx/user-info/async-remove">
     <form:hidden path="id"/>
 
     <table class="ext-data-table">
@@ -67,7 +67,7 @@
                         $('#overlay').show();
                         $(this).linkbutton('disable');
                         $(this).linkbutton({text:'加载中...'});
-                        location.href = 'http://local.com/wx/user-info/edit?id=${wxUserInfo.id}';
+                        location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/edit?id=${wxUserInfo.id}';
                     }">编辑</a>
                 <%--<a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-trash ', width: 80,--%>
                     <%--onClick: function(){--%>
@@ -81,9 +81,9 @@
                                 <%--thisButton.linkbutton({text:'加载中...'});--%>
 
                                 <%--var reqData = {id:'${wxUserInfo.id}'};--%>
-                                <%--$.post('http://local.com/wx/user-info/async-remove',reqData,function(data,textStatus,jqXHR){--%>
+                                <%--$.post('${WEB_ROOT_CONTEXT}/wx/user-info/async-remove',reqData,function(data,textStatus,jqXHR){--%>
                                     <%--if(data.success){--%>
-                                        <%--location.href = 'http://local.com/wx/user-info/index';--%>
+                                        <%--location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/index';--%>
                                     <%--}else{--%>
                                         <%--$.messager.show({msg:data.message});--%>
                                     <%--}--%>
@@ -99,7 +99,7 @@
                     <%--}">删除</a>--%>
                 <a href="javascript:;" class="easyui-linkbutton" data-options="iconCls: 'ext-icon fa fa-arrow-left ', width: 80,
                     onClick: function(){
-                    location.href = 'http://local.com/wx/user-info/index';
+                    location.href = '${WEB_ROOT_CONTEXT}/wx/user-info/index';
                     }">返回</a>
             </td>
         </tr>
