@@ -101,12 +101,6 @@
                             handler:function(){
                                 location.href = 'http://local.com/wx/tag/download';
                             }
-                        },
-                        {   iconCls:'ext-icon fa fa-cloud-upload',
-                            text: '发布',
-                            handler:function(){
-                                location.href = 'http://local.com/wx/tag/download';
-                            }
                         }
                     ]
                 });
