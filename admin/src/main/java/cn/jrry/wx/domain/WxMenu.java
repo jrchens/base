@@ -32,7 +32,7 @@ public class WxMenu implements Serializable {
     private String rich_content;
     private String url_state;
 
-    private WxMenuMatchRule wxMenuMatchRule;
+    private WxMenuMatchRule matchRule;
     private Integer sort;
     private Boolean deleted;
     private String cruser;
@@ -40,12 +40,12 @@ public class WxMenu implements Serializable {
     private String mduser;
     private Date mdtime;
 
-    public WxMenuMatchRule getWxMenuMatchRule() {
-        return wxMenuMatchRule;
+    public WxMenuMatchRule getMatchRule() {
+        return matchRule;
     }
 
-    public void setWxMenuMatchRule(WxMenuMatchRule wxMenuMatchRule) {
-        this.wxMenuMatchRule = wxMenuMatchRule;
+    public void setMatchRule(WxMenuMatchRule matchRule) {
+        this.matchRule = matchRule;
     }
 
     public String getUrl_state() {
@@ -240,7 +240,7 @@ public class WxMenu implements Serializable {
                 && (this.getCrtime() == null ? other.getCrtime() == null : this.getCrtime().equals(other.getCrtime()))
                 && (this.getMduser() == null ? other.getMduser() == null : this.getMduser().equals(other.getMduser()))
                 && (this.getMdtime() == null ? other.getMdtime() == null : this.getMdtime().equals(other.getMdtime()))
-                && (this.getWxMenuMatchRule() == null ? other.getWxMenuMatchRule() == null : this.getWxMenuMatchRule().equals(other.getWxMenuMatchRule()))
+                && (this.getMatchRule() == null ? other.getMatchRule() == null : this.getMatchRule().equals(other.getMatchRule()))
                 ;
     }
 
@@ -268,7 +268,7 @@ public class WxMenu implements Serializable {
         result = prime * result + ((getCrtime() == null) ? 0 : getCrtime().hashCode());
         result = prime * result + ((getMduser() == null) ? 0 : getMduser().hashCode());
         result = prime * result + ((getMdtime() == null) ? 0 : getMdtime().hashCode());
-        result = prime * result + ((getWxMenuMatchRule() == null) ? 0 : getWxMenuMatchRule().hashCode())
+        result = prime * result + ((getMatchRule() == null) ? 0 : getMatchRule().hashCode())
         ;
         return result;
     }
@@ -299,7 +299,7 @@ public class WxMenu implements Serializable {
         sb.append(", crtime=").append(crtime);
         sb.append(", mduser=").append(mduser);
         sb.append(", mdtime=").append(mdtime);
-        sb.append(", wxMenuMatchRule=").append(wxMenuMatchRule);
+        sb.append(", matchRule=").append(matchRule);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Deprecated
 public class WxTag extends WxResponse {
     private static final long serialVersionUID = 8482260777410947150L;
 

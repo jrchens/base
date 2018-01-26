@@ -87,7 +87,7 @@ public class WxUserInfoServiceImpl implements WxUserInfoService {
             String openid = record.getOpenid();
             String user = openid;
             Subject subject = SecurityUtils.getSubject();
-            if (null != subject) {
+            if (null != subject && null != subject.getPrincipal()) {
                 user = subject.getPrincipal().toString();
             }
             Timestamp now = new Timestamp(System.currentTimeMillis());

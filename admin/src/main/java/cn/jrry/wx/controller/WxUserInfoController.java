@@ -1,13 +1,17 @@
 package cn.jrry.wx.controller;
 
 import cn.jrry.util.ExceptionUtils;
-import cn.jrry.validation.group.*;
+import cn.jrry.validation.group.Detail;
+import cn.jrry.validation.group.Edit;
+import cn.jrry.validation.group.Update;
 import cn.jrry.wx.domain.WxTag;
 import cn.jrry.wx.domain.WxUserInfo;
 import cn.jrry.wx.domain.WxUserInfoTagRelation;
+import cn.jrry.wx.service.WxInvokeService;
 import cn.jrry.wx.service.WxTagService;
 import cn.jrry.wx.service.WxUserInfoService;
 import cn.jrry.wx.service.WxUserInfoTagRelationService;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -15,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +44,8 @@ public class WxUserInfoController {
     private WxUserInfoTagRelationService wxUserInfoTagRelationService;
     @Autowired
     private WxTagService wxTagService;
+    @Autowired
+    private WxInvokeService wxInvokeService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
     public String index(@Validated WxUserInfo record, BindingResult bindingResult, Model model) {
@@ -206,4 +215,24 @@ public class WxUserInfoController {
 //        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-delete");
 //        return result;
 //    }
+
+
+
+    @RequestMapping(path = "download", method = RequestMethod.GET)
+    public void download(HttpServletResponse httpServletResponse) { // , produces = "text/plain; charset=UTF-8"
+        logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "download");
+        String result = null;
+        try {
+            httpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("user-info.json", "UTF-8"));
+            result = wxInvokeService.getUserInfo();
+            FileCopyUtils.copy(result.getBytes(Charsets.UTF_8),httpServletResponse.getOutputStream());
+        } catch (Exception ex) {
+            try {
+                httpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("error.json", "UTF-8"));
+                FileCopyUtils.copy(ExceptionUtils.getSimpleMessage(ex).getBytes(Charsets.UTF_8),httpServletResponse.getOutputStream());
+            } catch (Exception e) {}
+        }
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "download");
+//        return result;
+    }
 }

@@ -1,6 +1,7 @@
 package cn.jrry.wx.mapper;
 
 import cn.jrry.wx.domain.WxAccessToken;
+
 import java.util.List;
 
 public interface WxAccessTokenMapper {

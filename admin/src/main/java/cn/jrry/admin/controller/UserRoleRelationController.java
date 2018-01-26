@@ -2,7 +2,6 @@ package cn.jrry.admin.controller;
 
 import cn.jrry.admin.domain.User;
 import cn.jrry.admin.domain.UserRoleRelation;
-import cn.jrry.admin.service.RoleService;
 import cn.jrry.admin.service.UserRoleRelationService;
 import cn.jrry.admin.service.UserService;
 import cn.jrry.util.ExceptionUtils;
@@ -18,7 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;

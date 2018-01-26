@@ -115,11 +115,13 @@ public class WxMenuServiceImpl implements WxMenuService {
 //            record.setId(id);
 
             int aff = wxMenuMapper.insert(record);
-            if(record.getCustom()){
-                WxMenuMatchRule wxMenuMatchRule = new WxMenuMatchRule();
-                wxMenuMatchRule.setMenu_id(record.getId());
-                wxMenuMatchRuleMapper.insert(wxMenuMatchRule);
-            }
+
+            WxMenuMatchRule wxMenuMatchRule = new WxMenuMatchRule();
+            wxMenuMatchRule.setMenu_id(record.getId());
+            wxMenuMatchRule.setCruser(user);
+            wxMenuMatchRule.setCrtime(now);
+            wxMenuMatchRuleMapper.insert(wxMenuMatchRule);
+
             return aff;
         } catch (Exception ex) {
             logger.error("insert error {}{}{}", record, System.lineSeparator(), ex);
@@ -131,8 +133,8 @@ public class WxMenuServiceImpl implements WxMenuService {
     public WxMenu selectByPrimaryKey(Long id) {
         try {
             WxMenu wxMenu = wxMenuMapper.selectByPrimaryKey(id);
-            WxMenuMatchRule wxMenuMatchRule = wxMenuMatchRuleMapper.selectByPrimaryKey(id);
-            wxMenu.setWxMenuMatchRule(wxMenuMatchRule);
+            WxMenuMatchRule wxMenuMatchRule = wxMenuMatchRuleMapper.selectByMenuid(id);
+            wxMenu.setMatchRule(wxMenuMatchRule);
             return wxMenu;
         } catch (Exception ex) {
             logger.error("selectByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
@@ -157,6 +159,16 @@ public class WxMenuServiceImpl implements WxMenuService {
             Timestamp now = new Timestamp(System.currentTimeMillis());
             record.setMduser(user);
             record.setMdtime(now);
+
+            if(record.getParent_id() == 1 && record.getId().longValue() != 2){
+                wxMenuMatchRuleMapper.deleteByMenuid(record.getId());
+                WxMenuMatchRule matchRule = record.getMatchRule();
+                matchRule.setMenu_id(record.getId());
+                matchRule.setCruser(user);
+                matchRule.setCrtime(now);
+                wxMenuMatchRuleMapper.insert(matchRule);
+            }
+
 
 //            Map<String, Object> params = Maps.newLinkedHashMap();
 //            Map<String, Object> tag = Maps.newHashMap();

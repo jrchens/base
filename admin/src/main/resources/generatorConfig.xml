@@ -67,8 +67,10 @@
         <!--wx_tag,wx_user_info_tag_relation-->
         <!--2018-01-25-->
         <!--wx_menu,wx_menu_match_rule-->
+        <!--2018-01-26-->
+        <!--wx_web_access_token-->
 
-        <table schema="base" tableName="wx_menu_match_rule">
+        <table schema="base" tableName="wx_web_access_token">
             <!--<domainObjectRenamingRule searchString="^Wx" replaceString=""/>-->
             <property name="useActualColumnNames" value="true"/>
             <columnRenamingRule searchString="^is_" replaceString=""/>

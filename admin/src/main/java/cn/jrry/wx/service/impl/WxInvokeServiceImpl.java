@@ -6,7 +6,9 @@ import cn.jrry.common.exception.WxInvokeException;
 import cn.jrry.wx.domain.WxMenu;
 import cn.jrry.wx.domain.WxResponse;
 import cn.jrry.wx.domain.WxUserInfo;
+import cn.jrry.wx.domain.WxWebAccessToken;
 import cn.jrry.wx.mapper.WxAccessTokenMapper;
+import cn.jrry.wx.mapper.WxWebAccessTokenMapper;
 import cn.jrry.wx.service.WxInvokeService;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -24,6 +26,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.shiro.util.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,7 @@ import org.springframework.stereotype.Service;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +44,12 @@ import java.util.Map;
 public class WxInvokeServiceImpl implements WxInvokeService {
     private static final Logger logger = LoggerFactory.getLogger(WxInvokeService.class);
     private static final String APP_ID_KEY = "76900565-ac11-4a9f-a990-1475db91db2f";
+    private static final String APP_SECRET_KEY = "8128125a-d95b-40cb-840e-477abfc594a7";
     private static final String WX_DEFAULT_USER_TAG_KEY = "356bf3a4-418c-4bf3-9e33-c1c3446aa751";
     @Autowired
     private WxAccessTokenMapper wxAccessTokenMapper;
+    @Autowired
+    private WxWebAccessTokenMapper wxWebAccessTokenMapper;
     @Autowired
     private ConfigService configService;
 
@@ -52,6 +59,83 @@ public class WxInvokeServiceImpl implements WxInvokeService {
         } catch (Exception ex) {
             logger.error("getAccessToken error {}", ex);
             throw new ServiceException(ex.getCause());
+        }
+    }
+
+    @Override
+    public WxWebAccessToken getWebAccessToken(String code) {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String appid = configService.getString(APP_ID_KEY);
+            String secret = configService.getString(APP_SECRET_KEY);
+            String grant_type = "authorization_code";
+            String accessToken = getAccessToken();
+
+            // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
+
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/sns/oauth2/access_token";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("appid", appid));
+            nvps.add(new BasicNameValuePair("secret", secret));
+            nvps.add(new BasicNameValuePair("code", code));
+            nvps.add(new BasicNameValuePair("grant_type", grant_type));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get sns/oauth2/access_token response : {}", json);
+
+            Gson gson = new Gson();
+            Map<String, Object> result = gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());
+
+//            { "access_token":"ACCESS_TOKEN",
+//                    "expires_in":7200,
+//                    "refresh_token":"REFRESH_TOKEN",
+//                    "openid":"OPENID",
+//                    "scope":"SCOPE" }
+
+            if(result.get("errcode") == null){
+                WxWebAccessToken wxWebAccessToken = gson.fromJson(json, WxWebAccessToken.class);
+                Date ex = DateTime.now().plusMinutes(90).toDate();
+                wxWebAccessToken.setExpires_time(ex);
+
+                return wxWebAccessToken;
+            }else{
+                throw new WxInvokeException(result.get("errcode").toString());
+            }
+
+        } catch (Exception ex) {
+            logger.error("sns/oauth2/access_token error {}", ex);
+            throw new WxInvokeException(ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception ex) {
+                logger.error("close error {}", ex);
+            }
+        }
+    }
+
+    public int insertWebAccessToken(WxWebAccessToken wxWebAccessToken){
+        try {
+            return wxWebAccessTokenMapper.insert(wxWebAccessToken);
+        } catch (Exception ex) {
+            logger.error("insertWebAccessToken error {}", ex);
+            throw new ServiceException("insertWebAccessToken error",ex);
         }
     }
 
@@ -84,26 +168,6 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             closeableHttpResponse = closeableHttpClient.execute(httpGet);
             HttpEntity entity = closeableHttpResponse.getEntity();
 
-
-            // errcode,errmsg
-            // {
-//                    "subscribe": 1,
-//                    "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-//                    "nickname": "Band",
-//                    "sex": 1,
-//                    "language": "zh_CN",
-//                    "city": "广州",
-//                    "province": "广东",
-//                    "country": "中国",
-//                    "headimgurl":"http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-//                    "subscribe_time": 1382694957,
-//                    "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
-//                    "remark": "",
-//                    "groupid": 0,
-//                    "tagid_list":[128,2]
-//
-//        }
-
             String json = EntityUtils.toString(entity, "UTF-8");
             logger.info("get user/info response : {}", json);
 
@@ -116,6 +180,105 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 //            } else {
 //                logger.error("get user/info error {}", json);
 //            }
+        } catch (Exception ex) {
+            logger.error("user/info error {}", ex);
+            throw new WxInvokeException(ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception ex) {
+                logger.error("close error {}", ex);
+            }
+        }
+    }
+
+    @Override
+    public String getUserInfo() {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String accessToken = getAccessToken();
+
+            // https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/cgi-bin/user/get";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("access_token", accessToken));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get user/get response : {}", json);
+
+            if (json.indexOf("errcode") != -1) {
+                Gson gson = new Gson();
+                WxResponse wxResponse = gson.fromJson(json, WxResponse.class);
+                throw new WxInvokeException(String.valueOf(wxResponse.getErrcode()));
+            }
+            return json;
+
+        } catch (Exception ex) {
+            logger.error("user/get error {}", ex);
+            throw new WxInvokeException(ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception ex) {
+                logger.error("close error {}", ex);
+            }
+        }
+    }
+
+
+    @Override
+    public String getTag() {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String accessToken = getAccessToken();
+
+            // https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/cgi-bin/tags/get";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("access_token", accessToken));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get user/info response : {}", json);
+
+            if (json.indexOf("errcode") != -1) {
+                Gson gson = new Gson();
+                WxResponse wxResponse = gson.fromJson(json, WxResponse.class);
+                throw new WxInvokeException(String.valueOf(wxResponse.getErrcode()));
+            }
+            return json;
+
         } catch (Exception ex) {
             logger.error("user/info error {}", ex);
             throw new WxInvokeException(ex);
@@ -371,7 +534,7 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 //
 
     @Override
-    public Object getMenu() {
+    public String getMenu() {
         CloseableHttpClient closeableHttpClient = null;
         CloseableHttpResponse closeableHttpResponse = null;
         try {
@@ -398,9 +561,10 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 
             String result = EntityUtils.toString(entity, "UTF-8");
             logger.info("get menu/get response : {}", result);
+            return result;
 
-            Gson gson = GsonBuilderUtils.gsonBuilderWithBase64EncodedByteArrays().disableHtmlEscaping().create();
-            return gson.fromJson(result, Object.class);
+//            Gson gson = GsonBuilderUtils.gsonBuilderWithBase64EncodedByteArrays().disableHtmlEscaping().create();
+//            return gson.fromJson(result, Object.class);
         } catch (Exception ex) {
             logger.error("menu/get error {}", ex);
             throw new WxInvokeException(ex);

@@ -85,6 +85,11 @@
                                 <%--location.href = 'http://local.com/wx/user-info/detail?id='+row.id;--%>
                             <%--}--%>
                         <%--}--%>
+                        {   iconCls:'ext-icon fa fa-cloud-download',
+                            handler:function(){
+                                location.href = 'http://local.com/wx/user-info/download';
+                            }
+                        }
                     ]
                 });
 

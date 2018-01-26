@@ -19,6 +19,9 @@
 
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
+<c:set var="WEB_ROOT_CONTEXT" value="${pageContext.request.contextPath}" scope="application"/>
+<%--<c:set var="WEB_ROOT_CONTEXT" value="http://wx.smejr.gov.cn/hdtyi-wx" scope="application"/>--%>
+
 <%--<%@ taglib prefix="util" uri="http://assets.hdtyi.com/taglib/util" %>--%>
 <%--session.setAttribute("SWITCH_ON","on");--%>
 <%--session.setAttribute("SWITCH_OFF","off");--%>

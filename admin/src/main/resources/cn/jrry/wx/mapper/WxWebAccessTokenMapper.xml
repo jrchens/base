@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jrry.wx.mapper.WxWebAccessTokenMapper">
+  <resultMap id="BaseResultMap" type="cn.jrry.wx.domain.WxWebAccessToken">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="access_token" jdbcType="VARCHAR" property="access_token" />
+    <result column="expires_in" jdbcType="INTEGER" property="expires_in" />
+    <result column="expires_time" jdbcType="TIMESTAMP" property="expires_time" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="refresh_token" jdbcType="VARCHAR" property="refresh_token" />
+    <result column="scope" jdbcType="VARCHAR" property="scope" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wx_web_access_token
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jrry.wx.domain.WxWebAccessToken" useGeneratedKeys="true" keyProperty="id">
+    insert into wx_web_access_token (access_token, expires_in,
+      expires_time, openid, refresh_token, 
+      scope)
+    values (#{access_token,jdbcType=VARCHAR}, #{expires_in,jdbcType=INTEGER},
+      #{expires_time,jdbcType=TIMESTAMP}, #{openid,jdbcType=VARCHAR}, #{refresh_token,jdbcType=VARCHAR}, 
+      #{scope,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxWebAccessToken">
+    update wx_web_access_token
+    set access_token = #{access_token,jdbcType=VARCHAR},
+      expires_in = #{expires_in,jdbcType=INTEGER},
+      expires_time = #{expires_time,jdbcType=TIMESTAMP},
+      openid = #{openid,jdbcType=VARCHAR},
+      refresh_token = #{refresh_token,jdbcType=VARCHAR},
+      scope = #{scope,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, access_token, expires_in, expires_time, openid, refresh_token, scope
+    from wx_web_access_token
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, access_token, expires_in, expires_time, openid, refresh_token, scope
+    from wx_web_access_token
+  </select>
+
+  <select id="selectByOpenid" parameterType="string" resultType="string">
+    select access_token
+    from wx_web_access_token
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+</mapper>

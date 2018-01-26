@@ -3,7 +3,9 @@ package cn.jrry.wx.controller;
 import cn.jrry.admin.domain.Config;
 import cn.jrry.admin.service.ConfigService;
 import cn.jrry.util.ExceptionUtils;
-import cn.jrry.validation.group.*;
+import cn.jrry.validation.group.Detail;
+import cn.jrry.validation.group.Edit;
+import cn.jrry.validation.group.Update;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller(value = "wxConfigController")
 @RequestMapping(path = "wx/config")

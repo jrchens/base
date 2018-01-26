@@ -32,13 +32,13 @@
       node_name, node_key, node_url, 
       node_media_id, node_appid, node_pagepath, 
       view_scope, is_custom, menuid, 
-      rich_content, sort, is_deleted,url_state
+      rich_content, sort, is_deleted, url_state,
       cruser, crtime)
-    values (#{parent_id,jdbcType=BIGINT}, 'view',
+    values (#{parent_id,jdbcType=BIGINT}, #{node_type,jdbcType=VARCHAR},
       #{node_name,jdbcType=VARCHAR}, #{node_key,jdbcType=VARCHAR}, #{node_url,jdbcType=VARCHAR}, 
       #{node_media_id,jdbcType=VARCHAR}, #{node_appid,jdbcType=VARCHAR}, #{node_pagepath,jdbcType=VARCHAR}, 
-      'snsapi_base', 0, #{menuid,jdbcType=BIGINT},
-      #{rich_content,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 0, '',
+      #{view_scope,jdbcType=VARCHAR}, 1, #{menuid,jdbcType=BIGINT},
+      #{rich_content,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 0, #{url_state,jdbcType=VARCHAR},
       #{cruser,jdbcType=VARCHAR}, #{crtime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cn.jrry.wx.domain.WxMenu">

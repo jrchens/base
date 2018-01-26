@@ -1,12 +1,17 @@
 package cn.jrry.wx.controller;
 
-import cn.jrry.cms.domain.Category;
 import cn.jrry.cms.domain.TreeNode;
 import cn.jrry.util.ExceptionUtils;
-import cn.jrry.validation.group.*;
+import cn.jrry.validation.group.Detail;
+import cn.jrry.validation.group.Remove;
+import cn.jrry.validation.group.Save;
+import cn.jrry.validation.group.Update;
 import cn.jrry.wx.domain.WxMenu;
+import cn.jrry.wx.domain.WxMenuMatchRule;
 import cn.jrry.wx.service.WxInvokeService;
 import cn.jrry.wx.service.WxMenuService;
+import cn.jrry.wx.service.WxTagService;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -14,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +42,8 @@ public class WxMenuController {
     private WxMenuService wxMenuService;
     @Autowired
     private WxInvokeService wxInvokeService;
+    @Autowired
+    private WxTagService wxTagService;
 
     @RequestMapping(path = {"index"}, method = RequestMethod.GET)
     public String index(@Validated WxMenu record, BindingResult bindingResult, Model model) {
@@ -42,7 +52,9 @@ public class WxMenuController {
             if (record == null) {
                 record = new WxMenu();
             }
+            record.setMatchRule(new WxMenuMatchRule());
             model.addAttribute(record);
+            model.addAttribute(wxTagService.selectAll());
         } catch (Exception ex) {
             model.addAttribute("controller_error", ExceptionUtils.getSimpleMessage(ex));
         }
@@ -207,24 +219,42 @@ public class WxMenuController {
     }
 
 
+//    @RequestMapping(path = "async-download", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> asyncDownload() {
+//        logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "async-download");
+//        Map<String, Object> result = Maps.newLinkedHashMap();
+//        Map<String, Object> data = Maps.newLinkedHashMap();
+//        try {
+//            result.put("success", true);
+//            result.put("message", "");
+//            result.put("data", wxInvokeService.getMenu());
+//        } catch (Exception ex) {
+//            result.put("success", false);
+//            result.put("message", ExceptionUtils.getSimpleMessage(ex));
+//            result.put("data", 0);
+//        }
+//
+//        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-download");
+//        return result;
+//    }
 
-    @RequestMapping(path = "async-download", method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String, Object> asyncDownload() {
-        logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "async-download");
-        Map<String, Object> result = Maps.newLinkedHashMap();
-        Map<String, Object> data = Maps.newLinkedHashMap();
+
+    @RequestMapping(path = "download", method = RequestMethod.GET)
+    public void download(HttpServletResponse httpServletResponse) { // , produces = "text/plain; charset=UTF-8"
+        logger.info("--> {}.{}", CONTROLLER_CLASS_NAME, "download");
+        String result = null;
         try {
-            result.put("success", true);
-            result.put("message", "");
-            result.put("data", wxInvokeService.getMenu());
+            httpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("menu.json", "UTF-8"));
+            result = wxInvokeService.getMenu();
+            FileCopyUtils.copy(result.getBytes(Charsets.UTF_8),httpServletResponse.getOutputStream());
         } catch (Exception ex) {
-            result.put("success", false);
-            result.put("message", ExceptionUtils.getSimpleMessage(ex));
-            result.put("data", 0);
+            try {
+                httpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("error.json", "UTF-8"));
+                FileCopyUtils.copy(ExceptionUtils.getSimpleMessage(ex).getBytes(Charsets.UTF_8),httpServletResponse.getOutputStream());
+            } catch (Exception e) {}
         }
-
-        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "async-download");
-        return result;
+        logger.info("<-- {}.{}", CONTROLLER_CLASS_NAME, "download");
+//        return result;
     }
 }

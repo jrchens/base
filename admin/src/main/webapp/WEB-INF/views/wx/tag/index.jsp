@@ -35,11 +35,13 @@
                 pager.pagination({
                     buttons:[
                         {   iconCls:'ext-icon fa fa-plus',
+                            text: '新增',
                             handler:function(){
                                 location.href = 'http://local.com/wx/tag/create';
                             }
                         },
                         {   iconCls:'ext-icon fa fa-pencil',
+                            text: '编辑',
                             handler:function(){
                                 var row = $('#wx_tag_index_datagrid').datagrid('getSelected');
                                 if(row == null){
@@ -50,6 +52,7 @@
                             }
                         },
                         {   iconCls:'ext-icon fa fa-trash',
+                            text: '删除',
                             handler:function(){
                                 var thisButton = $(this);
                                 var row = $('#wx_tag_index_datagrid').datagrid('getSelected');
@@ -83,6 +86,7 @@
                             }
                         },
                         {   iconCls:'ext-icon fa fa-eye',
+                            text: '详情',
                             handler:function(){
                                 var row = $('#wx_tag_index_datagrid').datagrid('getSelected');
                                 if(row == null){
@@ -90,6 +94,18 @@
                                     return false;
                                 }
                                 location.href = 'http://local.com/wx/tag/detail?id='+row.id;
+                            }
+                        },
+                        {   iconCls:'ext-icon fa fa-cloud-download',
+                            text: '下载',
+                            handler:function(){
+                                location.href = 'http://local.com/wx/tag/download';
+                            }
+                        },
+                        {   iconCls:'ext-icon fa fa-cloud-upload',
+                            text: '发布',
+                            handler:function(){
+                                location.href = 'http://local.com/wx/tag/download';
                             }
                         }
                     ]

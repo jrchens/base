@@ -1,11 +1,11 @@
 package cn.jrry.wx.mapper;
 
 import cn.jrry.wx.domain.WxTag;
-import cn.jrry.wx.domain.WxUserInfo;
 
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public interface WxTagMapper {
     int deleteByPrimaryKey(Long id);
 

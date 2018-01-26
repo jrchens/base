@@ -5,7 +5,7 @@ import cn.jrry.wx.domain.WxTag;
 
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public interface WxTagService {
     int deleteByPrimaryKey(Long id);
 

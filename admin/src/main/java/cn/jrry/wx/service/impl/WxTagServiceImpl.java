@@ -1,13 +1,10 @@
 package cn.jrry.wx.service.impl;
 
 import cn.jrry.common.exception.ServiceException;
-import cn.jrry.common.exception.WxInvokeException;
-import cn.jrry.wx.domain.WxResponse;
 import cn.jrry.wx.domain.WxTag;
 import cn.jrry.wx.mapper.WxTagMapper;
 import cn.jrry.wx.service.WxInvokeService;
 import cn.jrry.wx.service.WxTagService;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -20,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 @Service
 public class WxTagServiceImpl implements WxTagService {
     private static final Logger logger = LoggerFactory.getLogger(WxTagService.class);
@@ -33,18 +31,20 @@ public class WxTagServiceImpl implements WxTagService {
     @Override
     public int deleteByPrimaryKey(Long id) {
         try {
-            Map<String, Object> params = Maps.newLinkedHashMap();
-            Map<String, Object> tag = Maps.newHashMap();
-            tag.put("id", id);
-            params.put("tag", tag);
+//            Map<String, Object> params = Maps.newLinkedHashMap();
+//            Map<String, Object> tag = Maps.newHashMap();
+//            tag.put("id", id);
+//            params.put("tag", tag);
+//
+//            WxResponse result = wxInvokeService.deleteTag(params);
+//
+//            if (result.getErrcode() == 0) {
+//                return wxTagMapper.deleteByPrimaryKey(id);
+//            } else {
+//                throw new WxInvokeException(String.valueOf(result.getErrcode()));
+//            }
 
-            WxResponse result = wxInvokeService.deleteTag(params);
-
-            if (result.getErrcode() == 0) {
-                return wxTagMapper.deleteByPrimaryKey(id);
-            } else {
-                throw new WxInvokeException(String.valueOf(result.getErrcode()));
-            }
+            return wxTagMapper.deleteByPrimaryKey(id);
         } catch (Exception ex) {
             logger.error("deleteByPrimaryKey error {}{}{}", id, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
@@ -59,12 +59,12 @@ public class WxTagServiceImpl implements WxTagService {
             record.setCruser(user);
             record.setCrtime(now);
 
-            Map<String, Object> params = Maps.newLinkedHashMap();
-            Map<String, Object> tag = Maps.newHashMap();
-            tag.put("name", record.getName());
-            params.put("tag", tag);
-            Long id = wxInvokeService.insertTag(params);
-            record.setId(id);
+//            Map<String, Object> params = Maps.newLinkedHashMap();
+//            Map<String, Object> tag = Maps.newHashMap();
+//            tag.put("name", record.getName());
+//            params.put("tag", tag);
+//            Long id = wxInvokeService.insertTag(params);
+//            record.setId(id);
 
             int aff = wxTagMapper.insert(record);
             return aff;
@@ -102,20 +102,21 @@ public class WxTagServiceImpl implements WxTagService {
             record.setMduser(user);
             record.setMdtime(now);
 
-            Map<String, Object> params = Maps.newLinkedHashMap();
-            Map<String, Object> tag = Maps.newHashMap();
-            tag.put("id", record.getId());
-            tag.put("name", record.getName());
-            params.put("tag", tag);
+//            Map<String, Object> params = Maps.newLinkedHashMap();
+//            Map<String, Object> tag = Maps.newHashMap();
+//            tag.put("id", record.getId());
+//            tag.put("name", record.getName());
+//            params.put("tag", tag);
+//
+//            WxResponse result = wxInvokeService.updateTag(params);
+//
+//            if (result.getErrcode() == 0) {
+//                return wxTagMapper.updateByPrimaryKey(record);
+//            } else {
+//                throw new WxInvokeException(String.valueOf(result.getErrcode()));
+//            }
 
-            WxResponse result = wxInvokeService.updateTag(params);
-
-            if (result.getErrcode() == 0) {
-                return wxTagMapper.updateByPrimaryKey(record);
-            } else {
-                throw new WxInvokeException(String.valueOf(result.getErrcode()));
-            }
-
+            return wxTagMapper.updateByPrimaryKey(record);
         } catch (Exception ex) {
             logger.error("updateByPrimaryKey error {}{}{}", record, System.lineSeparator(), ex);
             throw new ServiceException(ex.getCause());
