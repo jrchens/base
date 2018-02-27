@@ -1,6 +1,8 @@
 package apache.httpclient;
 
+import com.github.wxpay.sdk.WXPayUtil;
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
@@ -9,14 +11,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -277,6 +284,70 @@ public class HttpClientTest {
                 response.close();
                 httpclient.close();
             } catch (Exception e2) {
+            }
+        }
+    }
+
+
+    @Test
+    public void testForm() throws Exception {
+
+        logger.info("test form post");
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            Map<String, Object> params = Maps.newLinkedHashMap();
+//                params.put("openid_list", openid_list);
+//                params.put("tagid", wxConfigService.getString(ConfigConstants.WX_DEFAULT_TAG_KEY));
+
+
+            String scheme = "http";
+            String host = "api.chanyoo.cn";
+            String path = "/utf8/interface/send_sms.aspx";
+
+            String receiver = "13376170091";
+            String content = String.format("您的手机号：%s，注册验证码：%s，一天内提交有效！【句容热线网】",receiver,RandomStringUtils.randomNumeric(6));
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("username", "jrhotbbs"));
+            nvps.add(new BasicNameValuePair("password", "Jrhot87285699"));
+            nvps.add(new BasicNameValuePair("receiver", receiver));
+            nvps.add(new BasicNameValuePair("content", content));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(builder.build().toString());
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charsets.UTF_8.name()));
+
+            closeableHttpResponse = closeableHttpClient.execute(httpPost);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+            String result = EntityUtils.toString(entity, "UTF-8");
+            logger.info("test form post response {}", result);
+
+            Map<String,String> rs = WXPayUtil.xmlToMap(result);
+
+            if(Integer.parseInt(rs.get("result")) >= 0){
+
+            }
+
+
+
+        } catch (Exception ex) {
+            logger.error(" form post error {}", ex);
+            throw new RuntimeException(" form post error", ex);
+        } finally {
+            try {
+                if (closeableHttpResponse != null)
+                    closeableHttpResponse.close();
+                if (closeableHttpClient != null)
+                    closeableHttpClient.close();
+            } catch (Exception e) {
+                logger.error("close error {}", e);
             }
         }
     }

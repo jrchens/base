@@ -5,11 +5,17 @@ import cn.jrry.common.exception.ServiceException;
 import cn.jrry.common.exception.WxInvokeException;
 import cn.jrry.wx.domain.*;
 import cn.jrry.wx.mapper.WxAccessTokenMapper;
+import cn.jrry.wx.mapper.WxJsapiTicketMapper;
 import cn.jrry.wx.mapper.WxWebAccessTokenMapper;
 import cn.jrry.wx.service.WxInvokeService;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -29,10 +35,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +53,14 @@ public class WxInvokeServiceImpl implements WxInvokeService {
     private static final Logger logger = LoggerFactory.getLogger(WxInvokeService.class);
     private static final String APP_ID_KEY = "76900565-ac11-4a9f-a990-1475db91db2f";
     private static final String APP_SECRET_KEY = "8128125a-d95b-40cb-840e-477abfc594a7";
+    private static final String UPLOAD_BASE_PATH = "34c10bf0-fe3b-4ff0-846d-66acf338e7fb";
     @Autowired
     private WxAccessTokenMapper wxAccessTokenMapper;
     @Autowired
     private WxWebAccessTokenMapper wxWebAccessTokenMapper;
+    @Autowired
+    private WxJsapiTicketMapper wxJsapiTicketMapper;
+
     @Autowired
     private ConfigService configService;
 
@@ -128,6 +143,70 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             }
         } catch (Exception ex) {
             logger.error("task --> refresh web_access_token error {}", ex);
+        }
+    }
+
+    @Override
+    public void refreshJsapiTicketTask() {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+
+            Date expiresTime = DateTime.now().plusMinutes(10).toDate();
+            List<WxJsapiTicket> refreshTokenList = wxJsapiTicketMapper.selectNeedRefresh(expiresTime);
+            if (refreshTokenList.size() == 0) {
+                return;
+            }
+
+            String access_token = getAccessToken();
+
+            // https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/cgi-bin/ticket/getticket";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("access_token", access_token));
+            nvps.add(new BasicNameValuePair("type", "jsapi"));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+            HttpEntity entity = closeableHttpResponse.getEntity();
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get jsapi_ticket response json : {}", json);
+
+            Gson gson = new Gson();
+
+            JsapiTicketResponse jsapiTicketResponse = gson.fromJson(json, JsapiTicketResponse.class);
+
+            if (jsapiTicketResponse.getErrcode() == 0) {
+                WxJsapiTicket wxJsapiTicket = new WxJsapiTicket();
+                wxJsapiTicket.setTicket(jsapiTicketResponse.getTicket());
+                wxJsapiTicket.setExpires_in(jsapiTicketResponse.getExpires_in());
+                wxJsapiTicket.setExpires_time(DateTime.now().plusMinutes(90).toDate());
+                wxJsapiTicketMapper.insert(wxJsapiTicket);
+            } else {
+                // TODO send notification to admin
+            }
+        } catch (Exception ex) {
+            logger.error("get jsapi_ticket error {}", ex);
+            throw new WxInvokeException("get jsapi_ticket error", ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception e) {
+                logger.error("close error {}", e);
+            }
         }
     }
 
@@ -222,7 +301,8 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             logger.info("get sns/oauth2/access_token response : {}", json);
 
             Gson gson = new Gson();
-            Map<String, Object> result = gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());
+            Map<String, Object> result = gson.fromJson(json, new TypeToken<Map<String, Object>>() {
+            }.getType());
 
 //            { "access_token":"ACCESS_TOKEN",
 //                    "expires_in":7200,
@@ -230,13 +310,13 @@ public class WxInvokeServiceImpl implements WxInvokeService {
 //                    "openid":"OPENID",
 //                    "scope":"SCOPE" }
 
-            if(result.get("errcode") == null){
+            if (result.get("errcode") == null) {
                 WxWebAccessToken wxWebAccessToken = gson.fromJson(json, WxWebAccessToken.class);
                 Date ex = DateTime.now().plusMinutes(90).toDate();
                 wxWebAccessToken.setExpires_time(ex);
 
                 return wxWebAccessToken;
-            }else{
+            } else {
                 throw new WxInvokeException(result.get("errcode").toString());
             }
 
@@ -253,21 +333,21 @@ public class WxInvokeServiceImpl implements WxInvokeService {
         }
     }
 
-    public int deleteWebAccessTokenByOpenid(String openid){
+    public int deleteWebAccessTokenByOpenid(String openid) {
         try {
             return wxWebAccessTokenMapper.deleteByOpenid(openid);
         } catch (Exception ex) {
             logger.error("deleteWebAccessTokenByOpenid error {}", ex);
-            throw new ServiceException("deleteWebAccessTokenByOpenid error",ex);
+            throw new ServiceException("deleteWebAccessTokenByOpenid error", ex);
         }
     }
 
-    public int insertWebAccessToken(WxWebAccessToken wxWebAccessToken){
+    public int insertWebAccessToken(WxWebAccessToken wxWebAccessToken) {
         try {
             return wxWebAccessTokenMapper.insert(wxWebAccessToken);
         } catch (Exception ex) {
             logger.error("insertWebAccessToken error {}", ex);
-            throw new ServiceException("insertWebAccessToken error",ex);
+            throw new ServiceException("insertWebAccessToken error", ex);
         }
     }
 
@@ -949,5 +1029,126 @@ public class WxInvokeServiceImpl implements WxInvokeService {
             }
         }
     }
+
+    @Override
+    public String getJsapiTicket() {
+        try {
+            return wxJsapiTicketMapper.getJsapiTicket();
+        } catch (Exception ex) {
+            logger.error("getJsapiTicket error {}", ex);
+            throw new WxInvokeException(ex);
+        }
+    }
+
+    @Override
+    public WxConfig getWxConfig(String url, String code, String state) {
+        String appid = configService.getString(APP_ID_KEY);
+        Long timestamp = System.currentTimeMillis() / 1000;
+        String nonceStr = RandomStringUtils.randomAlphanumeric(12);
+
+        String[] params = {
+                "jsapi_ticket=".concat(getJsapiTicket()),
+                "noncestr=".concat(nonceStr),
+                "timestamp=".concat(String.valueOf(timestamp)),
+                "url=".concat(url)
+        };
+
+        Arrays.sort(params);
+
+        String str = Joiner.on("&").join(params);
+        String signature = Hashing.sha1().hashString(str, Charsets.UTF_8).toString();
+
+        WxConfig config = new WxConfig();
+        config.setAppId(appid);
+        config.setTimestamp(timestamp);
+        config.setNonceStr(nonceStr);
+        config.setSignature(signature);
+
+        logger.info("wx config : {}", config);
+
+        return config;
+    }
+
+
+    @Override
+    public File getMedia(String serverId) {
+        CloseableHttpClient closeableHttpClient = null;
+        CloseableHttpResponse closeableHttpResponse = null;
+        try {
+
+            String accessToken = getAccessToken();
+
+            // https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/cgi-bin/media/get";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("access_token", accessToken));
+            nvps.add(new BasicNameValuePair("media_id", serverId));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
+
+            closeableHttpClient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            closeableHttpResponse = closeableHttpClient.execute(httpGet);
+
+            int code = closeableHttpResponse.getStatusLine().getStatusCode();
+            if (code == 200) {
+
+                Header[] headers = closeableHttpResponse.getHeaders("Content-disposition");
+                String filename = serverId.concat(".jpg");
+                for (int i = 0; i < headers.length; i++) {
+                    String value = headers[i].getValue();
+                    if (value.indexOf(serverId) != -1) {
+                        int idx = value.indexOf("filename=");
+                        filename = value.substring(idx + 9);
+                        filename = filename.replaceAll("\"","");
+                    }
+                }
+                HttpEntity entity = closeableHttpResponse.getEntity();
+
+                String basePath = configService.getString(UPLOAD_BASE_PATH);
+                SimpleDateFormat df = new SimpleDateFormat("/yyyy/MM/dd");
+                String prefixPath = df.format(DateTime.now().toDate());
+                File dir = new File(basePath.concat(prefixPath));
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                File dest = new File(dir, filename);
+                FileCopyUtils.copy(EntityUtils.toByteArray(entity), new FileOutputStream(dest));
+                return dest;
+            } else {
+//                String json = EntityUtils.toString(entity, "UTF-8");
+//                logger.info("get media/get response : {}", json);
+//
+//                Gson gson = new Gson();
+//                MediaResponse mediaResponse = gson.fromJson(json, MediaResponse.class);
+                throw new RuntimeException(String.format("download media id ({}) object to local failed",serverId));
+            }
+
+
+
+        } catch (Exception ex) {
+            logger.error("getMedia error {}", ex);
+            throw new WxInvokeException(ex);
+        } finally {
+            try {
+                closeableHttpResponse.close();
+                closeableHttpClient.close();
+            } catch (Exception ex) {
+                logger.error("close error {}", ex);
+            }
+        }
+    }
+
+//    appId: '', // 必填，公众号的唯一标识
+//    timestamp: , // 必填，生成签名的时间戳
+//    nonceStr: '', // 必填，生成签名的随机串
+//    signature: '',// 必填，签名，见附录1
+
 
 }

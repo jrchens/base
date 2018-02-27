@@ -88,6 +88,7 @@
                 if(data.success){
                     var form = $('#wx_menu_index_update_form');
                     form.form('load',data.data);
+
                     <%--if(data.data.custom){--%>
                         <%--$('#wx_menu_index_update_form_custom_switchbutton',form).switchbutton('check');--%>
                     <%--} else {--%>
@@ -241,10 +242,10 @@
                 <td>菜单链接</td>
                 <td><input id="node_url" name="node_url" class="easyui-textbox" data-options="required:false, fit:true"></td>
             </tr>
-            <tr>
-                <td>菜单状态</td>
-                <td><input id="url_state" name="url_state" class="easyui-textbox" data-options="required:false, fit:true"></td>
-            </tr>
+            <%--<tr>--%>
+                <%--<td>菜单状态</td>--%>
+                <%--<td><input id="url_state" name="url_state" class="easyui-textbox" data-options="required:false, fit:true"></td>--%>
+            <%--</tr>--%>
             <%--<tr>--%>
                 <%--<td>永久素材(media_id)</td>--%>
                 <%--<td><input id="node_media_id" name="node_media_id" class="easyui-textbox" data-options="required:false, fit:true"></td>--%>

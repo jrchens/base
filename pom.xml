@@ -15,6 +15,7 @@
         <module>test</module>
         <module>gen</module>
         <module>admin</module>
+        <module>wx</module>
     </modules>
 
     <properties>
@@ -341,6 +342,15 @@
             <artifactId>tiles-jsp</artifactId>
             <version>3.0.5</version>
         </dependency>
+
+
+
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
 
         <!--fileupload-->
         <!--<dependency>-->

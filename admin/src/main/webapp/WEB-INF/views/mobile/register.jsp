@@ -54,6 +54,8 @@
 </div>
 
 <script type="text/javascript">
+    var openid = '${wxWebAccessToken.openid}';
+    localStorage.setItem("openid",openid);
     // toast
 //    $(function(){
 //        var $toast = $('#toast');
@@ -76,11 +78,11 @@
             $loadingToast.fadeIn(100);
 
             var reqData = {
-                openid: '${wxWebAccessToken.openid}',
+                openid: openid,
                 viewname: $('#viewname').val(),
                 mobile: $('#mobile').val()
             };
-            $.post('${WEB_ROOT_CONTEXT}/register',reqData,function(data,textStatus,jqXHR){
+            $.post('${WEB_ROOT_CONTEXT}/mobile/register',reqData,function(data,textStatus,jqXHR){
                 if(data.success){
                     $loadingToast.fadeOut(100);
 

@@ -69,8 +69,10 @@
         <!--wx_menu,wx_menu_match_rule-->
         <!--2018-01-26-->
         <!--wx_web_access_token-->
+        <!--2018-01-27-->
+        <!--wx_jsapi_ticket-->
 
-        <table schema="base" tableName="wx_web_access_token">
+        <table schema="base" tableName="wx_jsapi_ticket">
             <!--<domainObjectRenamingRule searchString="^Wx" replaceString=""/>-->
             <property name="useActualColumnNames" value="true"/>
             <columnRenamingRule searchString="^is_" replaceString=""/>

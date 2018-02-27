@@ -27,6 +27,7 @@ hs_err_pid*
 target/
 .idea/
 rebel.xml
+.rebel.xml.bak
 .classpath
 .project
 .settings/

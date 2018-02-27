@@ -159,6 +159,7 @@ public class WxMenuServiceImpl implements WxMenuService {
             Timestamp now = new Timestamp(System.currentTimeMillis());
             record.setMduser(user);
             record.setMdtime(now);
+            record.setUrl_state(String.valueOf(record.getId()));
 
             if(record.getParent_id() == 1 && record.getId().longValue() != 2){
                 wxMenuMatchRuleMapper.deleteByMenuid(record.getId());

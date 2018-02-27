@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="${WEB_ROOT_CONTEXT}/favicon.ico" type="image/x-icon">
 <link rel="icon" href="${WEB_ROOT_CONTEXT}/favicon.ico" type="image/x-icon">
 
-<link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css" href="http://res.local.com/jquery-easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="http://res.local.com/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/resources/css/common.css">
+<link rel="stylesheet" type="text/css" href="${WEB_ROOT_CONTEXT}/resources/jquery-easyui/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="${WEB_ROOT_CONTEXT}/resources/jquery-easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${WEB_ROOT_CONTEXT}/resources/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="${WEB_ROOT_CONTEXT}/resources/css/common.css">

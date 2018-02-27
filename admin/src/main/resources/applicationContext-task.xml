@@ -4,8 +4,6 @@
        xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-
-
         http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task.xsd">
 
@@ -19,8 +17,9 @@
         <!--90 minute -->
 
         <!--initial-delay="60000"-->
-        <task:scheduled ref="wxInvokeServiceImpl" method="refreshAccessTokenTask" fixed-rate="6000000"/><!--100-->
-        <task:scheduled ref="wxInvokeServiceImpl" method="refreshWebAccessTokenTask" initial-delay="60000" fixed-rate="600000"/><!--10-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refreshAccessTokenTask" fixed-delay="6000000"/><!--100-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refreshWebAccessTokenTask" initial-delay="60000" fixed-delay="6000000"/><!--100-->
+        <task:scheduled ref="wxInvokeServiceImpl" method="refreshJsapiTicketTask" initial-delay="90000" fixed-delay="6000000"/><!--100-->
     </task:scheduled-tasks>
 
 </beans>

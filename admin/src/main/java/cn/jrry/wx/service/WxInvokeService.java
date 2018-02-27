@@ -1,10 +1,8 @@
 package cn.jrry.wx.service;
 
-import cn.jrry.wx.domain.WxMenu;
-import cn.jrry.wx.domain.WxResponse;
-import cn.jrry.wx.domain.WxUserInfo;
-import cn.jrry.wx.domain.WxWebAccessToken;
+import cn.jrry.wx.domain.*;
 
+import java.io.File;
 import java.util.Map;
 
 public interface WxInvokeService {
@@ -12,6 +10,7 @@ public interface WxInvokeService {
 
     void refreshAccessTokenTask(); // access token
     void refreshWebAccessTokenTask(); // web access token
+    void refreshJsapiTicketTask();
 
     String getAccessToken();
 
@@ -43,5 +42,11 @@ public interface WxInvokeService {
 
     Long createConditionalMenu(Map<String,Object> params);
     WxResponse deleteConditionalMenu(Map<String,Object> params);
+
+
+    String getJsapiTicket();
+    WxConfig getWxConfig(String url,String code, String state);
+
+    File getMedia(String serverId);
 
 }

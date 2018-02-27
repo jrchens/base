@@ -18,6 +18,8 @@ import java.util.List;
 
 public class AccessTokenTest {
     private static final Logger logger = LoggerFactory.getLogger(AccessTokenTest.class);
+    private static final String appid = "wx1916e46e3c5ec3c0"; // wx00979ffb52ef6c4f
+    private static final String appsecret = ""; // 219810842bebe6c15351d938eb577953
 
     /**
      * <pre>
@@ -32,8 +34,6 @@ public class AccessTokenTest {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
         try {
-            String appid = "wx00979ffb52ef6c4f";
-            String appsecret = "219810842bebe6c15351d938eb577953";
 
             // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
             String scheme = "https";
@@ -76,8 +76,6 @@ public class AccessTokenTest {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
         try {
-            String appid = "wx8741d5a95ebb85b5";
-            String appsecret = "c4e71a7d035b600740fd4cab0053ea3a";
 
             // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
             String scheme = "https";
@@ -93,6 +91,51 @@ public class AccessTokenTest {
             builder.setScheme(scheme).setHost(host).setPath(path);
             builder.addParameters(nvps);
 
+
+            httpclient = HttpClients.createDefault();
+            HttpGet httpGet = new HttpGet(builder.build().toString());
+
+            response = httpclient.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+
+
+            // access_token,expires_in
+            // errcode,errmsg
+            // AccessToken
+
+            String json = EntityUtils.toString(entity, "UTF-8");
+            logger.info("get access_token response json : {}", json);
+            // {"access_token":"C7D0CQ_jZoG8ZxpUwo5fKhcTh5DgQgeXPzTPu_m5tORYx76T4TzyKSYMGQpgZMHR-EAFw0X00UTxmtFNyiUgrxnXmAyr6MIyVrVmE2fz1hnqA37-o_GOlPhMDGzle2o5ESPaAGAWKH","expires_in":7200}
+        } finally {
+            response.close();
+            httpclient.close();
+        }
+    }
+
+
+
+    @Test
+    public void code() throws Exception {
+        CloseableHttpClient httpclient = null;
+        CloseableHttpResponse response = null;
+        try {
+
+            // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
+            String scheme = "https";
+            String host = "api.weixin.qq.com";
+            String path = "/sns/oauth2/access_token";
+
+            String code = "011dNhrn12x4Aj0ztWun1nsxrn1dNhr3";
+
+            List<NameValuePair> nvps = Lists.newArrayList();
+            nvps.add(new BasicNameValuePair("appid", appid));
+            nvps.add(new BasicNameValuePair("secret", appsecret));
+            nvps.add(new BasicNameValuePair("code", code));
+            nvps.add(new BasicNameValuePair("grant_type", "authorization_code"));
+
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme(scheme).setHost(host).setPath(path);
+            builder.addParameters(nvps);
 
             httpclient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(builder.build().toString());

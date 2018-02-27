@@ -22,5 +22,11 @@ public class DateTimeParserTest {
         System.out.println(dateTime);
 
 
+        String dt = "2018-02-07 22:50:03";
+
+        DateTime payment_time = DateTime.parse(dt, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+
+        System.out.println(payment_time.toDate());
+
     }
 }

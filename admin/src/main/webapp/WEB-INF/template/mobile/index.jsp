@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="${WEB_ROOT_CONTEXT}/resources/weui/1.1.2/weui.min.css"/>
 
     <script src="${WEB_ROOT_CONTEXT}/resources/js/zepto.min.js"></script>
-    <script src="${WEB_ROOT_CONTEXT}/resources/js/jweixin-1.0.0.js"></script>
+    <script src="${WEB_ROOT_CONTEXT}/resources/js/jweixin-1.2.0.js"></script>
     <script src="${WEB_ROOT_CONTEXT}/resources/weuijs/1.0.0/weui.min.js"></script>
 
 </head>
