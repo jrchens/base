@@ -1,17 +1,89 @@
 package apache.poi;
 
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellValue;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.hssf.util.CellReference;
+import org.apache.poi.ss.usermodel.*;
 import org.junit.Test;
+import org.springframework.util.FileCopyUtils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class HSSFWorkbookTest {
+
+    @Test
+    public void testRead() throws Exception {
+        Workbook wb = null;
+        List<String> error = Lists.newArrayList();
+        try {
+            File file = new File("/Users/sheng/Documents/students.xls");
+            wb = WorkbookFactory.create(file);
+            Sheet sheet = wb.getSheetAt(0);
+            int rowNum = sheet.getLastRowNum();
+
+            String sheetName = sheet.getSheetName();
+            List<String> configColumnViewames = Lists.newArrayList("年级", "班级", "身份证", "学生姓名", "缴费项目1", "金额", "缴费项目2", "金额", "联系方式", "备注", "收费截止日期");
+            List<String> configColumnames = Lists.newArrayList("col001", "col002", "col003", "col004", "col005", "col006", "col007", "col008", "col009", "col010", "col011");
+            List<String> configColumnCheck = Lists.newArrayList(null, null, null, null, null, null, null, null, null, null, null);
+            List<String> columnames = Lists.newArrayList();
+            List<String> sheetData = Lists.newArrayList();
+
+            // nullable,regex
+
+            Row tableHeader = sheet.getRow(1);
+            short cellNum = tableHeader.getLastCellNum();
+            for (int i = 0; i < cellNum; i++) {
+                Cell cell = tableHeader.getCell(i);
+                if (null != cell && Cell.CELL_TYPE_STRING == cell.getCellType()) {
+                    columnames.add(cell.getStringCellValue());
+                }
+            }
+
+            if (configColumnViewames.equals(columnames)) {
+                for (int i = 2; i <= rowNum; i++) {
+                    boolean emptyRow = true;
+                    Row row = sheet.getRow(i);
+                    List<String> rowData = Lists.newArrayList();
+                    for (int j = 0; j < cellNum; j++) {
+                        Cell cell = row.getCell(j);
+                        if (cell == null || Cell.CELL_TYPE_BLANK == cell.getCellType()) {
+                            rowData.add("");
+                            // cell.getColumnIndex();
+                        } else {
+                            if (Cell.CELL_TYPE_STRING == cell.getCellType()) {
+                                rowData.add(cell.getStringCellValue());
+                                if (emptyRow) emptyRow = false;
+                            } else {
+                                String cellRef = new CellReference(cell.getRowIndex(), cell.getColumnIndex()).formatAsString();
+                                error.add(String.format("cell (%s) format err", cellRef));
+                            }
+                        }
+                    }
+                    if (emptyRow) continue;
+                    sheetData.add(Arrays.toString(rowData.toArray()));
+                    sheetData.add("\n");
+                }
+            } else {
+                error.add("table header format err");
+            }
+
+            System.err.println(Arrays.toString(error.toArray()));
+            System.out.println(sheetData);
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            wb.close();
+        }
+    }
 
     @Test
     public void testXLSRead() throws FileNotFoundException, IOException {

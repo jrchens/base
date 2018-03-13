@@ -1,8 +1,13 @@
 package apache.dbutils;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.apache.commons.dbutils.BaseResultSetHandler;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.*;
 import org.junit.Before;
@@ -10,6 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +30,7 @@ public class QueryRunnerTest {
     @Before
     public void init() throws Exception {
         dataSource = new MysqlDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/simple");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test");
         dataSource.setUser("develop");
         dataSource.setPassword("develop");
         // MysqlConnectionPoolDataSource
@@ -136,6 +143,50 @@ public class QueryRunnerTest {
         String var = run.query("show variables like 'innodb_max_purge_lag'",
                 new ScalarHandler<String>("Variable_name"));
         logger.info("{}", var);
+    }
+
+    @Test
+    public void update() throws Exception {
+        QueryRunner run = new QueryRunner();
+
+        Gson gson = new Gson();
+        File dir = new File("/Users/sheng/Documents/tmp/wx_user_info");
+        File[] files = dir.listFiles();
+        Object[][] params = new Object[14][];
+
+        for (File file : files
+                ) {
+            String json = Files.toString(file, Charsets.UTF_8);
+            // logger.info("json:{}", json);
+
+            Map<String, Object> row = gson.fromJson(json, new TypeToken<Map<String, Object>>() {
+
+            }.getType());
+
+            Connection conn = dataSource.getConnection();
+            int res = run.update(conn,"insert into wx_user_info  (openid,subscribe,nickname,sex,province,city,country,headimgurl,unionid,remark,subscribe_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    row.get("openid"),
+                    row.get("subscribe"),
+                    row.get("nickname"),
+                    row.get("sex"),
+                    row.get("province"),
+                    row.get("city"),
+                    row.get("country"),
+                    row.get("headimgurl"),
+                    row.get("unionid"),
+                    row.get("remark"),
+                    row.get("subscribe_time") );
+
+            logger.info("res:{}",res);
+            DbUtils.close(conn);
+
+            }
+
+
+//        run.batch("insert into wx_user_info  (openid,subscribe,nickname,sex,province,city,country,headimgurl,unionid,remark,subscribe_time) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//               params );
+
+
     }
 
     // TODO insert update batch
